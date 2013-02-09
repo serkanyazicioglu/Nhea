@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nhea.Data.EntityFrameworkRepository", "Nhea.Data.EntityFrameworkRepository\Nhea.Data.EntityFrameworkRepository.csproj", "{AC448B28-59BC-4418-9CB0-C32460305989}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nhea", "Nhea\Nhea.csproj", "{65768B08-8EEF-4C13-9EB3-237A84DC2B5F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AC448B28-59BC-4418-9CB0-C32460305989}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AC448B28-59BC-4418-9CB0-C32460305989}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AC448B28-59BC-4418-9CB0-C32460305989}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AC448B28-59BC-4418-9CB0-C32460305989}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65768B08-8EEF-4C13-9EB3-237A84DC2B5F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65768B08-8EEF-4C13-9EB3-237A84DC2B5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65768B08-8EEF-4C13-9EB3-237A84DC2B5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65768B08-8EEF-4C13-9EB3-237A84DC2B5F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
