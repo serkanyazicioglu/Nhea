@@ -9,9 +9,9 @@ using System.Web.UI;
 [assembly: AssemblyTitle("Nhea")]
 [assembly: AssemblyDescription("Nhea Development Library")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Garaj Yazılım Danişmanlık Hizmetleri Ltd. Şti.")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Nhea Framework")]
-[assembly: AssemblyCopyright("Copyright ©  2013")]
+[assembly: AssemblyCopyright("Copyright ©  2011")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,6 @@ using System.Web.UI;
 //
 // You can specify all the values or you can default the Revision and Build Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("1.4.0.0")]
-[assembly: AssemblyFileVersion("1.4.0.0")]
+[assembly: AssemblyVersion("1.6.0.0")]
+[assembly: AssemblyFileVersion("1.6.0.0")]
+[assembly: TagPrefix("Nhea.Web.UI.WebControls", "nhea")]

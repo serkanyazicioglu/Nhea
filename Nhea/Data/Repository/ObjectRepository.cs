@@ -153,7 +153,7 @@ namespace Nhea.Data.Repository
             }
         }
 
-        public override void Delete<E>(E item)
+        public override void Delete(T item)
         {
             throw new NotImplementedException();
         }

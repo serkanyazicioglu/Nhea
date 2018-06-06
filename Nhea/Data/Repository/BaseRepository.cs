@@ -174,7 +174,7 @@ namespace Nhea.Data.Repository
 
         public abstract void Delete(Expression<Func<T, bool>> filter);
 
-        public abstract void Delete<E>(E entity) where E : class, new();
+        public abstract void Delete(T entity);
 
         #endregion
 

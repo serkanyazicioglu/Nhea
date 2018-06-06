@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Web.UI.WebControls;
 using Nhea.Helper;
 
 namespace Nhea.Enumeration
@@ -33,6 +34,26 @@ namespace Nhea.Enumeration
 
                     enumerationList.Add(enumeration);
                 }
+            }
+
+            return enumerationList;
+        }
+
+        public static List<Enumeration> ConvertToEnumerations<T>(List<T> enumerations)
+        {
+            List<Enumeration> enumerationList = new List<Enumeration>();
+
+            foreach (var enumC in enumerations)
+            {
+                Enumeration enumeration = new Enumeration();
+                enumeration.Name = enumC.ToString();
+
+                int enumcval = Convert.ToInt32(enumC);
+
+                enumeration.Value = enumcval.ToString();
+                enumeration.Detail = GetDetail<T>(enumcval);
+
+                enumerationList.Add(enumeration);
             }
 
             return enumerationList;

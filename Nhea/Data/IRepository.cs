@@ -80,7 +80,7 @@ namespace Nhea.Data
 
         void Delete(Expression<Func<T, bool>> filter);
 
-        void Delete<E>(E entity) where E : class, new();
+        void Delete(T entity);
 
         #endregion
 
