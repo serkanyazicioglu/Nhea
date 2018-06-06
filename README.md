@@ -28,15 +28,52 @@ Project is built with .NET 4.6.1. There are no other library dependencies.
 
 ### Configuration
 
-First of all it will be wise to edit .config file to include Nhea configurations. Inside configSections we're gonna add Nhea's sectionGroup.
+First of all we will edit .config file to include Nhea configurations. Inside configSections we're gonna add Nhea's sectionGroup.
 
 ```
 <configSections>
+	<sectionGroup name="nhea" type="Nhea.Configuration.GenericConfigSection, Nhea">
+		<section name="application" type="Nhea.Configuration.GenericConfigSection.ApplicationSection.ApplicationConfigSection, Nhea"/>
+		<section name="data" type="Nhea.Configuration.GenericConfigSection.DataSection.DataConfigSection, Nhea"/>
+		<section name="communication" type="Nhea.Configuration.GenericConfigSection.CommunicationSection.CommunicationConfigSection, Nhea" />
+		<section name="log" type="Nhea.Configuration.GenericConfigSection.LogSection.LogConfigSection, Nhea"/>
+		<section name="web" type="Nhea.Configuration.GenericConfigSection.WebSection.WebConfigSection, Nhea"/>
+	</sectionGroup>
+</configSections>
+```
+
+And then we will embed our settings.
+
+```
+<nhea>
+	<application environmentType="Development" />
+	<data connectionName="MyDbConnectionName" />
+	<communication connectionName="MyDbConnectionName" />
+	<log />
+	<web />
+</nhea>
+```
+
+At the end .config file should look like this: 
+
+```
+...
+<configSections>
     <sectionGroup name="nhea" type="Nhea.Configuration.GenericConfigSection, Nhea">
-      <section name="application" type="Nhea.Configuration.GenericConfigSection.ApplicationSection.ApplicationConfigSection, Nhea"/>
-      <section name="data" type="Nhea.Configuration.GenericConfigSection.DataSection.DataConfigSection, Nhea"/>
-      <section name="log" type="Nhea.Configuration.GenericConfigSection.LogSection.LogConfigSection, Nhea"/>
-      <section name="web" type="Nhea.Configuration.GenericConfigSection.WebSection.WebConfigSection, Nhea"/>
+      <section name="application" type="Nhea.Configuration.GenericConfigSection.ApplicationSection.ApplicationConfigSection, Nhea" />
+      <section name="data" type="Nhea.Configuration.GenericConfigSection.DataSection.DataConfigSection, Nhea" />
+      <section name="communication" type="Nhea.Configuration.GenericConfigSection.CommunicationSection.CommunicationConfigSection, Nhea" />
+      <section name="log" type="Nhea.Configuration.GenericConfigSection.LogSection.LogConfigSection, Nhea" />
+      <section name="web" type="Nhea.Configuration.GenericConfigSection.WebSection.WebConfigSection, Nhea" />
     </sectionGroup>
+    <section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
   </configSections>
+  <nhea>
+    <application environmentType="Development" />
+    <data connectionName="MyDbConnectionName" />
+    <communication connectionName="MyDbConnectionName" />
+    <log />
+    <web />
+  </nhea>
+  ...
 ```
