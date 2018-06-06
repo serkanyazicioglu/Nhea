@@ -59,21 +59,43 @@ At the end .config file should look like this:
 ```
 ...
 <configSections>
-    <sectionGroup name="nhea" type="Nhea.Configuration.GenericConfigSection, Nhea">
-      <section name="application" type="Nhea.Configuration.GenericConfigSection.ApplicationSection.ApplicationConfigSection, Nhea" />
-      <section name="data" type="Nhea.Configuration.GenericConfigSection.DataSection.DataConfigSection, Nhea" />
-      <section name="communication" type="Nhea.Configuration.GenericConfigSection.CommunicationSection.CommunicationConfigSection, Nhea" />
-      <section name="log" type="Nhea.Configuration.GenericConfigSection.LogSection.LogConfigSection, Nhea" />
-      <section name="web" type="Nhea.Configuration.GenericConfigSection.WebSection.WebConfigSection, Nhea" />
-    </sectionGroup>
-    <section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
-  </configSections>
-  <nhea>
-    <application environmentType="Development" />
-    <data connectionName="MyDbConnectionName" />
-    <communication connectionName="MyDbConnectionName" />
-    <log />
-    <web />
-  </nhea>
+	<sectionGroup name="nhea" type="Nhea.Configuration.GenericConfigSection, Nhea">
+		<section name="application" type="Nhea.Configuration.GenericConfigSection.ApplicationSection.ApplicationConfigSection, Nhea" />
+		<section name="data" type="Nhea.Configuration.GenericConfigSection.DataSection.DataConfigSection, Nhea" />
+		<section name="communication" type="Nhea.Configuration.GenericConfigSection.CommunicationSection.CommunicationConfigSection, Nhea" />
+		<section name="log" type="Nhea.Configuration.GenericConfigSection.LogSection.LogConfigSection, Nhea" />
+		<section name="web" type="Nhea.Configuration.GenericConfigSection.WebSection.WebConfigSection, Nhea" />
+	</sectionGroup>
+	<section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
+</configSections>
+<nhea>
+	<application environmentType="Development" />
+	<data connectionName="MyDbConnectionName" />
+	<communication connectionName="MyDbConnectionName" />
+	<log />
+	<web />
+</nhea>
   ...
 ```
+
+### Application segment
+
+Inside the code we can get environment type by using:
+
+```
+if (Nhea.Configuration.Settings.Application.EnvironmentType == Nhea.Configuration.EnvironmentType.Production)
+{
+    //PROD
+}
+else
+{
+    //NOT PROD
+}
+```
+
+Inside environmentType following options can be set:
+- Development,
+- Integration,
+- Uat,
+- Staging,
+- Production
