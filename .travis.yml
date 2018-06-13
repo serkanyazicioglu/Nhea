@@ -1,0 +1,7 @@
+language: C#
+notifications:
+  email:
+    recipients:
+      - serkanyazicioglu@gmail.com
+    on_success: always
+    on_failure: always
