@@ -22,7 +22,7 @@ Just download the solution and build project. This way you can add libraries dir
 
 ### Prerequisites
 
-Project is built with .NET 4.6.1. There are no other library dependencies.
+Project is built with .NET Framework 4.6.1. There are no other library dependencies.
 
 ## Using Namespaces
 
