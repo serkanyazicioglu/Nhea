@@ -82,7 +82,7 @@ namespace Nhea.Web.Helper
                 request.UserAgent = userAgent;
             }
 
-            if (byPassSsl && url.StartsWith(UrlScheme.Https.ToString()))
+            if (byPassSsl && url.StartsWith("https://"))
             {
                 ServicePointManager.ServerCertificateValidationCallback = delegate(object s, X509Certificate certificate, X509Chain chain, SslPolicyErrors sslPolicyErrors) { return true; };
             }
@@ -195,22 +195,6 @@ namespace Nhea.Web.Helper
             m_socWorker.Connect(remoteEP);
 
             m_socWorker.Send(postData);
-
-
-        }
-
-        public static string GetCurrentIp()
-        {
-            string ip;
-
-            ip = HttpContext.Current.Request["HTTP_X_FORWARDED_FOR"];
-
-            if (String.IsNullOrEmpty(ip))
-            {
-                ip = HttpContext.Current.Request["REMOTE_ADDR"];
-            }
-
-            return ip;
         }
     }
 }

@@ -16,10 +16,6 @@ namespace Nhea.Logging.LogPublisher
                     {
                         return new DbPublisher();
                     }
-                case PublishType.EventLog:
-                    {
-                        return new EventLogPublisher();
-                    }
                 case PublishType.File:
                     {
                         return new FilePublisher();

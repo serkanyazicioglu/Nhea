@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Nhea.Data.Repository
 {
-    public abstract class ObjectRepository<T> : Nhea.Data.Repository.BaseRepository<T> where T : class, new()
+    public abstract class ObjectRepository<T> : Nhea.Data.Repository.BaseRepository<T>, IDisposable where T : class, new()
     {
         public abstract List<T> CurrentList { get; set; }
 
@@ -66,7 +66,7 @@ namespace Nhea.Data.Repository
 
             if (!String.IsNullOrEmpty(sortColumn))
             {
-                returnList = returnList.OrderBy(sortColumn + " " + sortDirection.ToString().ToLower());
+                returnList = returnList.OrderBy(sortColumn + " " + sortDirection.ToString().ToLower(), DefaultSortType == SortDirection.Ascending);
             }
             else if (getDefaultFilter && DefaultSorter != null)
             {
@@ -155,7 +155,7 @@ namespace Nhea.Data.Repository
 
         public override void Delete(T item)
         {
-            throw new NotImplementedException();
+            CurrentList.Remove(item);
         }
 
         #endregion

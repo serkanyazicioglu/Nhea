@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="12.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{65768B08-8EEF-4C13-9EB3-237A84DC2B5F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Nhea</RootNamespace>
+    <AssemblyName>Nhea</AssemblyName>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>
+    </DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DocumentationFile>bin\Release\Nhea.xml</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Design" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Activation" />
+    <Reference Include="System.ServiceModel.Channels" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions.Design">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Communication\DeviceType.cs" />
+    <Compile Include="Communication\Mail.cs" />
+    <Compile Include="Communication\MailMessageBuilder.cs" />
+    <Compile Include="Communication\MailProvider.cs" />
+    <Compile Include="Communication\MailQueue.cs" />
+    <Compile Include="Communication\MailQueueHistory.cs" />
+    <Compile Include="Communication\MailStatus.cs" />
+    <Compile Include="Communication\NotificationInfo.cs" />
+    <Compile Include="Communication\NotificationQueue.cs" />
+    <Compile Include="Communication\Priority.cs" />
+    <Compile Include="Communication\SmtpClientBuilder.cs" />
+    <Compile Include="Communication\SmtpHelper.cs" />
+    <Compile Include="Configuration\GenericConfigSection\Communication\CommunicationConfigSection.cs" />
+    <Compile Include="Configuration\GenericConfigSection\Communication\SmtpElement.cs" />
+    <Compile Include="Configuration\GenericConfigSection\Communication\SmtpSettingsElementCollection.cs" />
+    <Compile Include="Configuration\GenericConfigSection\WebSection\WebConfigSection.cs" />
+    <Compile Include="Configuration\Settings.Communication.cs" />
+    <Compile Include="Configuration\Settings.Web.cs" />
+    <Compile Include="Configuration\Settings.Application.cs" />
+    <Compile Include="Configuration\ConfigBase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\ConfigFactory.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\ConfigHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Configuration\Settings.Data.cs" />
+    <Compile Include="Configuration\GenericConfigSection\ApplicationSection\ApplicationConfigSection.cs" />
+    <Compile Include="Configuration\GenericConfigSection\DataSection\DataConfigSection.cs" />
+    <Compile Include="Configuration\GenericConfigSection\WebSection\ExceptionConfigSection.cs" />
+    <Compile Include="Configuration\GenericConfigSection\LogSection\LogConfigSection.cs" />
+    <Compile Include="Configuration\Settings.Log.cs" />
+    <Compile Include="Configuration\Settings.Web.Exception.cs" />
+    <Compile Include="Configuration\XmlConfigHelper.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Data\Dynamic.cs" />
+    <Compile Include="Data\ExpressionHelper.cs" />
+    <Compile Include="Data\ExtensionMethods.cs" />
+    <Compile Include="Data\IRepository.cs" />
+    <Compile Include="Data\LambdaComparer.cs" />
+    <Compile Include="Data\Repository\BaseRepository.cs" />
+    <Compile Include="Data\Repository\ObjectRepository.cs" />
+    <Compile Include="Data\SortDirection.cs" />
+    <Compile Include="Enumeration\Detail.cs" />
+    <Compile Include="Enumeration\Enumeration.cs" />
+    <Compile Include="Enumeration\EnumHelper.cs" />
+    <Compile Include="Globalization\DataFormatManager.cs" />
+    <Compile Include="Globalization\DataFormatType.cs" />
+    <Compile Include="Globalization\ResourceChanger.cs" />
+    <Compile Include="Helper\BufferHelper.cs" />
+    <Compile Include="Helper\ConvertionHelper.cs" />
+    <Compile Include="Helper\ExtensionMethods.cs" />
+    <Compile Include="Helper\ImageHelper.cs" />
+    <Compile Include="IO\IOHelper.cs" />
+    <Compile Include="Localization\Catalog.cs" />
+    <Compile Include="Localization\Language.cs" />
+    <Compile Include="Localization\CatalogManager.cs" />
+    <Compile Include="Localization\LocalizationManager.cs" />
+    <Compile Include="Logging\LogLevel.cs" />
+    <Compile Include="Logging\LogPublisher\DbPublisher.cs" />
+    <Compile Include="Logging\LogPublisher\EventLogPublisher.cs" />
+    <Compile Include="Logging\ExceptionDetailBuilder.cs" />
+    <Compile Include="Logging\LogPublisher\FilePublisher.cs" />
+    <Compile Include="Logging\LogPublisher\IPublisher.cs" />
+    <Compile Include="Logging\Logger.cs" />
+    <Compile Include="Logging\LogPublisher\MailPublisher.cs" />
+    <Compile Include="Logging\LogPublisher\Publisher.cs" />
+    <Compile Include="Logging\LogPublisher\PublisherFactory.cs" />
+    <Compile Include="Localization\LanguageManager.cs" />
+    <Compile Include="Logging\PublishType.cs" />
+    <Compile Include="Security\Encryption\Crc16.cs" />
+    <Compile Include="Security\Encryption\HashHelper.cs" />
+    <Compile Include="Security\GoogleRecaptcha.cs" />
+    <Compile Include="Security\GoogleRecaptchaResponse.cs" />
+    <Compile Include="Security\QueryStringSecurity.cs" />
+    <Compile Include="Security\XssSecurity.cs" />
+    <Compile Include="Text\CharacterReplace.cs" />
+    <Compile Include="Text\HtmlHelper.cs" />
+    <Compile Include="Text\Password\ConstantChar.cs" />
+    <Compile Include="Text\Password\PasswordGenerator.cs" />
+    <Compile Include="Text\StringHelper.cs" />
+    <Compile Include="Text\TextCase.cs" />
+    <Compile Include="Text\TextGenerator.cs" />
+    <Compile Include="Text\TextType.cs" />
+    <Compile Include="Text\TextValidator.cs" />
+    <Compile Include="Text\XmlHelper.cs" />
+    <Compile Include="Utils\ConnectionSource.cs" />
+    <Compile Include="Utils\ConnectionStringBuilder.cs" />
+    <Compile Include="Utils\DBUtil.cs" />
+    <Compile Include="Web\Helper\HttpRequestMethod.cs" />
+    <Compile Include="Web\Helper\RequestHelper.cs" />
+    <Compile Include="Web\Helper\UrlHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

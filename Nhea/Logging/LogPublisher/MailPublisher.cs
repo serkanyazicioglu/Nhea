@@ -48,8 +48,8 @@ namespace Nhea.Logging.LogPublisher
             }
             catch (Exception ex)
             {
-                Logger.Log(LogLevel.Error, PublishType.EventLog, null, null, ex.Message, ex, false);
-                Logger.Log(LogLevel.Error, PublishType.EventLog, this.Source, this.UserName, this.Message, this.Exception, false);
+                Logger.Log(LogLevel.Error, PublishType.File, null, null, ex.Message, ex, false);
+                Logger.Log(LogLevel.Error, PublishType.File, this.Source, this.UserName, this.Message, this.Exception, false);
 
                 return false;
             }

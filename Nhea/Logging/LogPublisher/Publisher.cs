@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Web;
-using System.Windows.Forms;
 using System.Security.Principal;
 using Nhea.Configuration;
 
@@ -31,10 +30,6 @@ namespace Nhea.Logging.LogPublisher
                     if (!String.IsNullOrEmpty(userName))
                     {
                         return userName;
-                    }
-                    else if (HttpContext.Current != null && HttpContext.Current.User.Identity.IsAuthenticated)
-                    {
-                        return HttpContext.Current.User.Identity.Name;
                     }
                     else if (WindowsIdentity.GetCurrent() != null)
                     {

@@ -9,34 +9,16 @@ namespace Nhea.Data
 {
     public static class ExpressionHelper
     {
-        //public static Expression<Func<T>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
-        //{
-        //    if (first == null)
-        //    {
-        //        return second;
-        //    }
-        //    else if (second == null)
-        //    {
-        //        return first;
-        //    }
-
-        //    //Replace(second, second.Parameters[0], first.Parameters[0]);
-        //    var map = first.Parameters.Select((f, i) => new { f, s = second.Parameters[i] }).ToDictionary(p => p.s, p => p.f);
-        //    var secondBody = ParameterRebinder.ReplaceParameters(map, second.Body);
-
-        //    return Expression.Lambda<Func<T>>(Expression.And(first.Body, secondBody), first.Parameters);
-        //}
-
-        //public static Expression<Func<T, bool>> Or<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
-        //{
-            
-
-        //    //Replace(second, second.Parameters[0], first.Parameters[0]);
-        //    var map = first.Parameters.Select((f, i) => new { f, s = second.Parameters[i] }).ToDictionary(p => p.s, p => p.f);
-        //    var secondBody = ParameterRebinder.ReplaceParameters(map, second.Body);
-
-        //    return Expression.Lambda<Func<T, bool>>(Expression.Or(first.Body, secondBody), first.Parameters);
-        //}
+        public static IQueryable<T> OrderBy<T>(this IQueryable<T> q, string SortField, bool Ascending)
+        {
+            var param = Expression.Parameter(typeof(T), "p");
+            var prop = Expression.Property(param, SortField);
+            var exp = Expression.Lambda(prop, param);
+            string method = Ascending ? "OrderBy" : "OrderByDescending";
+            Type[] types = new Type[] { q.ElementType, exp.Body.Type };
+            var mce = Expression.Call(typeof(Queryable), method, types, q.Expression, exp);
+            return q.Provider.CreateQuery<T>(mce);
+        }
 
         public static Expression<Func<T, bool>> And<T>(this Expression<Func<T, bool>> first, Expression<Func<T, bool>> second)
         {

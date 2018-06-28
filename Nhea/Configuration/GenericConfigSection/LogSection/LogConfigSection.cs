@@ -28,7 +28,7 @@ namespace Nhea.Configuration.GenericConfigSection.LogSection
             }
         }
 
-        [ConfigurationProperty("defaultPublishType", DefaultValue = PublishType.EventLog)]
+        [ConfigurationProperty("defaultPublishType", DefaultValue = PublishType.File)]
         public PublishType PublishType
         {
             get

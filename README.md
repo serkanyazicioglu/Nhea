@@ -37,7 +37,6 @@ First of all we will edit .config file to include Nhea configurations. Inside co
 		<section name="data" type="Nhea.Configuration.GenericConfigSection.DataSection.DataConfigSection, Nhea"/>
 		<section name="communication" type="Nhea.Configuration.GenericConfigSection.CommunicationSection.CommunicationConfigSection, Nhea" />
 		<section name="log" type="Nhea.Configuration.GenericConfigSection.LogSection.LogConfigSection, Nhea"/>
-		<section name="web" type="Nhea.Configuration.GenericConfigSection.WebSection.WebConfigSection, Nhea"/>
 	</sectionGroup>
 </configSections>
 ```
@@ -50,7 +49,6 @@ And then we will embed our settings.
 	<data connectionName="MyDbConnectionName" />
 	<communication connectionName="MyDbConnectionName" />
 	<log />
-	<web />
 </nhea>
 ```
 
@@ -64,7 +62,6 @@ At the end .config file should look like this:
 		<section name="data" type="Nhea.Configuration.GenericConfigSection.DataSection.DataConfigSection, Nhea" />
 		<section name="communication" type="Nhea.Configuration.GenericConfigSection.CommunicationSection.CommunicationConfigSection, Nhea" />
 		<section name="log" type="Nhea.Configuration.GenericConfigSection.LogSection.LogConfigSection, Nhea" />
-		<section name="web" type="Nhea.Configuration.GenericConfigSection.WebSection.WebConfigSection, Nhea" />
 	</sectionGroup>
 	<section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
 </configSections>
@@ -73,7 +70,6 @@ At the end .config file should look like this:
 	<data connectionName="MyDbConnectionName" />
 	<communication connectionName="MyDbConnectionName" />
 	<log />
-	<web />
 </nhea>
   ...
 ```
