@@ -1,12 +1,5 @@
 using System;
-using System.Text;
-using System.Configuration;
-using System.Data.SqlClient;
-using Nhea.Utils;
-using System.Collections;
 using Nhea.Logging.LogPublisher;
-using Nhea.Configuration.GenericConfigSection;
-using Nhea.Configuration.GenericConfigSection.LogSection;
 using Nhea.Configuration;
 
 namespace Nhea.Logging
@@ -73,7 +66,7 @@ namespace Nhea.Logging
         /// <param name="logLevel">Priority of log.</param>
         /// <param name="publishType">Publishing type of log.</param>
         /// <param name="message">Loggers additional notes.</param>
-        public static bool Log(LogLevel logLevel, PublishType publishType, string message)
+        public static bool Log(LogLevel logLevel, PublishTypes publishType, string message)
         {
             return LogCore(logLevel, publishType, null, null, message, null, Settings.Log.AutoInform);
         }
@@ -84,7 +77,7 @@ namespace Nhea.Logging
         /// <param name="logLevel">Priority of log.</param>
         /// <param name="publishType">Publishing type of log.</param>
         /// <param name="exception">Exception of the log if caused by any type of error.</param>
-        public static bool Log(LogLevel logLevel, PublishType publishType, Exception exception)
+        public static bool Log(LogLevel logLevel, PublishTypes publishType, Exception exception)
         {
             return LogCore(logLevel, publishType, null, null, null, exception, Settings.Log.AutoInform);
         }
@@ -96,7 +89,7 @@ namespace Nhea.Logging
         /// <param name="publishType">Publishing type of log.</param>
         /// <param name="userName">Current application user's name.</param>
         /// <param name="message">Loggers additional notes.</param>
-        public static bool Log(LogLevel logLevel, PublishType publishType, string userName, string message)
+        public static bool Log(LogLevel logLevel, PublishTypes publishType, string userName, string message)
         {
             return LogCore(logLevel, publishType, null, userName, message, null, Settings.Log.AutoInform);
         }
@@ -109,7 +102,7 @@ namespace Nhea.Logging
         /// <param name="userName">Current application user's name.</param>
         /// <param name="message">Loggers additional notes.</param>
         /// <param name="exception">Exception of the log if caused by any type of error.</param>
-        public static bool Log(LogLevel logLevel, PublishType publishType, string userName, string message, Exception exception)
+        public static bool Log(LogLevel logLevel, PublishTypes publishType, string userName, string message, Exception exception)
         {
             return LogCore(logLevel, publishType, exception.Source, userName, message, exception, Settings.Log.AutoInform);
         }
@@ -123,17 +116,17 @@ namespace Nhea.Logging
         /// <param name="userName">Current application user's name.</param>
         /// <param name="message">Loggers additional notes.</param>
         /// <param name="exception">Exception of the log if caused by any type of error.</param>
-        public static bool Log(LogLevel logLevel, PublishType publishType, string source, string userName, string message, Exception exception)
+        public static bool Log(LogLevel logLevel, PublishTypes publishType, string source, string userName, string message, Exception exception)
         {
             return LogCore(logLevel, publishType, source, userName, message, exception, Settings.Log.AutoInform);
         }
 
-        internal static bool Log(LogLevel logLevel, PublishType publishType, string source, string userName, string message, Exception exception, bool autoInform)
+        internal static bool Log(LogLevel logLevel, PublishTypes publishType, string source, string userName, string message, Exception exception, bool autoInform)
         {
             return LogCore(logLevel, publishType, source, userName, message, exception, autoInform);
         }
 
-        private static bool LogCore(LogLevel logLevel, PublishType publishType, string source, string userName, string message, Exception exception, bool autoInform)
+        private static bool LogCore(LogLevel logLevel, PublishTypes publishType, string source, string userName, string message, Exception exception, bool autoInform)
         {
             Publisher publisher = PublisherFactory.CreatePublisher(publishType);
             publisher.Message = message;

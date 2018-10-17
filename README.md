@@ -13,7 +13,6 @@ Other Helper namespaces:
 - Convertion Helpers
 - Image Helpers
 - Text Helpers
-- Request & Url Helpers
 
 
 ## Getting Started
@@ -22,7 +21,7 @@ Just download the solution and build project. This way you can add libraries dir
 
 ### Prerequisites
 
-Project is built with .NET Framework 4.6.1. There are no other library dependencies.
+Project is built with .NET Framework Core. There are no other library dependencies.
 
 ## Using Namespaces
 

@@ -1,10 +1,8 @@
 using System;
 using System.Net.Mail;
-using System.Text;
 using System.Collections.Generic;
 using Nhea.Configuration.GenericConfigSection.Communication;
 using System.Linq;
-using System.Configuration;
 
 namespace Nhea.Communication
 {

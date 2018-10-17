@@ -1,10 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Web;
 using System.Security.Principal;
-using Nhea.Configuration;
 
 namespace Nhea.Logging.LogPublisher
 {
@@ -80,7 +75,7 @@ namespace Nhea.Logging.LogPublisher
         {
             if (this.AutoInform)
             {
-                Publisher publisher = PublisherFactory.CreatePublisher(PublishType.Email);
+                Publisher publisher = PublisherFactory.CreatePublisher(PublishTypes.Email);
                 publisher.Message = this.Message;
                 publisher.LogLevel = this.LogLevel;
                 publisher.Source = this.Source;

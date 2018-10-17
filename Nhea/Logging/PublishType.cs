@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Nhea.Logging
+﻿namespace Nhea.Logging
 {
-    public enum PublishType
+    public enum PublishTypes
     {
         Database = 1,
         File = 3,

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Nhea.Configuration.GenericConfigSection.ApplicationSection;
+﻿using Nhea.Configuration.GenericConfigSection.ApplicationSection;
 
 namespace Nhea.Configuration
 {

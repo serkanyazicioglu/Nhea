@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Nhea.Configuration.GenericConfigSection.CommunicationSection;
 using Nhea.Configuration.GenericConfigSection.Communication;
 using Nhea.Helper;

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Data.SqlClient;
+﻿using Nhea.Text;
 using Nhea.Utils;
-using Nhea.Text;
+using System;
+using System.Data.SqlClient;
 
 namespace Nhea.Logging.LogPublisher
 {
@@ -109,8 +106,8 @@ namespace Nhea.Logging.LogPublisher
             }
             catch (Exception ex)
             {
-                Logger.Log(LogLevel.Error, PublishType.File, null, null, ex.Message, ex, false);
-                Logger.Log(LogLevel.Error, PublishType.File, this.Source, this.UserName, this.Message, this.Exception, false);
+                Logger.Log(LogLevel.Error, PublishTypes.File, null, null, ex.Message, ex, false);
+                Logger.Log(LogLevel.Error, PublishTypes.File, this.Source, this.UserName, this.Message, this.Exception, false);
 
                 return false;
             }

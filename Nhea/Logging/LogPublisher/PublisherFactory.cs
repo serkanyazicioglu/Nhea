@@ -1,26 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Nhea.Logging.LogPublisher
+﻿namespace Nhea.Logging.LogPublisher
 {
     internal static class PublisherFactory
     {
-        internal static Publisher CreatePublisher(PublishType publishType)
+        internal static Publisher CreatePublisher(PublishTypes publishType)
         {
             switch (publishType)
             {
                 default:
-                case PublishType.Database:
+                case PublishTypes.Database:
                     {
                         return new DbPublisher();
                     }
-                case PublishType.File:
+                case PublishTypes.File:
                     {
                         return new FilePublisher();
                     }
-                case PublishType.Email:
+                case PublishTypes.Email:
                     {
                         return new MailPublisher();
                     }

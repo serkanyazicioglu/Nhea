@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Nhea.Communication
+﻿namespace Nhea.Communication
 {
-    internal enum MailStatus
+    public enum MailStatus
     {
         Failed = -2,
         NotDelivered = -1,

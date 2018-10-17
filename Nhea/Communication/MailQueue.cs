@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Data.SqlClient;
 using Nhea.Utils;
-using System.Xml;
 using System.Net.Mail;
 using Nhea.Logging;
 
@@ -83,6 +81,10 @@ namespace Nhea.Communication
                         }
                     }
 
+                    toRecipient = PrepareMailAddress(toRecipient);
+                    ccRecipients = PrepareMailAddress(ccRecipients);
+                    bccRecipients = PrepareMailAddress(bccRecipients);
+
                     cmd.Parameters.Add(new SqlParameter("@Id", id));
                     cmd.Parameters.Add(new SqlParameter("@From", from));
                     cmd.Parameters.Add(new SqlParameter("@To", toRecipient));
@@ -116,6 +118,23 @@ namespace Nhea.Communication
 
                 return false;
             }
+        }
+
+        private static string PrepareMailAddress(string address)
+        {
+            if (address != null)
+            {
+                if (!String.IsNullOrEmpty(address) && address.Contains(","))
+                {
+                    address = address.Replace(',', ';');
+                }
+            }
+            else
+            {
+                address = String.Empty;
+            }
+
+            return address;
         }
 
         internal static void Delete(Mail mail)
@@ -190,12 +209,12 @@ namespace Nhea.Communication
             }
         }
 
-        internal static List<Mail> Fetch()
+        public static List<Mail> Fetch()
         {
             return Fetch(null);
         }
 
-        internal static List<Mail> Fetch(MailProvider mailProvider)
+        public static List<Mail> Fetch(MailProvider mailProvider)
         {
             List<Mail> mailList = new List<Mail>();
 

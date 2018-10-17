@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Nhea.Communication;
-using Nhea.Configuration.GenericConfigSection;
-using Nhea.Configuration.GenericConfigSection.LogSection;
+﻿using Nhea.Communication;
 using Nhea.Configuration;
+using System;
 
 namespace Nhea.Logging.LogPublisher
 {
@@ -34,7 +29,7 @@ namespace Nhea.Logging.LogPublisher
                     ExceptionDetailBuilder.Build(this.Exception, out exceptionDetail, out exceptionData, out fileName);
 
                     exceptionDetail = String.Format("<b>Exception Detail:</b>{1}{0}{1}", Nhea.Text.HtmlHelper.ReplaceNewLineWithHtml(exceptionDetail), "<br/>");
-                    exceptionData = String.Format("<b>Exception Detail:</b>{1}{0}{1}", Nhea.Text.HtmlHelper.ReplaceNewLineWithHtml(exceptionData), "<br/>");
+                    exceptionData = String.Format("<b>Exception Data:</b>{1}{0}{1}", Nhea.Text.HtmlHelper.ReplaceNewLineWithHtml(exceptionData), "<br/>");
 
                     if (String.IsNullOrEmpty(this.Message))
                     {
@@ -48,8 +43,8 @@ namespace Nhea.Logging.LogPublisher
             }
             catch (Exception ex)
             {
-                Logger.Log(LogLevel.Error, PublishType.File, null, null, ex.Message, ex, false);
-                Logger.Log(LogLevel.Error, PublishType.File, this.Source, this.UserName, this.Message, this.Exception, false);
+                Logger.Log(LogLevel.Error, PublishTypes.File, null, null, ex.Message, ex, false);
+                Logger.Log(LogLevel.Error, PublishTypes.File, this.Source, this.UserName, this.Message, this.Exception, false);
 
                 return false;
             }
@@ -70,7 +65,14 @@ namespace Nhea.Logging.LogPublisher
                     subject = this.Message;
                 }
 
-                MailQueue.Add(String.Empty, Settings.Log.MailList, subject, detail);
+                string mailFrom = String.Empty;
+
+                if (!String.IsNullOrEmpty(Settings.Log.MailFrom))
+                {
+                    mailFrom = Settings.Log.MailFrom;
+                }
+
+                MailQueue.Add(mailFrom, Settings.Log.MailList, subject, detail);
 
                 return true;
             }

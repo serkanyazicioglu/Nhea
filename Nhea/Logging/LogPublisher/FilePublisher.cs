@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using Nhea.Configuration;
+using System;
 using System.IO;
-using System.Web;
-using Nhea.Configuration.GenericConfigSection.LogSection;
-using Nhea.Configuration;
 
 namespace Nhea.Logging.LogPublisher
 {
@@ -43,28 +38,28 @@ namespace Nhea.Logging.LogPublisher
                 string detail = String.Format("Date: {0}{7}LogLevel: {1}{7}Message: {2}{7}Source: {3}{7}Username: {4}{7}{7}Exception Detail:{7}{5}{7}Exception Data:{7}{6}", DateTime.Now.ToString(), LogLevel.ToString(), Message, Source, UserName, exceptionDetail, exceptionData, Environment.NewLine);
 
                 base.Publish();
-                
+
                 return PublishToFile(detail);
             }
             catch (Exception ex)
             {
+                Logger.Log(LogLevel.Error, PublishTypes.File, null, null, ex.Message, ex, false);
+                Logger.Log(LogLevel.Error, PublishTypes.File, this.Source, this.UserName, this.Message, this.Exception, false);
                 return false;
             }
         }
 
         private bool PublishToFile(string data)
         {
-            if (String.IsNullOrEmpty(Settings.Log.FilePath))
-            {
-                throw new Exception("Could not initalize FilePath parameter, please check your configurations.");
-            }
-
             string logfilename = "NheaLog" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
             try
             {
-                if (!Directory.Exists(Settings.Log.FilePath))
+                if (!String.IsNullOrEmpty(Settings.Log.FilePath))
                 {
-                    Directory.CreateDirectory(Settings.Log.FilePath);
+                    if (!Directory.Exists(Settings.Log.FilePath))
+                    {
+                        Directory.CreateDirectory(Settings.Log.FilePath);
+                    }
                 }
 
                 FileStream file;

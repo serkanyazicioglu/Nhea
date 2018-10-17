@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Drawing;
 using System.Drawing.Imaging;
-using System.Web;
 using System.Drawing.Drawing2D;
 
 namespace Nhea.Helper

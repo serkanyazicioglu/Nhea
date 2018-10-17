@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Nhea.Configuration.GenericConfigSection.LogSection;
 using Nhea.Logging;
 
@@ -37,7 +34,7 @@ namespace Nhea.Configuration
             /// <summary>
             /// Gets default PublishType
             /// </summary>
-            public static PublishType PublishType
+            public static PublishTypes PublishType
             {
                 get
                 {
@@ -64,6 +61,14 @@ namespace Nhea.Configuration
                 get
                 {
                     return config.FilePath;
+                }
+            }
+
+            public static string MailFrom
+            {
+                get
+                {
+                    return config.MailFrom;
                 }
             }
 

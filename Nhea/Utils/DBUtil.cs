@@ -1,11 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Configuration;
 using System.Data.SqlClient;
-using Nhea.Configuration.GenericConfigSection;
-using Nhea.Configuration;
-using Nhea.Configuration.GenericConfigSection.DataSection;
 
 namespace Nhea.Utils
 {

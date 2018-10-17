@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Configuration;
 using Nhea.Logging;
 
@@ -28,12 +25,12 @@ namespace Nhea.Configuration.GenericConfigSection.LogSection
             }
         }
 
-        [ConfigurationProperty("defaultPublishType", DefaultValue = PublishType.File)]
-        public PublishType PublishType
+        [ConfigurationProperty("defaultPublishType", DefaultValue = PublishTypes.Database)]
+        public PublishTypes PublishType
         {
             get
             {
-                return (PublishType)Enum.Parse(typeof(PublishType), this["defaultPublishType"].ToString());
+                return (PublishTypes)Enum.Parse(typeof(PublishTypes), this["defaultPublishType"].ToString());
             }
         }
 
@@ -52,6 +49,15 @@ namespace Nhea.Configuration.GenericConfigSection.LogSection
             get
             {
                 return this["filePath"].ToString();
+            }
+        }
+
+        [ConfigurationProperty("mailFrom", IsRequired = false, DefaultValue = "")]
+        public string MailFrom
+        {
+            get
+            {
+                return this["mailFrom"].ToString();
             }
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Collections;
@@ -54,11 +53,13 @@ namespace Nhea.Logging
 
                     if (trace != null)
                     {
-                        StackFrame[] frames = trace.GetFrames();
+                        var frames = trace.GetFrames();
 
                         if (frames != null)
                         {
-                            foreach (StackFrame frame in frames)
+                            var framesList = frames.Reverse().ToList();
+
+                            foreach (StackFrame frame in framesList)
                             {
                                 string lineNumber = LineNumberString + frame.GetFileLineNumber().ToString() + Environment.NewLine;
                                 exceptionStackTrace.Insert(0, lineNumber);

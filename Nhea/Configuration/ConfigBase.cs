@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace Nhea.Configuration
+﻿namespace Nhea.Configuration
 {
     internal abstract class ConfigBase
     {

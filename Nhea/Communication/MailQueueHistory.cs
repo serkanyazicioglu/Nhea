@@ -1,17 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Data.SqlClient;
 using Nhea.Utils;
 
 namespace Nhea.Communication
 {
-    internal class MailQueueHistory
+    public class MailQueueHistory
     {
         private const string SetMailStatusCommand = "UPDATE nhea_MailQueueHistory SET Status=@Status WHERE Id=@Id";
 
-        internal static void SetMailStatus(Guid id, MailStatus status)
+        public static void SetMailStatus(Guid id, MailStatus status)
         {
             using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
             {
