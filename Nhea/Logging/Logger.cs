@@ -143,7 +143,7 @@ namespace Nhea.Logging
                 var subs = LogPublishing.GetInvocationList();
                 foreach (LogPublishingEventHandler sub in subs)
                 {
-                    sub.BeginInvoke(publisher, null, null);
+                    sub.Invoke(publisher);
                 }
             }
 
@@ -160,7 +160,7 @@ namespace Nhea.Logging
                 var subs = LogPublished.GetInvocationList();
                 foreach (LogPublishedEventHandler sub in subs)
                 {
-                    sub.BeginInvoke(publisher, result, null, null);
+                    sub.Invoke(publisher, result);
                 }
             }
 

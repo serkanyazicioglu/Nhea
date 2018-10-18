@@ -92,7 +92,7 @@ namespace Nhea.Communication
                     var subs = MailQueueing.GetInvocationList();
                     foreach (MailQueueingEventHandler sub in subs)
                     {
-                        sub.BeginInvoke(mail, null, null);
+                        sub.Invoke(mail);
                     }
                 }
 
@@ -159,7 +159,7 @@ namespace Nhea.Communication
                 var subs = MailQueued.GetInvocationList();
                 foreach (MailQueuedEventHandler sub in subs)
                 {
-                    sub.BeginInvoke(mail, result, null, null);
+                    sub.Invoke(mail, result);
                 }
             }
 
