@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/serkanyazicioglu/Nhea.svg?branch=master)](https://travis-ci.org/serkanyazicioglu/Nhea)
+
 # Nhea Framework
 
 Nhea Framework is a set of tools that helped me over years. This framework consists of following namespaces:
