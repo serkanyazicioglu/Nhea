@@ -54,13 +54,24 @@ namespace Nhea.Configuration
             }
 
             /// <summary>
-            /// Gets default FilePath
+            /// Gets default directory
             /// </summary>
-            public static string FilePath
+            public static string DirectoryPath
             {
                 get
                 {
-                    return config.FilePath;
+                    return config.DirectoryPath;
+                }
+            }
+
+            /// <summary>
+            /// Gets log file name
+            /// </summary>
+            public static string FileName
+            {
+                get
+                {
+                    return config.FileName;
                 }
             }
 

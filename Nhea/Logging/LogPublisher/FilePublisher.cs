@@ -20,22 +20,25 @@ namespace Nhea.Logging.LogPublisher
         {
             try
             {
-                string exceptionDetail;
-                string exceptionData;
+                string exceptionDetail = String.Empty;
+                string exceptionData = String.Empty;
 
-                ExceptionDetailBuilder.Build(this.Exception, out exceptionDetail, out exceptionData);
-
-                if (exceptionDetail == null)
+                if (this.Exception != null)
                 {
-                    exceptionDetail = String.Empty;
+                    ExceptionDetailBuilder.Build(this.Exception, out exceptionDetail, out exceptionData);
+
+                    if (!String.IsNullOrEmpty(exceptionDetail))
+                    {
+                        exceptionDetail = "Exception Detail:" + Environment.NewLine + exceptionDetail + Environment.NewLine;
+                    }
+
+                    if (exceptionData == null)
+                    {
+                        exceptionData = "Exception Data:" + Environment.NewLine + exceptionDetail + Environment.NewLine;
+                    }
                 }
 
-                if (exceptionData == null)
-                {
-                    exceptionData = String.Empty;
-                }
-
-                string detail = String.Format("Date: {0}{7}LogLevel: {1}{7}Message: {2}{7}Source: {3}{7}Username: {4}{7}{7}Exception Detail:{7}{5}{7}Exception Data:{7}{6}", DateTime.Now.ToString(), LogLevel.ToString(), Message, Source, UserName, exceptionDetail, exceptionData, Environment.NewLine);
+                string detail = String.Format("Date: {0}{7}LogLevel: {1}{7}Message: {2}{7}Source: {3}{7}Username: {4}{7}{7}{5}{6}", DateTime.Now.ToString(), LogLevel.ToString(), Message, Source, UserName, exceptionDetail, exceptionData, Environment.NewLine);
 
                 base.Publish();
 
@@ -51,36 +54,35 @@ namespace Nhea.Logging.LogPublisher
 
         private bool PublishToFile(string data)
         {
-            string logfilename = "NheaLog" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
+            string logfilename = Nhea.Helper.IOHelper.ToSafeFileName(String.Format(Settings.Log.FileName, DateTime.Now));
+
             try
             {
-                if (!String.IsNullOrEmpty(Settings.Log.FilePath))
+                string directoryPath = Nhea.Helper.IOHelper.ToSafeDirectoryPath(Settings.Log.DirectoryPath);
+
+                if (!String.IsNullOrEmpty(directoryPath))
                 {
-                    if (!Directory.Exists(Settings.Log.FilePath))
+                    if (!Directory.Exists(directoryPath))
                     {
-                        Directory.CreateDirectory(Settings.Log.FilePath);
+                        Directory.CreateDirectory(directoryPath);
                     }
                 }
 
-                FileStream file;
-                if (!File.Exists(Settings.Log.FilePath + logfilename))
+                string filePath = Path.Combine(directoryPath, logfilename);
+
+                var fileMode = FileMode.Append;
+
+                if (!File.Exists(filePath))
                 {
-                    file = new FileStream(Settings.Log.FilePath + logfilename, FileMode.Create, FileAccess.Write);
-                    StreamWriter sw = new StreamWriter(file);
-                    sw.WriteLine(data);
-                    sw.WriteLine("--------------------------------------");
-                    sw.WriteLine(Environment.NewLine);
-                    sw.Close();
+                    fileMode = FileMode.CreateNew;
                 }
-                else
-                {
-                    file = new FileStream(Settings.Log.FilePath + logfilename, FileMode.Append, FileAccess.Write);
-                    StreamWriter sw = new StreamWriter(file);
-                    sw.WriteLine(data);
-                    sw.WriteLine("--------------------------------------");
-                    sw.WriteLine(Environment.NewLine);
-                    sw.Close();
-                }
+
+                var file = new FileStream(filePath, fileMode, FileAccess.Write);
+                StreamWriter sw = new StreamWriter(file);
+                sw.WriteLine(data);
+                sw.WriteLine("--------------------------------------");
+                sw.WriteLine(Environment.NewLine);
+                sw.Close();
 
                 return true;
             }

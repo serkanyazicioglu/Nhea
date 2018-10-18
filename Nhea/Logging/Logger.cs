@@ -1,6 +1,6 @@
-using System;
-using Nhea.Logging.LogPublisher;
 using Nhea.Configuration;
+using Nhea.Logging.LogPublisher;
+using System;
 
 namespace Nhea.Logging
 {
@@ -126,16 +126,45 @@ namespace Nhea.Logging
             return LogCore(logLevel, publishType, source, userName, message, exception, autoInform);
         }
 
+        public delegate void LogPublishingEventHandler(Publisher publisher);
+
+        public delegate void LogPublishedEventHandler(Publisher publisher, bool result);
+
+        public static event LogPublishingEventHandler LogPublishing;
+
+        public static event LogPublishedEventHandler LogPublished;
+
         private static bool LogCore(LogLevel logLevel, PublishTypes publishType, string source, string userName, string message, Exception exception, bool autoInform)
         {
             Publisher publisher = PublisherFactory.CreatePublisher(publishType);
+
+            if (LogPublishing != null)
+            {
+                var subs = LogPublishing.GetInvocationList();
+                foreach (LogPublishingEventHandler sub in subs)
+                {
+                    sub.BeginInvoke(publisher, null, null);
+                }
+            }
+
             publisher.Message = message;
             publisher.LogLevel = logLevel;
             publisher.Source = source;
             publisher.UserName = userName;
             publisher.Exception = exception;
             publisher.AutoInform = autoInform;
-            return publisher.Publish();
+            var result = publisher.Publish();
+
+            if (LogPublished != null)
+            {
+                var subs = LogPublished.GetInvocationList();
+                foreach (LogPublishedEventHandler sub in subs)
+                {
+                    sub.BeginInvoke(publisher, result, null, null);
+                }
+            }
+
+            return result;
         }
     }
 }

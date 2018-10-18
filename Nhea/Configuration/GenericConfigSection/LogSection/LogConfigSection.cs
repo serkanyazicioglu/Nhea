@@ -25,7 +25,7 @@ namespace Nhea.Configuration.GenericConfigSection.LogSection
             }
         }
 
-        [ConfigurationProperty("defaultPublishType", DefaultValue = PublishTypes.Database)]
+        [ConfigurationProperty("defaultPublishType", DefaultValue = PublishTypes.File)]
         public PublishTypes PublishType
         {
             get
@@ -43,12 +43,21 @@ namespace Nhea.Configuration.GenericConfigSection.LogSection
             }
         }
 
-        [ConfigurationProperty("filePath", DefaultValue = "ErrorLog.txt", IsRequired = false)]
-        public string FilePath
+        [ConfigurationProperty("directoryPath", DefaultValue = "Logs", IsRequired = false)]
+        public string DirectoryPath
         {
             get
             {
-                return this["filePath"].ToString();
+                return this["directoryPath"].ToString();
+            }
+        }
+
+        [ConfigurationProperty("fileName", DefaultValue = "NheaLog-{0:dd.MM.yyyy-HH:mm}.txt", IsRequired = false)]
+        public string FileName
+        {
+            get
+            {
+                return this["fileName"].ToString();
             }
         }
 

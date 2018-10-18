@@ -1,9 +1,10 @@
+using Nhea.Logging;
+using Nhea.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using Nhea.Utils;
 using System.Net.Mail;
-using Nhea.Logging;
+using System.Linq;
 
 namespace Nhea.Communication
 {
@@ -57,8 +58,44 @@ namespace Nhea.Communication
 
         public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, DateTime priorityDate, List<string> attachmentPaths)
         {
+            var mail = new Mail
+            {
+                From = from,
+                ToRecipient = toRecipient,
+                CcRecipients = ccRecipients,
+                BccRecipients = bccRecipients,
+                Subject = subject,
+                Body = body,
+                Priority = priorityDate,
+                AttachmentPaths = attachmentPaths
+            };
+
+            return Add(mail);
+        }
+
+        public delegate void MailQueueingEventHandler(Mail mail);
+
+        public delegate void MailQueuedEventHandler(Mail mail, bool result);
+
+        public static event MailQueueingEventHandler MailQueueing;
+
+        public static event MailQueuedEventHandler MailQueued;
+
+        public static bool Add(Mail mail)
+        {
+            var result = false;
+
             try
             {
+                if (MailQueueing != null)
+                {
+                    var subs = MailQueueing.GetInvocationList();
+                    foreach (MailQueueingEventHandler sub in subs)
+                    {
+                        sub.BeginInvoke(mail, null, null);
+                    }
+                }
+
                 using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
                 using (SqlCommand cmd = new SqlCommand(InsertCommandText, sqlConnection))
                 {
@@ -68,11 +105,11 @@ namespace Nhea.Communication
 
                     bool hasAttachment = false;
 
-                    if (attachmentPaths != null)
+                    if (mail.AttachmentPaths != null && mail.AttachmentPaths.Any())
                     {
                         hasAttachment = true;
 
-                        foreach (string attachmentPath in attachmentPaths)
+                        foreach (string attachmentPath in mail.AttachmentPaths)
                         {
                             SqlCommand attachmentCommand = new SqlCommand(InsertAttachmentCommandText, cmd.Connection);
                             attachmentCommand.Parameters.Add(new SqlParameter("@MailQueueId", id));
@@ -81,25 +118,25 @@ namespace Nhea.Communication
                         }
                     }
 
-                    toRecipient = PrepareMailAddress(toRecipient);
-                    ccRecipients = PrepareMailAddress(ccRecipients);
-                    bccRecipients = PrepareMailAddress(bccRecipients);
+                    mail.ToRecipient = PrepareMailAddress(mail.ToRecipient);
+                    mail.CcRecipients = PrepareMailAddress(mail.CcRecipients);
+                    mail.BccRecipients = PrepareMailAddress(mail.BccRecipients);
 
                     cmd.Parameters.Add(new SqlParameter("@Id", id));
-                    cmd.Parameters.Add(new SqlParameter("@From", from));
-                    cmd.Parameters.Add(new SqlParameter("@To", toRecipient));
-                    cmd.Parameters.Add(new SqlParameter("@Cc", ccRecipients));
-                    cmd.Parameters.Add(new SqlParameter("@Bcc", bccRecipients));
-                    cmd.Parameters.Add(new SqlParameter("@Subject", subject));
-                    cmd.Parameters.Add(new SqlParameter("@Body", body));
-                    cmd.Parameters.Add(new SqlParameter("@PriorityDate", priorityDate));
+                    cmd.Parameters.Add(new SqlParameter("@From", mail.From));
+                    cmd.Parameters.Add(new SqlParameter("@To", mail.ToRecipient));
+                    cmd.Parameters.Add(new SqlParameter("@Cc", mail.CcRecipients));
+                    cmd.Parameters.Add(new SqlParameter("@Bcc", mail.BccRecipients));
+                    cmd.Parameters.Add(new SqlParameter("@Subject", mail.Subject));
+                    cmd.Parameters.Add(new SqlParameter("@Body", mail.Body));
+                    cmd.Parameters.Add(new SqlParameter("@PriorityDate", mail.Priority));
                     cmd.Parameters.Add(new SqlParameter("@MailProviderId", DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@IsReadyToSend", true));
                     cmd.Parameters.Add(new SqlParameter("@HasAttachment", hasAttachment));
 
-                    if (!String.IsNullOrEmpty(toRecipient))
+                    if (!String.IsNullOrEmpty(mail.ToRecipient))
                     {
-                        int? mailProviderId = MailProvider.Find(toRecipient);
+                        int? mailProviderId = MailProvider.Find(mail.ToRecipient);
                         if (mailProviderId.HasValue)
                         {
                             cmd.Parameters["@MailProviderId"].Value = mailProviderId.Value;
@@ -110,14 +147,23 @@ namespace Nhea.Communication
                     cmd.Connection.Close();
                 }
 
-                return true;
+                result = true;
             }
             catch (Exception ex)
             {
                 Logger.Log(ex, false);
-
-                return false;
             }
+
+            if (MailQueued != null)
+            {
+                var subs = MailQueued.GetInvocationList();
+                foreach (MailQueuedEventHandler sub in subs)
+                {
+                    sub.BeginInvoke(mail, result, null, null);
+                }
+            }
+
+            return result;
         }
 
         private static string PrepareMailAddress(string address)

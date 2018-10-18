@@ -77,5 +77,37 @@ namespace Nhea.Helper
                 fileStream.Close();
             }
         }
+
+        public static string ToSafeDirectoryPath(string s)
+        {
+            if (s.Contains(":"))
+            {
+                var driver = s.Substring(0, s.IndexOf(':') + 1);
+                var afterDriverPath = s.Substring(s.IndexOf(':') + 1);
+
+                s = driver + afterDriverPath.Replace(':', '-');
+            }
+
+            return s
+                .Replace("*", "-")
+                .Replace("?", "-")
+                .Replace("<", "-")
+                .Replace(">", "-")
+                .Replace("|", "-");
+        }
+
+        public static string ToSafeFileName(string s)
+        {
+            return s
+                .Replace(":", "-")
+                .Replace("*", "-")
+                .Replace("?", "-")
+                .Replace("<", "-")
+                .Replace(">", "-")
+                .Replace("|", "-")
+                .Replace("\\", "")
+                .Replace("/", "")
+                .Replace("\"", "");
+        }
     }
 }

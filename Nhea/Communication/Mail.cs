@@ -15,31 +15,27 @@ namespace Nhea.Communication
 
         protected internal int? MailProviderId { get; set; }
 
-        protected internal string From { get; set; }
+        public string From { get; set; }
 
-        protected internal string ToRecipient { get; set; }
+        public string ToRecipient { get; set; }
 
-        protected internal string CcRecipients { get; set; }
+        public string CcRecipients { get; set; }
 
-        protected internal string BccRecipients { get; set; }
+        public string BccRecipients { get; set; }
 
-        protected internal string Subject { get; set; }
+        public string Subject { get; set; }
 
-        protected internal string Body { get; set; }
+        public string Body { get; set; }
 
-        protected internal DateTime Priority { get; set; }
+        public List<string> AttachmentPaths { get; set; }
+
+        public DateTime Priority { get; set; }
 
         protected internal DateTime CreateDate { get; set; }
 
         protected internal bool HasAttachment { get; set; }
 
-        //TODO: params yapalým burayý
         protected internal List<Attachment> Attachments { get; set; }
-
-        public static void Send(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body)
-        {
-            SmtpHelper.SendMail(from, toRecipient, ccRecipients, bccRecipients, subject, body);
-        }
 
         public void Send()
         {
@@ -87,7 +83,7 @@ namespace Nhea.Communication
 
         public bool Save()
         {
-            return MailQueue.Add(From, ToRecipient, CcRecipients, BccRecipients, Subject, Body);
+            return MailQueue.Add(this);
         }
 
         public void Delete()

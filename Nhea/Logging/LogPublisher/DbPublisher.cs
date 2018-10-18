@@ -7,15 +7,11 @@ namespace Nhea.Logging.LogPublisher
 {
     public class DbPublisher : Publisher
     {
-        #region Publisher Properties
-
         public override string Message { get; set; }
+
         public override Exception Exception { get; set; }
+
         public override LogLevel LogLevel { get; set; }
-
-        #endregion
-
-        #region Publisher Methods
 
         public override bool Publish()
         {
@@ -112,7 +108,5 @@ namespace Nhea.Logging.LogPublisher
                 return false;
             }
         }
-
-        #endregion
     }
 }
