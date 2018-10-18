@@ -17,11 +17,20 @@ Other Helper namespaces:
 
 ## Getting Started
 
-Just download the solution and build project. This way you can add libraries directly to your project.
+Nhea is on NuGet. You may install Nhea via NuGet Package manager.
+
+https://www.nuget.org/packages/Nhea/
 
 ### Prerequisites
 
-Project is built with .NET Framework Core. There are no other library dependencies.
+Project is built with .NET Framework Standard. 
+
+Dependencies:
+- Newtonsoft.Json (>= 11.0.2)
+- System.Configuration.ConfigurationManager (>= 4.5.0)
+- System.Data.Common (>= 4.3.0)
+- System.Data.SqlClient (>= 4.5.1)
+- System.Drawing.Common (>= 4.5.1)
 
 ## Using Namespaces
 
