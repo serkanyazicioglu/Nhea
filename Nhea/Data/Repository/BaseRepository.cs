@@ -130,22 +130,32 @@ namespace Nhea.Data.Repository
 
         public int Count()
         {
-            return CountCore(null);
+            return CountCore(null, true);
         }
 
         public int Count(Expression<Func<T, bool>> filter)
         {
-            return CountCore(filter);
+            return CountCore(filter, true);
         }
 
-        protected abstract int CountCore(Expression<Func<T, bool>> filter);
+        public int Count(Expression<Func<T, bool>> filter, bool getDefaultFilter)
+        {
+            return CountCore(filter, getDefaultFilter);
+        }
+
+        protected abstract int CountCore(Expression<Func<T, bool>> filter, bool getDefaultFilter);
 
         public bool Any(Expression<Func<T, bool>> filter)
         { 
-            return AnyCore(filter);
+            return AnyCore(filter, true);
         }
 
-        protected abstract bool AnyCore(Expression<Func<T, bool>> filter);
+        public bool Any(Expression<Func<T, bool>> filter, bool getDefaultFilter)
+        {
+            return AnyCore(filter, getDefaultFilter);
+        }
+
+        protected abstract bool AnyCore(Expression<Func<T, bool>> filter, bool getDefaultFilter);
 
         #endregion
 

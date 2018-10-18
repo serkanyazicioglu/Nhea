@@ -39,36 +39,23 @@ namespace Nhea.Data.Repository
 
         protected internal override IQueryable<T> GetAllCore(System.Linq.Expressions.Expression<Func<T, bool>> filter, bool getDefaultFilter, bool getDefaultSorter, string sortColumn, SortDirection? sortDirection, bool allowPaging, int pageSize, int pageIndex, ref int totalCount)
         {
-            IQueryable<T> returnList = null;
+            if (getDefaultFilter)
+            {
+                filter = filter.And(this.DefaultFilter);
+            }
 
             if (filter == null)
             {
-                if (getDefaultFilter && DefaultFilter != null)
-                {
-                    returnList = CurrentList.Where(DefaultFilter.Compile()).AsQueryable();
-                }
-                else
-                {
-                    returnList = CurrentList.AsQueryable();
-                }
+                filter = query => true;
             }
-            else
-            {
-                if (getDefaultFilter && DefaultFilter != null)
-                {
-                    returnList = CurrentList.Where(filter.Compile()).Where(DefaultFilter.Compile()).AsQueryable();
-                }
-                else
-                {
-                    returnList = CurrentList.Where(filter.Compile()).AsQueryable();
-                }
-            }
+
+            IQueryable<T> returnList = CurrentList.Where(filter.Compile()).AsQueryable();
 
             if (!String.IsNullOrEmpty(sortColumn))
             {
                 returnList = returnList.Sort(sortColumn, sortDirection);
             }
-            else if (getDefaultFilter && DefaultSorter != null)
+            else if (getDefaultSorter && DefaultSorter != null)
             {
                 if (DefaultSortType == SortDirection.Ascending)
                 {
@@ -99,12 +86,12 @@ namespace Nhea.Data.Repository
 
         #region Count & Any
 
-        protected override int CountCore(System.Linq.Expressions.Expression<Func<T, bool>> filter)
+        protected override int CountCore(System.Linq.Expressions.Expression<Func<T, bool>> filter, bool getDefaultFilter)
         {
             return CurrentList.Count(filter.Compile());
         }
 
-        protected override bool AnyCore(System.Linq.Expressions.Expression<Func<T, bool>> filter)
+        protected override bool AnyCore(System.Linq.Expressions.Expression<Func<T, bool>> filter, bool getDefaultFilter)
         {
             return CurrentList.Any(filter.Compile());
         }
