@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/serkanyazicioglu/Nhea.svg?branch=master)](https://travis-ci.org/serkanyazicioglu/Nhea)
+[![NuGet](https://img.shields.io/nuget/v/Nhea.svg)](https://www.nuget.org/packages/Nhea/)
 
 # Nhea Framework
 
