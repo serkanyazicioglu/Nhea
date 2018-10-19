@@ -57,7 +57,7 @@ And then we will embed our settings.
 <nhea>
 	<application environmentType="Development" />
 	<data connectionName="MyDbConnectionName" />
-	<communication connectionName="MyDbConnectionName" />
+	<communication />
 	<log />
 </nhea>
 ```
@@ -78,7 +78,7 @@ At the end .config file should look like this:
 <nhea>
 	<application environmentType="Development" />
 	<data connectionName="MyDbConnectionName" />
-	<communication connectionName="MyDbConnectionName" />
+	<communication />
 	<log />
 </nhea>
   ...
@@ -105,3 +105,67 @@ Inside environmentType following options can be set:
 - Uat,
 - Staging,
 - Production
+
+### Log segment
+
+Nhea has three different kind of logging: File, Database (SQL) and E-Mail. By default Logging targets File.
+
+```
+Nhea.Logging.Logger.Log("Hello Nhea!");
+
+```
+
+By executing this code a log file will be created in the executing folder. If you want to change the path or the file name you can override these settings. Directory will be automatically created by Nhea.
+
+```
+<nhea>
+	<application environmentType="Development" />
+	<log directoryPath="C:\Projects\" fileName="MyLogFile.txt" />
+</nhea>
+```
+You may also give file name a formatter for datetime.
+```
+<nhea>
+	<application environmentType="Development" />
+	<log directoryPath="C:\Projects\" fileName="NheaLog-{0:dd.MM.yyyy-HH:mm}.txt" />
+</nhea>
+```
+
+Exceptions can easily be logged by the same method.
+```
+try
+{
+    throw new Exception("Test Exception");
+}
+catch (Exception ex)
+{
+    Nhea.Logging.Logger.Log(ex);
+}
+```
+
+If you want to add additional details or parameters to exception logs you may use Exception.Data collection.
+```
+try
+{
+    throw new Exception("Test Exception");
+}
+catch (Exception ex)
+{
+    ex.Data.Add("Id", 1);
+    Nhea.Logging.Logger.Log(ex);
+}
+```
+
+If you have a SQL database you may want to target your DB for logs. It can easily be done by just a few configuration changes. In order to use SQL first you have to create Nhea's log table. Execute the nhea_Log.sql which creates the schema of the table.
+And then you should change the configuration. Add data to configuration list and set the connection name. Then change the defaultPublishType to 'Database'.
+
+```
+<nhea>
+    <application environmentType="Development"></application>
+    <data connectionName="DbConnectionStringName" />
+    <log defaultPublishType="Database" />
+  </nhea>
+  <connectionStrings>
+    <add name="DbConnectionStringName" connectionString="DB connection string" providerName="System.Data.SqlClient" />
+  </connectionStrings>
+```

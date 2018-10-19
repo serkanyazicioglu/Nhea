@@ -9,10 +9,18 @@ namespace Nhea.CoreTestConsole
             Nhea.Logging.Logger.LogPublishing += Logger_LogPublishing;
             Nhea.Logging.Logger.LogPublished += Logger_LogPublished;
 
-            Nhea.Communication.MailQueue.MailQueueing += MailQueue_MailQueueing;
-            Nhea.Communication.MailQueue.MailQueued += MailQueue_MailQueued;
+            //Nhea.Communication.MailQueue.MailQueueing += MailQueue_MailQueueing;
+            //Nhea.Communication.MailQueue.MailQueued += MailQueue_MailQueued;
 
-            Nhea.Logging.Logger.Log("Hello Nhea!");
+            try
+            {
+                throw new Exception("Test Exception");
+            }
+            catch (Exception ex)
+            {
+                ex.Data.Add("Id", 1);
+                Nhea.Logging.Logger.Log(ex);
+            }
 
             Console.ReadLine();
         }
