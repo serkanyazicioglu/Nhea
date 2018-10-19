@@ -14,8 +14,6 @@ namespace Nhea.Logging.LogPublisher
 
         #endregion
 
-        private const string FilePathTitle = "Nhea.Logging.FilePath";
-
         public override bool Publish()
         {
             try
