@@ -74,11 +74,10 @@ At the end .config file should look like this:
 		<section name="communication" type="Nhea.Configuration.GenericConfigSection.CommunicationSection.CommunicationConfigSection, Nhea" />
 		<section name="log" type="Nhea.Configuration.GenericConfigSection.LogSection.LogConfigSection, Nhea" />
 	</sectionGroup>
-	<section name="entityFramework" type="System.Data.Entity.Internal.ConfigFile.EntityFrameworkSection, EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" requirePermission="false" />
 </configSections>
 <nhea>
 	<application environmentType="Development" />
-	<data connectionName="MyDbConnectionName" />
+	<data />
 	<communication />
 	<log />
 </nhea>
@@ -113,7 +112,6 @@ Nhea has three different kind of logging: File, Database (SQL) and E-Mail. By de
 
 ```
 Nhea.Logging.Logger.Log("Hello Nhea!");
-
 ```
 
 By executing this code a log file will be created in the executing folder. If you want to change the path or the file name you can override these settings. Directory will be automatically created by Nhea.
@@ -157,7 +155,8 @@ catch (Exception ex)
 }
 ```
 
-If you have a SQL database you may want to target your DB for logs. It can easily be done by just a few configuration changes. In order to use SQL first you have to create Nhea's log table. Execute the nhea_Log.sql which creates the schema of the table.
+If you have a SQL database you may want to target your DB for logs. It can easily be done by just a few configuration changes. In order to use SQL first you have to create Nhea's <a href=https://github.com/serkanyazicioglu/Nhea/blob/master/SQL/nhea_Log.sql>log table</a>. Execute the nhea_Log.sql which creates the schema of the table.
+
 And then you should change the configuration. Add data to configuration list and set the connection name. Then change the defaultPublishType to 'Database'.
 
 ```
