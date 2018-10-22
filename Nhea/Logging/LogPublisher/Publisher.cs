@@ -48,18 +48,45 @@ namespace Nhea.Logging.LogPublisher
         {
             get
             {
-                if (!String.IsNullOrEmpty(source))
+                if (String.IsNullOrEmpty(source))
                 {
-                    return source;
+                    source = String.Empty;
+
+                    try
+                    {
+                        var assemblyName = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
+
+                        if (!String.IsNullOrEmpty(assemblyName))
+                        {
+                            source = assemblyName;
+                        }
+                    }
+                    catch
+                    {
+                    }
+
+                    if (this.Exception != null)
+                    {
+                        source += ", " + this.Exception.Source;
+                    }
+                    else
+                    {
+                        try
+                        {
+                            var assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+
+                            if (!String.IsNullOrEmpty(assemblyName))
+                            {
+                                source += ", " + assemblyName;
+                            }
+                        }
+                        catch
+                        {
+                        }
+                    }
                 }
-                else if (this.Exception != null)
-                {
-                    return this.Exception.Source;
-                }
-                else
-                {
-                    return "Nhea";
-                }
+
+                return source;
             }
             set
             {
