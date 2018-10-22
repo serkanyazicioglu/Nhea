@@ -14,6 +14,8 @@ namespace Nhea.Logging.LogPublisher
 
         #endregion
 
+        private const string HtmlNewLine = "<br/>";
+
         public override bool Publish()
         {
             try
@@ -28,8 +30,8 @@ namespace Nhea.Logging.LogPublisher
                 {
                     ExceptionDetailBuilder.Build(this.Exception, out exceptionDetail, out exceptionData, out fileName);
 
-                    exceptionDetail = String.Format("<b>Exception Detail:</b>{1}{0}{1}", Nhea.Text.HtmlHelper.ReplaceNewLineWithHtml(exceptionDetail), "<br/>");
-                    exceptionData = String.Format("<b>Exception Data:</b>{1}{0}{1}", Nhea.Text.HtmlHelper.ReplaceNewLineWithHtml(exceptionData), "<br/>");
+                    exceptionDetail = String.Format("<b>Exception Detail:</b>{1}{0}{1}", Nhea.Text.HtmlHelper.ReplaceNewLineWithHtml(exceptionDetail), HtmlNewLine);
+                    exceptionData = String.Format("<b>Exception Data:</b>{1}{0}{1}", Nhea.Text.HtmlHelper.ReplaceNewLineWithHtml(exceptionData), HtmlNewLine);
 
                     if (String.IsNullOrEmpty(this.Message))
                     {
@@ -37,7 +39,21 @@ namespace Nhea.Logging.LogPublisher
                     }
                 }
 
-                string detail = String.Format("<b>Message:</b> {3}{8}<b>LogLevel:</b> {2}{8}<b>FileName:</b> {0}{8}<b>Date:</b> {1}{8}<b>Source:</b> {4}{8}<b>Username:</b> {5}{8}{8}{7}{6}<b>----------------------------------end----------------------------------</b>", fileName, DateTime.Now.ToString(), LogLevel.ToString(), Message, Source, UserName, exceptionDetail, exceptionData, "<br/>");
+                string detail = "<b>Message:</b> " + Message + HtmlNewLine;
+                detail += "<b>Log Level:</b> " + LogLevel.ToString() + HtmlNewLine;
+                detail += "<b>Date:</b> " + DateTime.Now.ToString() + HtmlNewLine;
+                detail += "<b>Username:</b> " + UserName + HtmlNewLine;
+                detail += "<b>Source:</b> " + Source + HtmlNewLine;
+
+                if (!String.IsNullOrEmpty(fileName))
+                {
+                    detail += "<b>File Name:</b> " + fileName + HtmlNewLine;
+                }
+
+                detail += HtmlNewLine + HtmlNewLine;
+                detail += exceptionData;
+                detail += exceptionDetail;
+                detail += "<b>----------------------------------end----------------------------------</b>";
 
                 return PublishToMail(detail);
             }
