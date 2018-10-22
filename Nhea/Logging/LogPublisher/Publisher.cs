@@ -65,24 +65,22 @@ namespace Nhea.Logging.LogPublisher
                     {
                     }
 
-                    if (this.Exception != null)
+                    try
                     {
-                        source += ", " + this.Exception.Source;
-                    }
-                    else
-                    {
-                        try
-                        {
-                            var assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
+                        var assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 
-                            if (!String.IsNullOrEmpty(assemblyName))
-                            {
-                                source += ", " + assemblyName;
-                            }
-                        }
-                        catch
+                        if (!String.IsNullOrEmpty(assemblyName))
                         {
+                            source += ", " + assemblyName;
                         }
+
+                        if (this.Exception != null && assemblyName != this.Exception.Source)
+                        {
+                            source += ", " + this.Exception.Source;
+                        }
+                    }
+                    catch
+                    {
                     }
                 }
 
