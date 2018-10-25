@@ -55,21 +55,6 @@ namespace Nhea.Logging.LogPublisher
                 detail += exceptionDetail;
                 detail += "<b>----------------------------------end----------------------------------</b>";
 
-                return PublishToMail(detail);
-            }
-            catch (Exception ex)
-            {
-                Logger.Log(LogLevel.Error, PublishTypes.File, null, null, ex.Message, ex, false);
-                Logger.Log(LogLevel.Error, PublishTypes.File, this.Source, this.UserName, this.Message, this.Exception, false);
-
-                return false;
-            }
-        }
-
-        private bool PublishToMail(string detail)
-        {
-            try
-            {
                 string subject = String.Empty;
 
                 if (String.IsNullOrEmpty(Settings.Log.MailList))
@@ -94,7 +79,10 @@ namespace Nhea.Logging.LogPublisher
             }
             catch (Exception ex)
             {
-                throw ex;
+                Logger.Log(LogLevel.Error, PublishTypes.File, null, null, ex.Message, ex, false);
+                Logger.Log(LogLevel.Error, PublishTypes.File, this.Source, this.UserName, this.Message, this.Exception, false);
+
+                return false;
             }
         }
     }
