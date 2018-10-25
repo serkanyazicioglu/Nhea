@@ -7,10 +7,10 @@
     <Company>Garaj</Company>
     <Authors>Serkan Yazıcıoğlu</Authors>
     <PackageProjectUrl>https://github.com/serkanyazicioglu/Nhea</PackageProjectUrl>
-    <Version>1.5.3</Version>
-    <AssemblyVersion>1.5.3.0</AssemblyVersion>
-    <FileVersion>1.5.3.0</FileVersion>
-    <PackageReleaseNotes>Enhanced log mail format...</PackageReleaseNotes>
+    <Version>1.5.4</Version>
+    <AssemblyVersion>1.5.4.0</AssemblyVersion>
+    <FileVersion>1.5.4.0</FileVersion>
+    <PackageReleaseNotes>Some bug fixes for logging...</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
