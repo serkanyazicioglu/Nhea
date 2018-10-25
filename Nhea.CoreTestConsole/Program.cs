@@ -9,24 +9,17 @@ namespace Nhea.CoreTestConsole
             Nhea.Logging.Logger.LogPublishing += Logger_LogPublishing;
             Nhea.Logging.Logger.LogPublished += Logger_LogPublished;
 
-            //Nhea.Communication.MailQueue.MailQueueing += MailQueue_MailQueueing;
-            //Nhea.Communication.MailQueue.MailQueued += MailQueue_MailQueued;
+            Nhea.Communication.MailQueue.MailQueueing += MailQueue_MailQueueing;
+            Nhea.Communication.MailQueue.MailQueued += MailQueue_MailQueued;
 
-            try
-            {
-                throw new Exception("Test Exception");
-            }
-            catch (Exception ex)
-            {
-                ex.Data.Add("Id", 1);
-                Nhea.Logging.Logger.Log(ex);
-            }
+            Nhea.Logging.Logger.Log("Hello World!");
 
             Console.ReadLine();
         }
 
         private static void MailQueue_MailQueueing(Communication.Mail mail)
         {
+            mail.Subject += " I'm manipulating subject!";
             Console.WriteLine("Mail Queueing: " + mail.Subject);
         }
 

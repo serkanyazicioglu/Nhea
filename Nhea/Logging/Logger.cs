@@ -136,35 +136,42 @@ namespace Nhea.Logging
 
         private static bool LogCore(LogLevel logLevel, PublishTypes publishType, string source, string userName, string message, Exception exception, bool autoInform)
         {
-            Publisher publisher = PublisherFactory.CreatePublisher(publishType);
-
-            if (LogPublishing != null)
+            try
             {
-                var subs = LogPublishing.GetInvocationList();
-                foreach (LogPublishingEventHandler sub in subs)
+                Publisher publisher = PublisherFactory.CreatePublisher(publishType);
+                publisher.Message = message;
+                publisher.LogLevel = logLevel;
+                publisher.Source = source;
+                publisher.UserName = userName;
+                publisher.Exception = exception;
+                publisher.AutoInform = autoInform;
+
+                if (LogPublishing != null)
                 {
-                    sub.Invoke(publisher);
+                    var subs = LogPublishing.GetInvocationList();
+                    foreach (LogPublishingEventHandler sub in subs)
+                    {
+                        sub.Invoke(publisher);
+                    }
                 }
+
+                var result = publisher.Publish();
+
+                if (LogPublished != null)
+                {
+                    var subs = LogPublished.GetInvocationList();
+                    foreach (LogPublishedEventHandler sub in subs)
+                    {
+                        sub.Invoke(publisher, result);
+                    }
+                }
+
+                return result;
             }
-
-            publisher.Message = message;
-            publisher.LogLevel = logLevel;
-            publisher.Source = source;
-            publisher.UserName = userName;
-            publisher.Exception = exception;
-            publisher.AutoInform = autoInform;
-            var result = publisher.Publish();
-
-            if (LogPublished != null)
+            catch
             {
-                var subs = LogPublished.GetInvocationList();
-                foreach (LogPublishedEventHandler sub in subs)
-                {
-                    sub.Invoke(publisher, result);
-                }
+                return false;
             }
-
-            return result;
         }
     }
 }

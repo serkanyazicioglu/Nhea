@@ -87,15 +87,6 @@ namespace Nhea.Communication
 
             try
             {
-                if (MailQueueing != null)
-                {
-                    var subs = MailQueueing.GetInvocationList();
-                    foreach (MailQueueingEventHandler sub in subs)
-                    {
-                        sub.Invoke(mail);
-                    }
-                }
-
                 using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
                 using (SqlCommand cmd = new SqlCommand(InsertCommandText, sqlConnection))
                 {
@@ -122,6 +113,24 @@ namespace Nhea.Communication
                     mail.CcRecipients = PrepareMailAddress(mail.CcRecipients);
                     mail.BccRecipients = PrepareMailAddress(mail.BccRecipients);
 
+                    if (!String.IsNullOrEmpty(mail.ToRecipient))
+                    {
+                        int? mailProviderId = MailProvider.Find(mail.ToRecipient);
+                        if (mailProviderId.HasValue)
+                        {
+                            cmd.Parameters["@MailProviderId"].Value = mailProviderId.Value;
+                        }
+                    }
+
+                    if (MailQueueing != null)
+                    {
+                        var subs = MailQueueing.GetInvocationList();
+                        foreach (MailQueueingEventHandler sub in subs)
+                        {
+                            sub.Invoke(mail);
+                        }
+                    }
+
                     cmd.Parameters.Add(new SqlParameter("@Id", id));
                     cmd.Parameters.Add(new SqlParameter("@From", mail.From));
                     cmd.Parameters.Add(new SqlParameter("@To", mail.ToRecipient));
@@ -133,21 +142,11 @@ namespace Nhea.Communication
                     cmd.Parameters.Add(new SqlParameter("@MailProviderId", DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@IsReadyToSend", true));
                     cmd.Parameters.Add(new SqlParameter("@HasAttachment", hasAttachment));
-
-                    if (!String.IsNullOrEmpty(mail.ToRecipient))
-                    {
-                        int? mailProviderId = MailProvider.Find(mail.ToRecipient);
-                        if (mailProviderId.HasValue)
-                        {
-                            cmd.Parameters["@MailProviderId"].Value = mailProviderId.Value;
-                        }
-                    }
-
                     cmd.ExecuteNonQuery();
                     cmd.Connection.Close();
-                }
 
-                result = true;
+                    result = true;
+                }
             }
             catch (Exception ex)
             {

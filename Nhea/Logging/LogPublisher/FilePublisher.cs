@@ -38,24 +38,8 @@ namespace Nhea.Logging.LogPublisher
 
                 string detail = String.Format("Date: {0}{7}LogLevel: {1}{7}Message: {2}{7}Source: {3}{7}Username: {4}{7}{7}{5}{6}", DateTime.Now.ToString(), LogLevel.ToString(), Message, Source, UserName, exceptionDetail, exceptionData, Environment.NewLine);
 
-                base.Publish();
+                string logfilename = Nhea.Helper.IOHelper.ToSafeFileName(String.Format(Settings.Log.FileName, DateTime.Now));
 
-                return PublishToFile(detail);
-            }
-            catch (Exception ex)
-            {
-                Logger.Log(LogLevel.Error, PublishTypes.File, null, null, ex.Message, ex, false);
-                Logger.Log(LogLevel.Error, PublishTypes.File, this.Source, this.UserName, this.Message, this.Exception, false);
-                return false;
-            }
-        }
-
-        private bool PublishToFile(string data)
-        {
-            string logfilename = Nhea.Helper.IOHelper.ToSafeFileName(String.Format(Settings.Log.FileName, DateTime.Now));
-
-            try
-            {
                 string directoryPath = Nhea.Helper.IOHelper.ToSafeDirectoryPath(Settings.Log.DirectoryPath);
 
                 if (!String.IsNullOrEmpty(directoryPath))
@@ -77,17 +61,18 @@ namespace Nhea.Logging.LogPublisher
 
                 var file = new FileStream(filePath, fileMode, FileAccess.Write);
                 StreamWriter sw = new StreamWriter(file);
-                sw.WriteLine(data);
+                sw.WriteLine(detail);
                 sw.WriteLine("--------------------------------------");
                 sw.WriteLine(Environment.NewLine);
                 sw.Close();
 
-                return true;
+                return base.Publish();
             }
             catch (Exception ex)
             {
-                throw ex;
             }
+
+            return false;
         }
     }
 }
