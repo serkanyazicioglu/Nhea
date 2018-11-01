@@ -109,18 +109,10 @@ namespace Nhea.Communication
                         }
                     }
 
+                    mail.From = PrepareMailAddress(mail.From);
                     mail.ToRecipient = PrepareMailAddress(mail.ToRecipient);
                     mail.CcRecipients = PrepareMailAddress(mail.CcRecipients);
                     mail.BccRecipients = PrepareMailAddress(mail.BccRecipients);
-
-                    if (!String.IsNullOrEmpty(mail.ToRecipient))
-                    {
-                        int? mailProviderId = MailProvider.Find(mail.ToRecipient);
-                        if (mailProviderId.HasValue)
-                        {
-                            cmd.Parameters["@MailProviderId"].Value = mailProviderId.Value;
-                        }
-                    }
 
                     if (MailQueueing != null)
                     {
@@ -142,6 +134,16 @@ namespace Nhea.Communication
                     cmd.Parameters.Add(new SqlParameter("@MailProviderId", DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@IsReadyToSend", true));
                     cmd.Parameters.Add(new SqlParameter("@HasAttachment", hasAttachment));
+
+                    if (!String.IsNullOrEmpty(mail.ToRecipient))
+                    {
+                        int? mailProviderId = MailProvider.Find(mail.ToRecipient);
+                        if (mailProviderId.HasValue)
+                        {
+                            cmd.Parameters["@MailProviderId"].Value = mailProviderId.Value;
+                        }
+                    }
+
                     cmd.ExecuteNonQuery();
                     cmd.Connection.Close();
 
