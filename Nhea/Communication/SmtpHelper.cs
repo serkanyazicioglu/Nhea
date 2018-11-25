@@ -1,8 +1,8 @@
-using System;
-using System.Net.Mail;
-using System.Collections.Generic;
 using Nhea.Configuration.GenericConfigSection.Communication;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net.Mail;
 
 namespace Nhea.Communication
 {
@@ -46,10 +46,17 @@ namespace Nhea.Communication
                 smtpElement = Nhea.Configuration.Settings.Communication.SmtpSettings.Where(smtpElementQuery => smtpElementQuery.IsDefault == true).First();
             }
 
-            MailMessage mailMessage = MailMessageBuilder.Build(smtpElement, toRecipients, ccRecipients, bccRecipients, subject, body, isHighPriority, attachments);
+            if (smtpElement != null)
+            {
+                MailMessage mailMessage = MailMessageBuilder.Build(smtpElement, toRecipients, ccRecipients, bccRecipients, subject, body, isHighPriority, attachments);
 
-            SmtpClient smtpClient = SmtpClientBuilder.Build(smtpElement);
-            smtpClient.Send(mailMessage);
+                SmtpClient smtpClient = SmtpClientBuilder.Build(smtpElement);
+                smtpClient.Send(mailMessage);
+            }
+            else
+            {
+                throw new Exception("Related smtp setting could not found!");
+            }
         }
     }
 }
