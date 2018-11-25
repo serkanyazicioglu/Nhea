@@ -9,10 +9,4 @@
     <ProjectReference Include="..\Nhea\Nhea.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="Assets\sample-image.jpg">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>

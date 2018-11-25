@@ -3,7 +3,6 @@ using Nhea.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Net.Mail;
 using System.Linq;
 
 namespace Nhea.Communication
@@ -16,24 +15,22 @@ namespace Nhea.Communication
         private const string DeleteCommandText = @"DELETE FROM nhea_MailQueue WHERE Id = @MailQueueId";
         private const string InsertCommandText = @"INSERT INTO nhea_MailQueue(Id, MailProviderId, [From], [To], Cc, Bcc, Subject, Body, Priority, IsReadyToSend, HasAttachment) VALUES(@Id, @MailProviderId, @From, @To, @Cc, @Bcc, @Subject, @Body, @PriorityDate, @IsReadyToSend, @HasAttachment);";
 
-        private const string UpdateStatusCommandText = @"UPDATE nhea_MailQueue SET IsReadyToSend = {0} WHERE Id = @MailQueueId";
-        private const string InsertAttachmentCommandText = @"INSERT INTO [nhea_MailQueueAttachment]([MailQueueId],[Path]) VALUES(@MailQueueId, @Path)";
-        private const string SelectAttachmentsCommandText = "SELECT [Path] FROM [nhea_MailQueueAttachment] WHERE MailQueueId = @MailQueueId";
-        private const string DeleteAttachmentsCommandText = @"DELETE FROM nhea_MailQueueAttachment WHERE MailQueueId = @MailQueueId";
-
-        private static readonly string MoveToHistoryCommandText = @"INSERT INTO nhea_MailQueueHistory
-             ([Id],[From],[To],[Cc],[Bcc],[Subject],[Body],[MailProviderId],[Priority],[HasAttachment],[CreateDate],[Status])
-             VALUES 
-             (@MailQueueId,@From,@To,@Cc,@Bcc,@Subject,@Body,@MailProviderId,@Priority,@HasAttachment,@CreateDate,@Status);" + DeleteCommandText;
+        private const string InsertAttachmentCommandText = @"INSERT INTO [nhea_MailQueueAttachment]([MailQueueId],[AttachmentName],[AttachmentData]) VALUES(@MailQueueId, @AttachmentName,@AttachmentData)";
+        private const string SelectAttachmentsCommandText = "SELECT [AttachmentName],[AttachmentData] FROM [nhea_MailQueueAttachment] WHERE MailQueueId = @MailQueueId";
 
         public static bool Add(string from, string toRecipient, string subject, string body)
         {
             return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), null);
         }
 
-        public static bool Add(string from, string toRecipient, string subject, string body, List<string> attachmentPaths)
+        public static bool Add(string from, string toRecipient, string subject, string body, MailQueueAttachment attachment)
         {
-            return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), attachmentPaths);
+            return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), new List<MailQueueAttachment> { attachment });
+        }
+
+        public static bool Add(string from, string toRecipient, string subject, string body, List<MailQueueAttachment> attachments)
+        {
+            return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), attachments);
         }
 
         public static bool Add(string from, string toRecipient, string ccRecipients, string subject, string body)
@@ -46,9 +43,9 @@ namespace Nhea.Communication
             return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, GetDateByPriority(Priority.Medium), null);
         }
 
-        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, List<string> attachmentPaths)
+        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, List<MailQueueAttachment> attachments)
         {
-            return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, GetDateByPriority(Priority.Medium), attachmentPaths);
+            return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, GetDateByPriority(Priority.Medium), attachments);
         }
 
         public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, Priority priority)
@@ -56,7 +53,7 @@ namespace Nhea.Communication
             return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, GetDateByPriority(priority), null);
         }
 
-        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, DateTime priorityDate, List<string> attachmentPaths)
+        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, DateTime priorityDate, List<MailQueueAttachment> attachments)
         {
             var mail = new Mail
             {
@@ -67,7 +64,7 @@ namespace Nhea.Communication
                 Subject = subject,
                 Body = body,
                 Priority = priorityDate,
-                AttachmentPaths = attachmentPaths
+                Attachments = attachments
             };
 
             return Add(mail);
@@ -96,15 +93,16 @@ namespace Nhea.Communication
 
                     bool hasAttachment = false;
 
-                    if (mail.AttachmentPaths != null && mail.AttachmentPaths.Any())
+                    if (mail.Attachments != null && mail.Attachments.Any())
                     {
                         hasAttachment = true;
 
-                        foreach (string attachmentPath in mail.AttachmentPaths)
+                        foreach (var mailQueueAttachment in mail.Attachments)
                         {
                             SqlCommand attachmentCommand = new SqlCommand(InsertAttachmentCommandText, cmd.Connection);
                             attachmentCommand.Parameters.Add(new SqlParameter("@MailQueueId", id));
-                            attachmentCommand.Parameters.Add(new SqlParameter("@Path", attachmentPath));
+                            attachmentCommand.Parameters.Add(new SqlParameter("@AttachmentName", mailQueueAttachment.Name));
+                            attachmentCommand.Parameters.Add(new SqlParameter("@AttachmentData", mailQueueAttachment.Data));
                             attachmentCommand.ExecuteNonQuery();
                         }
                     }
@@ -184,78 +182,6 @@ namespace Nhea.Communication
             return address;
         }
 
-        internal static void Delete(Mail mail)
-        {
-            using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
-            {
-                sqlConnection.Open();
-
-                using (SqlCommand cmd = new SqlCommand(DeleteCommandText, sqlConnection))
-                {
-                    ExecuteDeleteQuery(mail.Id, cmd);
-                }
-
-                if (mail.HasAttachment)
-                {
-                    using (SqlCommand cmd = new SqlCommand(DeleteAttachmentsCommandText, sqlConnection))
-                    {
-                        ExecuteDeleteQuery(mail.Id, cmd);
-                    }
-                }
-
-                sqlConnection.Close();
-            }
-        }
-
-        internal static void MoveToHistory(Mail mail, MailStatus status)
-        {
-            using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
-            {
-                sqlConnection.Open();
-
-                using (SqlCommand cmd = new SqlCommand(MoveToHistoryCommandText, sqlConnection))
-                {
-                    cmd.Parameters.Clear();
-                    cmd.Parameters.Add(new SqlParameter("@MailQueueId", mail.Id));
-                    cmd.Parameters.Add(new SqlParameter("@From", mail.From));
-                    cmd.Parameters.Add(new SqlParameter("@To", mail.ToRecipient));
-                    cmd.Parameters.Add(new SqlParameter("@Cc", mail.CcRecipients));
-                    cmd.Parameters.Add(new SqlParameter("@Bcc", mail.BccRecipients));
-                    cmd.Parameters.Add(new SqlParameter("@Subject", mail.Subject));
-                    cmd.Parameters.Add(new SqlParameter("@Body", mail.Body));
-                    cmd.Parameters.Add(new SqlParameter("@Priority", mail.Priority));
-                    cmd.Parameters.Add(new SqlParameter("@CreateDate", mail.CreateDate));
-                    cmd.Parameters.Add(new SqlParameter("@HasAttachment", mail.HasAttachment));
-                    cmd.Parameters.Add(new SqlParameter("@Status", (int)status));
-
-                    if (mail.MailProviderId.HasValue)
-                    {
-                        cmd.Parameters.Add(new SqlParameter("@MailProviderId", mail.MailProviderId.Value));
-                    }
-                    else
-                    {
-                        cmd.Parameters.Add(new SqlParameter("@MailProviderId", DBNull.Value));
-                    }
-
-                    cmd.ExecuteNonQuery();
-                }
-
-                sqlConnection.Close();
-            }
-        }
-
-        internal static void SetError(Guid mailQueueId)
-        {
-            using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
-            using (SqlCommand setStatusCommand = new SqlCommand(String.Format(UpdateStatusCommandText, "0"), sqlConnection))
-            {
-                sqlConnection.Open();
-                setStatusCommand.Parameters.Add(new SqlParameter("@MailQueueId", mailQueueId));
-                setStatusCommand.ExecuteNonQuery();
-                sqlConnection.Close();
-            }
-        }
-
         public static List<Mail> Fetch()
         {
             return Fetch(null);
@@ -323,7 +249,12 @@ namespace Nhea.Communication
                                 {
                                     string path = attachmentReader.GetString(0);
 
-                                    Attachment attachment = new Attachment(path);
+                                    var attachment = new MailQueueAttachment
+                                    {
+                                        Name = attachmentReader.GetString(0),
+                                        Data = (byte[])attachmentReader["AttachmentData"]
+                                    };
+
                                     mail.Attachments.Add(attachment);
                                 }
 
@@ -337,7 +268,7 @@ namespace Nhea.Communication
                     {
                         Logger.Log(ex, false);
 
-                        SetError(mail.Id);
+                        mail.SetError();
                     }
                 }
 
@@ -363,13 +294,6 @@ namespace Nhea.Communication
                     break;
             }
             return priorityDate;
-        }
-
-        private static void ExecuteDeleteQuery(Guid mailQueueId, SqlCommand cmd)
-        {
-            cmd.Parameters.Clear();
-            cmd.Parameters.Add(new SqlParameter("@MailQueueId", mailQueueId));
-            cmd.ExecuteNonQuery();
         }
     }
 }

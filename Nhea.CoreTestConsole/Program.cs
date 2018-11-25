@@ -1,4 +1,6 @@
 ﻿using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Nhea.CoreTestConsole
 {
@@ -9,11 +11,15 @@ namespace Nhea.CoreTestConsole
             Nhea.Logging.Logger.LogPublishing += Logger_LogPublishing;
             Nhea.Logging.Logger.LogPublished += Logger_LogPublished;
 
+            Nhea.Logging.Logger.Log("Hello World!");
+
             Nhea.Communication.MailQueue.MailQueueing += MailQueue_MailQueueing;
             Nhea.Communication.MailQueue.MailQueued += MailQueue_MailQueued;
 
-            Nhea.Logging.Logger.Log("Hello World!");
+            var attachmentData = File.ReadAllBytes(Path.Combine(Environment.CurrentDirectory, "Assets/sample-image.jpg"));
+            Nhea.Communication.MailQueue.Add("garajinformation@gmail.com", "serkanyazicioglu@gmail.com", "subject", "body", new Communication.MailQueueAttachment { Name = "sample-image.jpg", Data = attachmentData });
 
+            Console.WriteLine("Job done!");
             Console.ReadLine();
         }
 
