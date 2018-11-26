@@ -1,4 +1,5 @@
-﻿using Nhea.Communication;
+﻿using Microsoft.Extensions.Logging;
+using Nhea.Communication;
 using Nhea.Configuration;
 using System;
 
@@ -6,14 +7,6 @@ namespace Nhea.Logging.LogPublisher
 {
     public class MailPublisher : Publisher
     {
-        #region Publisher Properties
-
-        public override string Message { get; set; }
-        public override Exception Exception { get; set; }
-        public override LogLevel LogLevel { get; set; }
-
-        #endregion
-
         private const string HtmlNewLine = "<br/>";
 
         public override bool Publish()
@@ -40,7 +33,7 @@ namespace Nhea.Logging.LogPublisher
                 }
 
                 string detail = "<b>Message:</b> " + Message + HtmlNewLine;
-                detail += "<b>Log Level:</b> " + LogLevel.ToString() + HtmlNewLine;
+                detail += "<b>Log Level:</b> " + Level.ToString() + HtmlNewLine;
                 detail += "<b>Date:</b> " + DateTime.Now.ToString() + HtmlNewLine;
                 detail += "<b>Username:</b> " + UserName + HtmlNewLine;
                 detail += "<b>Source:</b> " + Source + HtmlNewLine;

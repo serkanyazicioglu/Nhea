@@ -1,4 +1,5 @@
-﻿using Nhea.Text;
+﻿using Microsoft.Extensions.Logging;
+using Nhea.Text;
 using Nhea.Utils;
 using System;
 using System.Data.SqlClient;
@@ -7,12 +8,6 @@ namespace Nhea.Logging.LogPublisher
 {
     public class DbPublisher : Publisher
     {
-        public override string Message { get; set; }
-
-        public override Exception Exception { get; set; }
-
-        public override LogLevel LogLevel { get; set; }
-
         public override bool Publish()
         {
             try
@@ -34,7 +29,7 @@ namespace Nhea.Logging.LogPublisher
 
                         #region BuildParameters
 
-                        cmd.Parameters.Add(new SqlParameter("@Level", StringHelper.SplitText(this.LogLevel.ToString(), 50)));
+                        cmd.Parameters.Add(new SqlParameter("@Level", StringHelper.SplitText(this.Level.ToString(), 50)));
 
                         if (this.Message == null)
                         {
