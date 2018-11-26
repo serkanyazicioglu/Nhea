@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using Microsoft.Extensions.Logging;
 using Nhea.Logging;
 
 namespace Nhea.Configuration.GenericConfigSection.LogSection
@@ -34,8 +35,8 @@ namespace Nhea.Configuration.GenericConfigSection.LogSection
             }
         }
 
-        [ConfigurationProperty("defaultlogLevel", DefaultValue = LogLevel.Info)]
-        public LogLevel LogLevel
+        [ConfigurationProperty("defaultlogLevel", DefaultValue = Microsoft.Extensions.Logging.LogLevel.Information)]
+        public LogLevel DefaultLogLevel
         {
             get
             {

@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Nhea.Configuration;
 using Nhea.Logging.LogPublisher;
 using System;
@@ -37,12 +38,12 @@ namespace Nhea.Logging
         /// <param name="message">Loggers additional notes.</param>
         public static bool Log(string message)
         {
-            return LogCore(Settings.Log.LogLevel, Settings.Log.PublishType, null, null, message, null, Settings.Log.AutoInform);
+            return LogCore(Settings.Log.DefaultLogLevel, Settings.Log.PublishType, null, null, message, null, Settings.Log.AutoInform);
         }
 
         public static bool Log(string message, bool autoInform)
         {
-            return LogCore(Settings.Log.LogLevel, Settings.Log.PublishType, null, null, message, null, autoInform);
+            return LogCore(Settings.Log.DefaultLogLevel, Settings.Log.PublishType, null, null, message, null, autoInform);
         }
 
         /// <summary>
@@ -140,7 +141,7 @@ namespace Nhea.Logging
             {
                 Publisher publisher = PublisherFactory.CreatePublisher(publishType);
                 publisher.Message = message;
-                publisher.LogLevel = logLevel;
+                publisher.Level = logLevel;
                 publisher.Source = source;
                 publisher.UserName = userName;
                 publisher.Exception = exception;

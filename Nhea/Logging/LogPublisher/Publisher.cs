@@ -1,17 +1,17 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using Nhea.Configuration;
+using System;
 using System.Security.Principal;
 
 namespace Nhea.Logging.LogPublisher
 {
-    public abstract class Publisher : IPublisher
+    public abstract class Publisher : IPublisher, ILogger
     {
-        #region IPublisher Properties
+        public string Message { get; set; }
 
-        public abstract string Message { get; set; }
+        public Exception Exception { get; set; }
 
-        public abstract Exception Exception { get; set; }
-
-        public abstract LogLevel LogLevel { get; set; }
+        public LogLevel Level { get; set; }
 
         public bool AutoInform { get; set; }
 
@@ -92,17 +92,13 @@ namespace Nhea.Logging.LogPublisher
             }
         }
 
-        #endregion
-
-        #region IPublisher Methods
-
         public virtual bool Publish()
         {
             if (this.AutoInform)
             {
                 Publisher publisher = PublisherFactory.CreatePublisher(PublishTypes.Email);
                 publisher.Message = this.Message;
-                publisher.LogLevel = this.LogLevel;
+                publisher.Level = this.Level;
                 publisher.Source = this.Source;
                 publisher.UserName = this.UserName;
                 publisher.Exception = this.Exception;
@@ -112,6 +108,25 @@ namespace Nhea.Logging.LogPublisher
             return true;
         }
 
-        #endregion
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        {
+            string msg = $"{logLevel} :: {formatter(state, exception)} :: UserName :: {this.UserName} :: {DateTime.Now}";
+
+            this.Level = logLevel;
+            this.Exception = exception;
+            this.Message = "";
+            this.AutoInform = Settings.Log.AutoInform;
+            this.Publish();
+        }
+
+        public bool IsEnabled(LogLevel logLevel)
+        {
+            return true;
+        }
+
+        public IDisposable BeginScope<TState>(TState state)
+        {
+            return null;
+        }
     }
 }
