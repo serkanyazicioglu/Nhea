@@ -1,8 +1,8 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
 using System.IO;
 using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace Nhea.CoreTestConsole
 {
@@ -11,7 +11,9 @@ namespace Nhea.CoreTestConsole
         static void Main(string[] args)
         {
             var serviceCollection = new ServiceCollection();
-            serviceCollection.AddLogging(configure => configure.AddConsole());
+            serviceCollection.AddLogging(configure =>
+                configure.AddConsole()
+            );
 
             var serviceProvider = serviceCollection.BuildServiceProvider();
 
