@@ -6,14 +6,6 @@ namespace Nhea.Logging.LogPublisher
 {
     public class FilePublisher : Publisher
     {
-        #region Publisher Properties
-
-        public override string Message { get; set; }
-        public override Exception Exception { get; set; }
-        public override LogLevel LogLevel { get; set; }
-
-        #endregion
-
         public override bool Publish()
         {
             try
@@ -36,7 +28,7 @@ namespace Nhea.Logging.LogPublisher
                     }
                 }
 
-                string detail = String.Format("Date: {0}{7}LogLevel: {1}{7}Message: {2}{7}Source: {3}{7}Username: {4}{7}{7}{5}{6}", DateTime.Now.ToString(), LogLevel.ToString(), Message, Source, UserName, exceptionDetail, exceptionData, Environment.NewLine);
+                string detail = String.Format("Date: {0}{7}LogLevel: {1}{7}Message: {2}{7}Source: {3}{7}Username: {4}{7}{7}{5}{6}", DateTime.Now.ToString(), Level.ToString(), Message, Source, UserName, exceptionDetail, exceptionData, Environment.NewLine);
 
                 string logfilename = Nhea.Helper.IOHelper.ToSafeFileName(String.Format(Settings.Log.FileName, DateTime.Now));
 

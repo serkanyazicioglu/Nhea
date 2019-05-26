@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -8,10 +10,25 @@ namespace Nhea.CoreTestConsole
     {
         static void Main(string[] args)
         {
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddLogging(configure =>
+                configure.AddConsole()
+            );
+
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
             Nhea.Logging.Logger.LogPublishing += Logger_LogPublishing;
             Nhea.Logging.Logger.LogPublished += Logger_LogPublished;
 
+            //Static logging
             Nhea.Logging.Logger.Log("Hello World!");
+
+            //Microsoft.Extensions.Logging.ILogger logging for DI
+
+
+            //Log.Information("Hello, world!");
+
+            //logger.Log(LogLevel.Critical, default(EventId), 
 
             Nhea.Communication.MailQueue.MailQueueing += MailQueue_MailQueueing;
             Nhea.Communication.MailQueue.MailQueued += MailQueue_MailQueued;

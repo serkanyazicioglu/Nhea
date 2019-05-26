@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.Extensions.Logging;
 using Nhea.Configuration.GenericConfigSection.LogSection;
 using Nhea.Logging;
 
@@ -45,11 +46,11 @@ namespace Nhea.Configuration
             /// <summary>
             /// Gets default log level
             /// </summary>
-            public static LogLevel LogLevel
+            public static LogLevel DefaultLogLevel
             {
                 get
                 {
-                    return config.LogLevel;
+                    return config.DefaultLogLevel;
                 }
             }
 
