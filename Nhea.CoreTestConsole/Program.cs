@@ -23,13 +23,6 @@ namespace Nhea.CoreTestConsole
             //Static logging
             Nhea.Logging.Logger.Log("Hello World!");
 
-            //Microsoft.Extensions.Logging.ILogger logging for DI
-
-
-            //Log.Information("Hello, world!");
-
-            //logger.Log(LogLevel.Critical, default(EventId), 
-
             Nhea.Communication.MailQueue.MailQueueing += MailQueue_MailQueueing;
             Nhea.Communication.MailQueue.MailQueued += MailQueue_MailQueued;
             
