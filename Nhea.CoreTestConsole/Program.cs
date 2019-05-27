@@ -32,9 +32,9 @@ namespace Nhea.CoreTestConsole
 
             Nhea.Communication.MailQueue.MailQueueing += MailQueue_MailQueueing;
             Nhea.Communication.MailQueue.MailQueued += MailQueue_MailQueued;
-
+            
             var attachmentData = File.ReadAllBytes(Path.Combine(Environment.CurrentDirectory, "Assets/sample-image.jpg"));
-            Nhea.Communication.MailQueue.Add("frommail@domain.com", "tomail@domain.com", "subject", "body", new Communication.MailQueueAttachment { Name = "sample-image.jpg", Data = attachmentData });
+            Nhea.Communication.MailQueue.Add("from@domain.com", "to@domain.com", "subject", "body", new Communication.MailQueueAttachment { Name = "sample-image.jpg", Data = attachmentData });
 
             Console.WriteLine("Job done!");
             Console.ReadLine();

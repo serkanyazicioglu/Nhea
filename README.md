@@ -174,7 +174,7 @@ And then you should change the configuration. Add data to configuration list and
 
 ### Removed Newtonsoft references
 
-As of 1.5.6 I've removed Newtonsoft references from the project. Therefore following methods doesn't exist anymore.
+As of 1.5.7 I'll be removing Newtonsoft references from the project. Therefore following methods won't exist anymore.
 ```
 public static T DeserializeObject<T>(string payload)
 {
