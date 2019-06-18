@@ -1,0 +1,1 @@
+docker run -e 'ACCEPT_EULA=Y' -e 'SA_PASSWORD=12345678' -p 1433:1433 --name sqltest -d mcr.microsoft.com/mssql/server:latest
