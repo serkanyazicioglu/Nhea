@@ -9,6 +9,24 @@ namespace Nhea.Communication
 {
     public static class MailQueue
     {
+        private static string _connectionString = null;
+        internal static string ConnectionString
+        {
+            get
+            {
+                if (String.IsNullOrEmpty(_connectionString))
+                {
+                    _connectionString = DBUtil.CreateConnectionString(ConnectionSource.Communication);
+                }
+
+                return _connectionString;
+            }
+            set
+            {
+                _connectionString = value;
+            }
+        }
+
         private const string SelectCommandText = @"SET ROWCOUNT @PackageSize; SELECT TOP 100 Id, [From], [To], Cc, Bcc, Subject, Body, Priority, CreateDate, HasAttachment FROM nhea_MailQueue WHERE IsReadyToSend = 1 AND MailProviderId = @MailProviderId";
         private const string NullableSelectCommandText = @"SET ROWCOUNT @PackageSize; SELECT TOP 100 Id, [From], [To], Cc, Bcc, Subject, Body, Priority, CreateDate, HasAttachment FROM nhea_MailQueue WHERE IsReadyToSend = 1 AND MailProviderId IS NULL";
 
@@ -84,7 +102,7 @@ namespace Nhea.Communication
 
             try
             {
-                using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
+                using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
                 using (SqlCommand cmd = new SqlCommand(InsertCommandText, sqlConnection))
                 {
                     Guid id = Guid.NewGuid();
@@ -202,7 +220,7 @@ namespace Nhea.Communication
                 packageSize = mailProvider.PackageSize;
             }
 
-            using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
+            using (SqlConnection sqlConnection = new SqlConnection(ConnectionString))
             using (SqlCommand cmd = new SqlCommand(cmdText, sqlConnection))
             {
                 cmd.Connection.Open();
@@ -278,7 +296,7 @@ namespace Nhea.Communication
             return mailList;
         }
 
-        private static DateTime GetDateByPriority(Priority priority)
+        internal static DateTime GetDateByPriority(Priority priority)
         {
             DateTime priorityDate = DateTime.Now;
             switch (priority)

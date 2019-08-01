@@ -53,24 +53,6 @@ namespace Nhea.Communication
             {
                 try
                 {
-                    //if (!String.IsNullOrEmpty(Nhea.Configuration.Settings.Communication.OpenReportUrl))
-                    //{
-                    //    string openReportUrl = Nhea.Configuration.Settings.Communication.OpenReportUrl;
-
-                    //    if (!openReportUrl.EndsWith("?"))
-                    //    {
-                    //        openReportUrl += "?";
-                    //    }
-
-                    //    string key = "i=" + this.Id;
-
-                    //    string hash = Nhea.Security.QueryStringSecurity.HashQueryString(key);
-
-                    //    string imageHtml = String.Format("<img src=\"{0}\" height=\"1\" width=\"1\"/>", openReportUrl + hash);
-
-                    //    this.Body += imageHtml;
-                    //}
-
                     var attachments = new List<System.Net.Mail.Attachment>();
 
                     if (HasAttachment)
@@ -102,7 +84,7 @@ namespace Nhea.Communication
 
         private void MoveToHistory(MailStatus status)
         {
-            using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
+            using (SqlConnection sqlConnection = new SqlConnection(MailQueue.ConnectionString))
             {
                 sqlConnection.Open();
 
@@ -137,43 +119,11 @@ namespace Nhea.Communication
             }
         }
 
-        public bool Save()
-        {
-            return MailQueue.Add(this);
-        }
-
-        internal void Delete()
-        {
-            using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
-            {
-                sqlConnection.Open();
-
-                using (SqlCommand cmd = new SqlCommand(DeleteCommandText, sqlConnection))
-                {
-                    cmd.Parameters.Clear();
-                    cmd.Parameters.Add(new SqlParameter("@MailQueueId", Id));
-                    cmd.ExecuteNonQuery();
-                }
-
-                if (HasAttachment)
-                {
-                    using (SqlCommand cmd = new SqlCommand(DeleteAttachmentsCommandText, sqlConnection))
-                    {
-                        cmd.Parameters.Clear();
-                        cmd.Parameters.Add(new SqlParameter("@MailQueueId", Id));
-                        cmd.ExecuteNonQuery();
-                    }
-                }
-
-                sqlConnection.Close();
-            }
-        }
-
         internal void SetError()
         {
             try
             {
-                using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
+                using (SqlConnection sqlConnection = new SqlConnection(MailQueue.ConnectionString))
                 using (SqlCommand setStatusCommand = new SqlCommand(String.Format(UpdateStatusCommandText, "0"), sqlConnection))
                 {
                     sqlConnection.Open();

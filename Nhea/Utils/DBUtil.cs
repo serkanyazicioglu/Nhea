@@ -10,13 +10,16 @@ namespace Nhea.Utils
             return CreateConnection(ConnectionSource.Data);
         }
 
-        public static SqlConnection CreateConnection(ConnectionSource connectionSource)
+        public static string CreateConnectionString(ConnectionSource connectionSource)
         {
             string connectionString = ConnectionStringBuilder.Build(connectionSource);
 
-            connectionString = ClearConnectionString(connectionString);
+            return ClearConnectionString(connectionString);
+        }
 
-            return new SqlConnection(connectionString);
+        public static SqlConnection CreateConnection(ConnectionSource connectionSource)
+        {
+            return new SqlConnection(CreateConnectionString(connectionSource));
         }
 
         public static string ClearConnectionString(string connectionString)

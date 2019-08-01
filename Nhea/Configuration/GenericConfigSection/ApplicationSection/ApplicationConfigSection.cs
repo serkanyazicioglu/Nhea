@@ -16,14 +16,5 @@ namespace Nhea.Configuration.GenericConfigSection.ApplicationSection
                 return (EnvironmentType)Enum.Parse(typeof(EnvironmentType), this["environmentType"].ToString());
             }
         }
-
-        [ConfigurationProperty("name", DefaultValue = "")]
-        public string Name
-        {
-            get
-            {
-                return this["name"].ToString();
-            }
-        }
     }
 }

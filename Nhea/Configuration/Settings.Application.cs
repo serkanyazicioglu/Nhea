@@ -27,14 +27,6 @@ namespace Nhea.Configuration
                     return config.EnvironmentType;
                 }
             }
-
-            public static string Name
-            {
-                get
-                {
-                    return config.Name;
-                }
-            }
         }
     }
 }

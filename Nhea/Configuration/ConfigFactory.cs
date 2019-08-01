@@ -18,19 +18,5 @@ namespace Nhea.Configuration
                 return new T();
             }
         }
-
-        internal static ConfigBase GetConfigManager()
-        {
-            ConfigBase configBase = new XmlConfigHelper();
-            string location = configBase.GetValue("location").ToString();
-            configBase = Activator.CreateInstance(Type.GetType(location)) as ConfigBase;
-
-            if (configBase == null)
-            {
-                throw new Exception(string.Format("Geçersiz config base türü. ConfigBase örneği alınamadı. Tip : {0}", location));
-            }
-
-            return configBase;
-        }
     }
 }

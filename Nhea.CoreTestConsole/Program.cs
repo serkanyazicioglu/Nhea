@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Configuration;
+using Nhea.Communication;
 using System;
 using System.IO;
 using System.Threading.Tasks;
@@ -8,26 +10,53 @@ namespace Nhea.CoreTestConsole
 {
     class Program
     {
+
+        /// <summary>
+        /// Mail kaydetme, mail queue, loglama ve localization servisi var. 
+        /// </summary>
+        /// <param name="args"></param>
         static void Main(string[] args)
         {
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddLogging(configure =>
+            var builder = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true);
+
+            IConfigurationRoot configuration = builder.Build();
+
+            var services = new ServiceCollection();
+            services.AddLogging(configure =>
                 configure.AddConsole()
             );
+            services.AddMailService();
+            services.AddOptions();
 
-            var serviceProvider = serviceCollection.BuildServiceProvider();
+            var nheaSection = configuration.GetSection("nhea");
+
+            services.Configure<Nhea.Configuration.NheaConfigurationSettings>(configuration.GetSection("nhea"));
+
+            //Optional overrides
+            services.Configure<Nhea.Configuration.NheaConfigurationSettings>(options =>
+            {
+                options.DefaultLogLevel = LogLevel.Critical;
+                options.PublishType = Logging.PublishTypes.Database;
+            });
+
+            var serviceProvider = services.BuildServiceProvider();
 
             Nhea.Logging.Logger.LogPublishing += Logger_LogPublishing;
             Nhea.Logging.Logger.LogPublished += Logger_LogPublished;
 
-            //Static logging
-            Nhea.Logging.Logger.Log("Hello World!");
-
             Nhea.Communication.MailQueue.MailQueueing += MailQueue_MailQueueing;
             Nhea.Communication.MailQueue.MailQueued += MailQueue_MailQueued;
-            
+
             var attachmentData = File.ReadAllBytes(Path.Combine(Environment.CurrentDirectory, "Assets/sample-image.jpg"));
-            Nhea.Communication.MailQueue.Add("from@domain.com", "to@domain.com", "subject", "body", new Communication.MailQueueAttachment { Name = "sample-image.jpg", Data = attachmentData });
+
+            var mailService = serviceProvider.GetService<IMailService>();
+            mailService.Add("from@domain.com", "to@domain.com", "subject", "body", new Communication.MailQueueAttachment
+            {
+                Name = "sample-image.jpg",
+                Data = attachmentData
+            });
 
             Console.WriteLine("Job done!");
             Console.ReadLine();
