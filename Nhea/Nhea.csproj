@@ -7,11 +7,10 @@
     <Company>Serkan Yazıcıoğlu</Company>
     <Authors>Serkan Yazıcıoğlu</Authors>
     <PackageProjectUrl>https://github.com/serkanyazicioglu/Nhea</PackageProjectUrl>
-    <Version>1.5.6</Version>
-    <AssemblyVersion>1.5.6.0</AssemblyVersion>
-    <FileVersion>1.5.6.0</FileVersion>
-    <PackageReleaseNotes>- Changed mail queue attachment functionality,
-- Removed notification queue classes. This feature is no longer supported.</PackageReleaseNotes>
+    <Version>1.6</Version>
+    <AssemblyVersion>1.6.0.0</AssemblyVersion>
+    <FileVersion>1.6.0.0</FileVersion>
+    <PackageReleaseNotes>- Added mail queue DI Service</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/serkanyazicioglu/Nhea</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
