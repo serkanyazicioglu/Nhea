@@ -38,30 +38,6 @@ namespace Nhea.Configuration
                     return config.SmtpSettings.Cast<SmtpElement>();
                 }
             }
-
-            public static string NotificationsPublicKey
-            {
-                get
-                {
-                    return config.NotificationsPublicKey;
-                }
-            }
-
-            public static string NotificationsApplicationId
-            {
-                get
-                {
-                    return config.NotificationsApplicationId;
-                }
-            }
-
-            public static string OpenReportUrl
-            {
-                get
-                {
-                    return config.OpenReportUrl.Convert<string>("");
-                }
-            }
         }
     }
 }

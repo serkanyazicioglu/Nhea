@@ -42,7 +42,7 @@ namespace Nhea.Communication
 
             try
             {
-                using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
+                using (SqlConnection sqlConnection = new SqlConnection(MailQueue.ConnectionString))
                 {
                     using (SqlCommand cmd = new SqlCommand(SelectCommandText, sqlConnection))
                     {
