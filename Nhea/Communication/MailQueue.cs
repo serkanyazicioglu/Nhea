@@ -1,3 +1,4 @@
+using Newtonsoft.Json;
 using Nhea.Logging;
 using Nhea.Utils;
 using System;
@@ -38,37 +39,37 @@ namespace Nhea.Communication
 
         public static bool Add(string from, string toRecipient, string subject, string body, string listUnsubscribe = null, string plainText = null)
         {
-            return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), null);
+            return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), null, listUnsubscribe: listUnsubscribe, plainText: plainText);
         }
 
         public static bool Add(string from, string toRecipient, string subject, string body, MailQueueAttachment attachment, string listUnsubscribe = null, string plainText = null)
         {
-            return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), new List<MailQueueAttachment> { attachment });
+            return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), new List<MailQueueAttachment> { attachment }, listUnsubscribe: listUnsubscribe, plainText: plainText);
         }
 
         public static bool Add(string from, string toRecipient, string subject, string body, List<MailQueueAttachment> attachments, string listUnsubscribe = null, string plainText = null)
         {
-            return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), attachments);
+            return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), attachments, listUnsubscribe: listUnsubscribe, plainText: plainText);
         }
 
         public static bool Add(string from, string toRecipient, string ccRecipients, string subject, string body, string listUnsubscribe = null, string plainText = null)
         {
-            return Add(from, toRecipient, ccRecipients, String.Empty, subject, body, GetDateByPriority(Priority.Medium), null);
+            return Add(from, toRecipient, ccRecipients, String.Empty, subject, body, GetDateByPriority(Priority.Medium), null, listUnsubscribe: listUnsubscribe, plainText: plainText);
         }
 
         public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, string listUnsubscribe = null, string plainText = null)
         {
-            return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, GetDateByPriority(Priority.Medium), null);
+            return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, GetDateByPriority(Priority.Medium), null, listUnsubscribe: listUnsubscribe, plainText: plainText);
         }
 
         public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, List<MailQueueAttachment> attachments, string listUnsubscribe = null, string plainText = null)
         {
-            return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, GetDateByPriority(Priority.Medium), attachments);
+            return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, GetDateByPriority(Priority.Medium), attachments, listUnsubscribe: listUnsubscribe, plainText: plainText);
         }
 
         public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, Priority priority, string listUnsubscribe = null, string plainText = null)
         {
-            return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, GetDateByPriority(priority), null);
+            return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, GetDateByPriority(priority), null, listUnsubscribe: listUnsubscribe, plainText: plainText);
         }
 
         public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, DateTime priorityDate, List<MailQueueAttachment> attachments, string listUnsubscribe = null, string plainText = null)
@@ -97,6 +98,8 @@ namespace Nhea.Communication
         public static event MailQueueingEventHandler MailQueueing;
 
         public static event MailQueuedEventHandler MailQueued;
+
+        internal const string NheaMailingStarter = "|NHEA_MAILING|";
 
         public static bool Add(Mail mail)
         {
@@ -141,14 +144,17 @@ namespace Nhea.Communication
                         }
                     }
 
-                    string body = "|NHEA_MAILING:V2|";
+                    string body = NheaMailingStarter;
 
                     MailParameters mailParameters = new MailParameters
                     {
+                        Version = "2",
                         Body = mail.Body,
-                        AutoGeneratePlainText = false,
-                        ListUnsubscribe = ""
+                        ListUnsubscribe = mail.ListUnsubscribe,
+                        PlainText = mail.PlainText
                     };
+
+                    body += JsonConvert.SerializeObject(mailParameters);
 
                     cmd.Parameters.Add(new SqlParameter("@Id", id));
                     cmd.Parameters.Add(new SqlParameter("@From", mail.From));
@@ -156,7 +162,7 @@ namespace Nhea.Communication
                     cmd.Parameters.Add(new SqlParameter("@Cc", mail.CcRecipients));
                     cmd.Parameters.Add(new SqlParameter("@Bcc", mail.BccRecipients));
                     cmd.Parameters.Add(new SqlParameter("@Subject", mail.Subject));
-                    cmd.Parameters.Add(new SqlParameter("@Body", mail.Body));
+                    cmd.Parameters.Add(new SqlParameter("@Body", body));
                     cmd.Parameters.Add(new SqlParameter("@PriorityDate", mail.Priority));
                     cmd.Parameters.Add(new SqlParameter("@MailProviderId", DBNull.Value));
                     cmd.Parameters.Add(new SqlParameter("@IsReadyToSend", true));
