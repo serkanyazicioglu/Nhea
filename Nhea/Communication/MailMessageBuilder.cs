@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net.Mail;
 using Nhea.Configuration.GenericConfigSection.Communication;
+using Newtonsoft.Json;
+using System.Net.Mime;
 
 namespace Nhea.Communication
 {
@@ -57,7 +59,8 @@ namespace Nhea.Communication
 
             mailMessage.DeliveryNotificationOptions = DeliveryNotificationOptions.OnSuccess | DeliveryNotificationOptions.OnFailure;
             mailMessage.Subject = subject.Replace('\r', ' ').Replace('\n', ' ').Replace(Environment.NewLine, String.Empty);
-            mailMessage.Body = body;
+            mailMessage.SubjectEncoding = Encoding.UTF8;
+            mailMessage.BodyEncoding = Encoding.UTF8;
 
             if (isHighPriority)
             {
@@ -76,8 +79,52 @@ namespace Nhea.Communication
                 }
             }
 
-            mailMessage.BodyEncoding = Encoding.UTF8;
-            mailMessage.IsBodyHtml = true;
+            if (body.StartsWith(MailQueue.NheaMailingStarter))
+            {
+                body = body.Replace(MailQueue.NheaMailingStarter, String.Empty);
+
+                var parameters = JsonConvert.DeserializeObject<MailParameters>(body);
+
+                if (!string.IsNullOrEmpty(parameters.PlainText) || smtpElement.AutoGeneratePlainText)
+                {
+                    if (string.IsNullOrEmpty(parameters.PlainText))
+                    {
+                        mailMessage.Body = parameters.PlainText;
+                    }
+                    else
+                    {
+                        mailMessage.Body = Nhea.Text.HtmlHelper.GetPlainText(parameters.Body);
+                    }
+
+                    mailMessage.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(parameters.Body, null, MediaTypeNames.Text.Html));
+                }
+                else
+                {
+                    mailMessage.Body = parameters.Body;
+                }
+
+                if (!string.IsNullOrEmpty(parameters.ListUnsubscribe))
+                {
+                    string listUnsubscribeHeader = parameters.ListUnsubscribe.Replace(" ", string.Empty);
+
+                    if (!listUnsubscribeHeader.StartsWith("<"))
+                    {
+                        listUnsubscribeHeader = "<" + listUnsubscribeHeader;
+                    }
+
+                    if (!listUnsubscribeHeader.EndsWith(">"))
+                    {
+                        listUnsubscribeHeader += ">";
+                    }
+
+                    mailMessage.Headers.Add("List-Unsubscribe", listUnsubscribeHeader);
+                }
+            }
+            else
+            {
+                mailMessage.Body = body;
+                mailMessage.IsBodyHtml = true;
+            }
 
             return mailMessage;
         }

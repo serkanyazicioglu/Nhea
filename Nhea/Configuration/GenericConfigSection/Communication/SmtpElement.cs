@@ -143,5 +143,21 @@ namespace Nhea.Configuration.GenericConfigSection.Communication
                 return this["sender"].ToString();
             }
         }
+
+        [ConfigurationProperty("autoGeneratePlainText", IsRequired = false)]
+        public bool AutoGeneratePlainText
+        {
+            get
+            {
+                if (!String.IsNullOrEmpty(this["autoGeneratePlainText"].ToString()))
+                {
+                    return Convert.ToBoolean(this["autoGeneratePlainText"]);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+        }
     }
 }
