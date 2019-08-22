@@ -6,7 +6,7 @@ using System.IO;
 
 namespace Nhea.Communication
 {
-    public class Mail
+    public class Mail : MailParameters
     {
         private const string UpdateStatusCommandText = @"UPDATE nhea_MailQueue SET IsReadyToSend = {0} WHERE Id = @MailQueueId";
         private const string DeleteCommandText = @"DELETE FROM nhea_MailQueue WHERE Id = @MailQueueId";
@@ -34,8 +34,6 @@ namespace Nhea.Communication
         public string BccRecipients { get; set; }
 
         public string Subject { get; set; }
-
-        public string Body { get; set; }
 
         public DateTime Priority { get; set; }
 

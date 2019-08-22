@@ -36,42 +36,42 @@ namespace Nhea.Communication
         private const string InsertAttachmentCommandText = @"INSERT INTO [nhea_MailQueueAttachment]([MailQueueId],[AttachmentName],[AttachmentData]) VALUES(@MailQueueId, @AttachmentName,@AttachmentData)";
         private const string SelectAttachmentsCommandText = "SELECT [AttachmentName],[AttachmentData] FROM [nhea_MailQueueAttachment] WHERE MailQueueId = @MailQueueId";
 
-        public static bool Add(string from, string toRecipient, string subject, string body)
+        public static bool Add(string from, string toRecipient, string subject, string body, string listUnsubscribe = null, string plainText = null)
         {
             return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), null);
         }
 
-        public static bool Add(string from, string toRecipient, string subject, string body, MailQueueAttachment attachment)
+        public static bool Add(string from, string toRecipient, string subject, string body, MailQueueAttachment attachment, string listUnsubscribe = null, string plainText = null)
         {
             return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), new List<MailQueueAttachment> { attachment });
         }
 
-        public static bool Add(string from, string toRecipient, string subject, string body, List<MailQueueAttachment> attachments)
+        public static bool Add(string from, string toRecipient, string subject, string body, List<MailQueueAttachment> attachments, string listUnsubscribe = null, string plainText = null)
         {
             return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), attachments);
         }
 
-        public static bool Add(string from, string toRecipient, string ccRecipients, string subject, string body)
+        public static bool Add(string from, string toRecipient, string ccRecipients, string subject, string body, string listUnsubscribe = null, string plainText = null)
         {
             return Add(from, toRecipient, ccRecipients, String.Empty, subject, body, GetDateByPriority(Priority.Medium), null);
         }
 
-        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body)
+        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, string listUnsubscribe = null, string plainText = null)
         {
             return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, GetDateByPriority(Priority.Medium), null);
         }
 
-        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, List<MailQueueAttachment> attachments)
+        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, List<MailQueueAttachment> attachments, string listUnsubscribe = null, string plainText = null)
         {
             return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, GetDateByPriority(Priority.Medium), attachments);
         }
 
-        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, Priority priority)
+        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, Priority priority, string listUnsubscribe = null, string plainText = null)
         {
             return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, GetDateByPriority(priority), null);
         }
 
-        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, DateTime priorityDate, List<MailQueueAttachment> attachments)
+        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, DateTime priorityDate, List<MailQueueAttachment> attachments, string listUnsubscribe = null, string plainText = null)
         {
             var mail = new Mail
             {
@@ -82,7 +82,9 @@ namespace Nhea.Communication
                 Subject = subject,
                 Body = body,
                 Priority = priorityDate,
-                Attachments = attachments
+                Attachments = attachments,
+                ListUnsubscribe = listUnsubscribe,
+                PlainText = plainText
             };
 
             return Add(mail);
@@ -138,6 +140,15 @@ namespace Nhea.Communication
                             sub.Invoke(mail);
                         }
                     }
+
+                    string body = "|NHEA_MAILING:V2|";
+
+                    MailParameters mailParameters = new MailParameters
+                    {
+                        Body = mail.Body,
+                        AutoGeneratePlainText = false,
+                        ListUnsubscribe = ""
+                    };
 
                     cmd.Parameters.Add(new SqlParameter("@Id", id));
                     cmd.Parameters.Add(new SqlParameter("@From", mail.From));
