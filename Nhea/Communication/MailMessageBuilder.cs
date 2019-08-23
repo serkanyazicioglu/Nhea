@@ -96,7 +96,7 @@ namespace Nhea.Communication
                         mailMessage.Body = Nhea.Text.HtmlHelper.GetPlainText(parameters.Body);
                     }
 
-                    mailMessage.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(parameters.Body, null, MediaTypeNames.Text.Html));
+                    mailMessage.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(parameters.Body, Encoding.UTF8, MediaTypeNames.Text.Html));
                 }
                 else
                 {

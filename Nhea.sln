@@ -6,10 +6,10 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{1EB71E5B-24B6-467C-B382-2D6FC630FDED}"
 	ProjectSection(SolutionItems) = preProject
 		azure-pipelines.yml = azure-pipelines.yml
-		InitSql.ps1 = InitSql.ps1
 		SQL\nhea_Log.sql = SQL\nhea_Log.sql
 		SQL\nhea_MailQueue.sql = SQL\nhea_MailQueue.sql
 		README.md = README.md
+		Start.ps1 = Start.ps1
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nhea", "Nhea\Nhea.csproj", "{E4D77EE2-9A82-4209-9A1D-951078EEDC73}"
