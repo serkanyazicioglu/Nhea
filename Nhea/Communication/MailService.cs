@@ -1,9 +1,10 @@
 ﻿using Microsoft.Extensions.Options;
+using Nhea.Communication;
 using Nhea.Configuration;
 using System;
 using System.Collections.Generic;
 
-namespace Nhea.Communication
+namespace Microsoft.Extensions.DependencyInjection
 {
     public class MailService : IMailService
     {
