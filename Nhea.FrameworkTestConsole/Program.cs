@@ -26,6 +26,12 @@ namespace Nhea.FrameworkTestConsole
                 Name = "sample-image.jpg",
                 Data = attachmentData
             });
+
+            Nhea.Communication.MailQueue.Add("from@domain.com", "to@domain.com", "subject", "body", new Communication.MailQueueAttachment
+            {
+                Name = "sample-image.jpg",
+                Data = attachmentData
+            }, listUnsubscribe: "http://domain.com/unsubscribe", plainText: "plainbody");
         }
 
         private static void MailQueue_MailQueueing(Communication.Mail mail)
