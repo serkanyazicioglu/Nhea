@@ -101,6 +101,7 @@ namespace Nhea.Communication
                 else
                 {
                     mailMessage.Body = parameters.Body;
+                    mailMessage.IsBodyHtml = true;
                 }
 
                 if (!string.IsNullOrEmpty(parameters.ListUnsubscribe))
