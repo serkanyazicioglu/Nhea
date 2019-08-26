@@ -44,6 +44,8 @@ namespace Nhea.FrameworkTestConsole
 
             Nhea.Communication.MailQueue.Add(from, to, cc, bcc, subject, body);
 
+            Nhea.Communication.MailQueue.Add(from, to, cc, subject, body, "https://www.testdomain.com/unsub");
+
             Nhea.Communication.MailQueue.Add(from, to, cc, subject, body, "https://www.testdomain.com/unsub", "body");
 
             Nhea.Communication.MailQueue.Add(from, to, cc, bcc, subject, body, "https://www.testdomain.com/unsub", "body");
