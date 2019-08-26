@@ -37,9 +37,9 @@ namespace Nhea.Communication
         private const string InsertAttachmentCommandText = @"INSERT INTO [nhea_MailQueueAttachment]([MailQueueId],[AttachmentName],[AttachmentData]) VALUES(@MailQueueId, @AttachmentName,@AttachmentData)";
         private const string SelectAttachmentsCommandText = "SELECT [AttachmentName],[AttachmentData] FROM [nhea_MailQueueAttachment] WHERE MailQueueId = @MailQueueId";
 
-        public static bool Add(string from, string toRecipient, string subject, string body, string listUnsubscribe = null, string plainText = null)
+        public static bool Add(string from, string toRecipient, string subject, string body)
         {
-            return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), null, listUnsubscribe: listUnsubscribe, plainText: plainText);
+            return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), null);
         }
 
         public static bool Add(string from, string toRecipient, string subject, string body, MailQueueAttachment attachment, string listUnsubscribe = null, string plainText = null)
@@ -52,9 +52,9 @@ namespace Nhea.Communication
             return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), attachments, listUnsubscribe: listUnsubscribe, plainText: plainText);
         }
 
-        public static bool Add(string from, string toRecipient, string ccRecipients, string subject, string body, string listUnsubscribe = null, string plainText = null)
+        public static bool Add(string from, string toRecipient, string ccRecipients, string subject, string body)
         {
-            return Add(from, toRecipient, ccRecipients, String.Empty, subject, body, GetDateByPriority(Priority.Medium), null, listUnsubscribe: listUnsubscribe, plainText: plainText);
+            return Add(from, toRecipient, ccRecipients, String.Empty, subject, body, GetDateByPriority(Priority.Medium), null);
         }
 
         public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, string listUnsubscribe = null, string plainText = null)
@@ -204,17 +204,10 @@ namespace Nhea.Communication
         {
             if (address != null)
             {
-                if (!String.IsNullOrEmpty(address) && address.Contains(","))
-                {
-                    address = address.Replace(',', ';');
-                }
-            }
-            else
-            {
-                address = String.Empty;
+                return MailMessageBuilder.ParseRecipients(address).ToString().Replace(",", ";");
             }
 
-            return address;
+            return String.Empty;
         }
 
         public static List<Mail> Fetch()

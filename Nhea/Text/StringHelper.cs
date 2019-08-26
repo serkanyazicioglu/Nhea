@@ -209,11 +209,13 @@ namespace Nhea.Text
         {
             if (!String.IsNullOrEmpty(text))
             {
-                text = text.Trim();
-
                 if (replaceAllBlanks)
                 {
                     text = text.Replace(" ", String.Empty);
+                }
+                else
+                {
+                    text = text.Trim();
                 }
 
                 if (textCase != TextCaseMode.None)
