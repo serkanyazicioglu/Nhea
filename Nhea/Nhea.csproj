@@ -7,12 +7,13 @@
     <Company>Serkan Yazıcıoğlu</Company>
     <Authors>Serkan Yazıcıoğlu</Authors>
     <PackageProjectUrl>https://github.com/serkanyazicioglu/Nhea</PackageProjectUrl>
-    <Version>1.6.5</Version>
-    <AssemblyVersion>1.6.5.0</AssemblyVersion>
-    <FileVersion>1.6.5.0</FileVersion>
+    <Version>1.6.8</Version>
+    <AssemblyVersion>1.6.8.0</AssemblyVersion>
+    <FileVersion>1.6.8.0</FileVersion>
     <PackageReleaseNotes>- Added Mailing v2
 - JsonHelper readded
-- MailQueue.Add overload fix</PackageReleaseNotes>
+- MailQueue.Add overload fix
+- Mail sending replacing invalid chars</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/serkanyazicioglu/Nhea</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
