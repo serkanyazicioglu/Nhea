@@ -52,9 +52,9 @@ namespace Nhea.Communication
             return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), attachments, listUnsubscribe: listUnsubscribe, plainText: plainText);
         }
 
-        public static bool Add(string from, string toRecipient, string ccRecipients, string subject, string body, string listUnsubscribe = null, string plainText = null)
+        public static bool Add(string from, string toRecipient, string ccRecipients, string subject, string body)
         {
-            return Add(from, toRecipient, ccRecipients, String.Empty, subject, body, GetDateByPriority(Priority.Medium), null, listUnsubscribe: listUnsubscribe, plainText: plainText);
+            return Add(from, toRecipient, ccRecipients, String.Empty, subject, body, GetDateByPriority(Priority.Medium), null);
         }
 
         public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, string listUnsubscribe = null, string plainText = null)

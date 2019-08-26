@@ -42,9 +42,11 @@ namespace Nhea.FrameworkTestConsole
 
             Nhea.Communication.MailQueue.Add(from, to, cc, subject, body);
 
-            Nhea.Communication.MailQueue.Add(from, to, cc, subject, body, listUnsubscribe: "https://www.testdomain.com/unsub", plainText: "body");
+            Nhea.Communication.MailQueue.Add(from, to, cc, bcc, subject, body);
 
-            Nhea.Communication.MailQueue.Add(from, to, cc, bcc, subject, body, listUnsubscribe: "https://www.testdomain.com/unsub", plainText: "body");
+            Nhea.Communication.MailQueue.Add(from, to, cc, subject, body, "https://www.testdomain.com/unsub", "body");
+
+            Nhea.Communication.MailQueue.Add(from, to, cc, bcc, subject, body, "https://www.testdomain.com/unsub", "body");
         }
 
         private static void MailQueue_MailQueueing(Communication.Mail mail)
