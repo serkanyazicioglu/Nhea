@@ -21,17 +21,37 @@ namespace Nhea.FrameworkTestConsole
 
             var attachmentData = File.ReadAllBytes(Path.Combine(Environment.CurrentDirectory, "Assets/sample-image.jpg"));
 
-            Nhea.Communication.MailQueue.Add("from@domain.com", "to@domain.com", "subject", "body", new Communication.MailQueueAttachment
+            string from = "from@domain.com";
+            string to = "to@domain.com";
+            string cc = null;
+            string bcc = null;
+            string subject = "subject";
+            string body = "<html><body>html body text</body></html>";
+
+            Nhea.Communication.MailQueue.Add(from, to, subject, body, new Communication.MailQueueAttachment
             {
                 Name = "sample-image.jpg",
                 Data = attachmentData
             });
 
-            Nhea.Communication.MailQueue.Add("from@domain.com", "to@domain.com", "subject", "body", new Communication.MailQueueAttachment
+            Nhea.Communication.MailQueue.Add(from, to, subject, body, new Communication.MailQueueAttachment
             {
                 Name = "sample-image.jpg",
                 Data = attachmentData
             }, listUnsubscribe: "http://domain.com/unsubscribe", plainText: "plainbody");
+
+            Nhea.Communication.MailQueue.Add(from, to, cc, subject, body);
+
+            Nhea.Communication.MailQueue.Add(from, to, cc, bcc, subject, body);
+
+            Nhea.Communication.MailQueue.Add(from, to, cc, subject, body, "https://www.testdomain.com/unsub");
+
+            Nhea.Communication.MailQueue.Add(from, to, cc, subject, body, "https://www.testdomain.com/unsub", "plainbody");
+
+            Nhea.Communication.MailQueue.Add(from, to, cc, bcc, subject, body, "https://www.testdomain.com/unsub", "plainbody");
+
+            Console.WriteLine("Job Done!");
+            Console.ReadLine();
         }
 
         private static void MailQueue_MailQueueing(Communication.Mail mail)
