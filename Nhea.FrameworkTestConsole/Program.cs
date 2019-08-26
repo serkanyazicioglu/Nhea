@@ -49,6 +49,9 @@ namespace Nhea.FrameworkTestConsole
             Nhea.Communication.MailQueue.Add(from, to, cc, subject, body, "https://www.testdomain.com/unsub", "plainbody");
 
             Nhea.Communication.MailQueue.Add(from, to, cc, bcc, subject, body, "https://www.testdomain.com/unsub", "plainbody");
+
+            Console.WriteLine("Job Done!");
+            Console.ReadLine();
         }
 
         private static void MailQueue_MailQueueing(Communication.Mail mail)
