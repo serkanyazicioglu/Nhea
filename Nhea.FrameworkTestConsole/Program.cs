@@ -26,7 +26,7 @@ namespace Nhea.FrameworkTestConsole
             string cc = null;
             string bcc = null;
             string subject = "subject";
-            string body = "<html><body>body text</body></html>";
+            string body = "<html><body>html body text</body></html>";
 
             Nhea.Communication.MailQueue.Add(from, to, subject, body, new Communication.MailQueueAttachment
             {
@@ -46,9 +46,9 @@ namespace Nhea.FrameworkTestConsole
 
             Nhea.Communication.MailQueue.Add(from, to, cc, subject, body, "https://www.testdomain.com/unsub");
 
-            Nhea.Communication.MailQueue.Add(from, to, cc, subject, body, "https://www.testdomain.com/unsub", "body");
+            Nhea.Communication.MailQueue.Add(from, to, cc, subject, body, "https://www.testdomain.com/unsub", "plainbody");
 
-            Nhea.Communication.MailQueue.Add(from, to, cc, bcc, subject, body, "https://www.testdomain.com/unsub", "body");
+            Nhea.Communication.MailQueue.Add(from, to, cc, bcc, subject, body, "https://www.testdomain.com/unsub", "plainbody");
         }
 
         private static void MailQueue_MailQueueing(Communication.Mail mail)
