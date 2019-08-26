@@ -132,7 +132,8 @@ namespace Nhea.Communication
 
         private static MailAddressCollection ParseRecipients(string mailAddress)
         {
-            mailAddress = mailAddress.Trim().Trim(',').Trim(';');
+            mailAddress = Nhea.Text.StringHelper.ReplaceNonInvariantCharacters(mailAddress);
+            mailAddress = mailAddress.Replace(" ", string.Empty).Trim(',').Trim(';');
 
             MailAddressCollection mailAddressCollection = new MailAddressCollection();
 
