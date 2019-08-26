@@ -130,27 +130,20 @@ namespace Nhea.Communication
             return mailMessage;
         }
 
-        private static MailAddressCollection ParseRecipients(string mailAddress)
+        public static MailAddressCollection ParseRecipients(string address)
         {
-            mailAddress = Nhea.Text.StringHelper.ReplaceNonInvariantCharacters(mailAddress);
-            mailAddress = mailAddress.Replace(" ", string.Empty).Trim(',').Trim(';');
+            address = Nhea.Text.StringHelper.TrimText(address, true, Nhea.Text.TextCaseMode.lowercase).Trim(',').Trim(';');
+            address = Nhea.Text.StringHelper.ReplaceNonInvariantCharacters(address);
 
             MailAddressCollection mailAddressCollection = new MailAddressCollection();
 
             char[] spliters = new char[] { ',', ';' };
 
-            string[] mailArray = mailAddress.Split(spliters, StringSplitOptions.RemoveEmptyEntries);
+            string[] mailArray = address.Split(spliters, StringSplitOptions.RemoveEmptyEntries);
 
-            if (mailArray.Length > 1)
+            foreach (string str in mailArray)
             {
-                foreach (string str in mailArray)
-                {
-                    mailAddressCollection.Add(str);
-                }
-            }
-            else
-            {
-                mailAddressCollection.Add(mailAddress);
+                mailAddressCollection.Add(str);
             }
 
             return mailAddressCollection;

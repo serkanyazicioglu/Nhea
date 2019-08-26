@@ -204,20 +204,10 @@ namespace Nhea.Communication
         {
             if (address != null)
             {
-                address = Nhea.Text.StringHelper.ReplaceNonInvariantCharacters(address);
-                address = address.Replace(" ", string.Empty);
-
-                if (!String.IsNullOrEmpty(address) && address.Contains(","))
-                {
-                    address = address.Replace(',', ';');
-                }
-            }
-            else
-            {
-                address = String.Empty;
+                return MailMessageBuilder.ParseRecipients(address).ToString().Replace(",", ";");
             }
 
-            return address;
+            return String.Empty;
         }
 
         public static List<Mail> Fetch()
