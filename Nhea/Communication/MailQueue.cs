@@ -37,9 +37,9 @@ namespace Nhea.Communication
         private const string InsertAttachmentCommandText = @"INSERT INTO [nhea_MailQueueAttachment]([MailQueueId],[AttachmentName],[AttachmentData]) VALUES(@MailQueueId, @AttachmentName,@AttachmentData)";
         private const string SelectAttachmentsCommandText = "SELECT [AttachmentName],[AttachmentData] FROM [nhea_MailQueueAttachment] WHERE MailQueueId = @MailQueueId";
 
-        public static bool Add(string from, string toRecipient, string subject, string body, string listUnsubscribe = null, string plainText = null)
+        public static bool Add(string from, string toRecipient, string subject, string body)
         {
-            return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), null, listUnsubscribe: listUnsubscribe, plainText: plainText);
+            return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), null);
         }
 
         public static bool Add(string from, string toRecipient, string subject, string body, MailQueueAttachment attachment, string listUnsubscribe = null, string plainText = null)
