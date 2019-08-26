@@ -89,14 +89,11 @@ namespace Nhea.Communication
                 {
                     if (string.IsNullOrEmpty(parameters.PlainText))
                     {
-                        mailMessage.Body = parameters.PlainText;
-                    }
-                    else
-                    {
-                        mailMessage.Body = Nhea.Text.HtmlHelper.GetPlainText(parameters.Body);
+                        parameters.PlainText = Nhea.Text.HtmlHelper.GetPlainText(parameters.Body);
                     }
 
-                    mailMessage.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(parameters.Body, Encoding.UTF8, MediaTypeNames.Text.Html));
+                    mailMessage.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(parameters.PlainText, null, MediaTypeNames.Text.Plain));
+                    mailMessage.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(parameters.Body, null, MediaTypeNames.Text.Html));
                 }
                 else
                 {
