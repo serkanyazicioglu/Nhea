@@ -168,3 +168,8 @@ And then you should change the configuration. Add data to configuration list and
     <add name="DbConnectionStringName" connectionString="DB connection string" providerName="System.Data.SqlClient" />
   </connectionStrings>
 ```
+
+
+### Mailing v2
+
+As of 1.6.1 I've developed new version for mailing system. This will be supporting some more mailing functionalities by using the same table structure. What you have to do is before updating any of your projects you must update the mail sender process.
