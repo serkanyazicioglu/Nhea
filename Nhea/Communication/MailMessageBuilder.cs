@@ -101,6 +101,11 @@ namespace Nhea.Communication
                     mailMessage.IsBodyHtml = true;
                 }
 
+                if (parameters.IsBulkEmail)
+                {
+                    mailMessage.Headers.Add("Precedence", "bulk");
+                }
+
                 if (!string.IsNullOrEmpty(parameters.ListUnsubscribe))
                 {
                     string listUnsubscribeHeader = parameters.ListUnsubscribe.Replace(" ", string.Empty);
@@ -116,6 +121,11 @@ namespace Nhea.Communication
                     }
 
                     mailMessage.Headers.Add("List-Unsubscribe", listUnsubscribeHeader);
+
+                    if (parameters.UnsubscribeOneClick)
+                    {
+                        mailMessage.Headers.Add("List-Unsubscribe-Post", "List-Unsubscribe=One-Click");
+                    }
                 }
             }
             else
