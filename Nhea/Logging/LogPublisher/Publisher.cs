@@ -1,8 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Nhea.Configuration;
 using System;
-using System.Net;
-using System.Security.Principal;
 
 namespace Nhea.Logging.LogPublisher
 {
