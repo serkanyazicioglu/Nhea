@@ -4,7 +4,6 @@ using Microsoft.Extensions.Configuration;
 using Nhea.Communication;
 using System;
 using System.IO;
-using Nhea.Logging;
 
 namespace Nhea.CoreTestConsole
 {
@@ -30,7 +29,7 @@ namespace Nhea.CoreTestConsole
                 {
                     nheaConfigure.AutoInform = true;
                     nheaConfigure.ConnectionString = configuration.GetConnectionString("SqlConnectionString");
-                    nheaConfigure.PublishType = Logging.PublishTypes.Database;
+                    nheaConfigure.PublishType = Nhea.Logging.PublishTypes.Database;
                     nheaConfigure.MailFrom = "from@domain.com";
                     nheaConfigure.MailList = "to@domain.com;to2@domain.com";
                     nheaConfigure.InformSubject = "test subject";
