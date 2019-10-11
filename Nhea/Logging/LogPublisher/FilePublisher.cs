@@ -60,7 +60,7 @@ namespace Nhea.Logging.LogPublisher
 
                 return base.Publish();
             }
-            catch (Exception ex)
+            catch
             {
             }
 

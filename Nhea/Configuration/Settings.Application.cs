@@ -1,4 +1,5 @@
 ﻿using Nhea.Configuration.GenericConfigSection.ApplicationSection;
+using System;
 
 namespace Nhea.Configuration
 {
@@ -24,6 +25,19 @@ namespace Nhea.Configuration
             {
                 get
                 {
+                    string aspnetCoreEnvironmentVariable = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+                    try
+                    {
+                        if (!string.IsNullOrEmpty(aspnetCoreEnvironmentVariable))
+                        {
+                            return Nhea.Enumeration.EnumHelper.GetEnum<EnvironmentType>(aspnetCoreEnvironmentVariable);
+                        }
+                    }
+                    catch
+                    {
+                    }
+
                     return config.EnvironmentType;
                 }
             }

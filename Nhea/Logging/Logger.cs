@@ -135,7 +135,7 @@ namespace Nhea.Logging
 
         public static event LogPublishedEventHandler LogPublished;
 
-        private static bool LogCore(LogLevel logLevel, PublishTypes publishType, string source, string userName, string message, Exception exception, bool autoInform)
+        internal static bool LogCore(LogLevel logLevel, PublishTypes publishType, string source, string userName, string message, Exception exception, bool autoInform)
         {
             try
             {

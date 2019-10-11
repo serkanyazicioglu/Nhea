@@ -12,13 +12,34 @@ namespace Nhea.Utils
             {
                 default:
                 case ConnectionSource.Data:
-                    connectionStringName = Settings.Data.ConnectionName;
+                    {
+                        if (Settings.CurrentDataConfigurationSettings != null && !string.IsNullOrEmpty(Settings.CurrentDataConfigurationSettings.ConnectionString))
+                        {
+                            return Settings.CurrentDataConfigurationSettings.ConnectionString;
+                        }
+
+                        connectionStringName = Settings.Data.ConnectionName;
+                    }
                     break;
                 case ConnectionSource.Communication:
-                    connectionStringName = Settings.Communication.ConnectionName;
+                    {
+                        if (Settings.CurrentCommunicationConfigurationSettings != null && !string.IsNullOrEmpty(Settings.CurrentCommunicationConfigurationSettings.ConnectionString))
+                        {
+                            return Settings.CurrentCommunicationConfigurationSettings.ConnectionString;
+                        }
+
+                        connectionStringName = Settings.Communication.ConnectionName;
+                    }
                     break;
                 case ConnectionSource.Log:
-                    connectionStringName = Settings.Log.ConnectionName;
+                    {
+                        if (Settings.CurrentLogConfigurationSettings != null && !string.IsNullOrEmpty(Settings.CurrentLogConfigurationSettings.ConnectionString))
+                        {
+                            return Settings.CurrentLogConfigurationSettings.ConnectionString;
+                        }
+
+                        connectionStringName = Settings.Log.ConnectionName;
+                    }
                     break;
             }
 

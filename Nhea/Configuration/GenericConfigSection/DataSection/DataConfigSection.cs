@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using Nhea.Enumeration;
 
 namespace Nhea.Configuration.GenericConfigSection.DataSection
 {
