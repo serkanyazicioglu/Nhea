@@ -1,8 +1,6 @@
-using Newtonsoft.Json;
 using Nhea.Utils;
 using System;
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.Data.SqlClient;
 using System.IO;
 
@@ -84,7 +82,7 @@ namespace Nhea.Communication
 
         private void MoveToHistory(MailStatus status)
         {
-            using (SqlConnection sqlConnection = new SqlConnection(MailQueue.ConnectionString))
+            using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
             {
                 sqlConnection.Open();
 
@@ -123,7 +121,7 @@ namespace Nhea.Communication
         {
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(MailQueue.ConnectionString))
+                using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
                 using (SqlCommand setStatusCommand = new SqlCommand(String.Format(UpdateStatusCommandText, "0"), sqlConnection))
                 {
                     sqlConnection.Open();

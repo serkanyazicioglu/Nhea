@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Nhea.FrameworkTestConsole
 {
@@ -44,9 +40,7 @@ namespace Nhea.FrameworkTestConsole
 
             Nhea.Communication.MailQueue.Add(from, to, cc, bcc, subject, body);
 
-            Nhea.Communication.MailQueue.Add(from, to, cc, subject, body, "https://www.testdomain.com/unsub");
-
-            Nhea.Communication.MailQueue.Add(from, to, cc, subject, body, "https://www.testdomain.com/unsub", "plainbody");
+            Nhea.Communication.MailQueue.Add(from, to, cc, bcc, subject, body, "https://www.testdomain.com/unsub");
 
             Nhea.Communication.MailQueue.Add(from, to, cc, bcc, subject, body, "https://www.testdomain.com/unsub", "plainbody");
 

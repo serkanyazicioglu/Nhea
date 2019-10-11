@@ -4,7 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Nhea.Communication;
 using System;
 using System.IO;
-using System.Threading.Tasks;
+using Nhea.Logging;
 
 namespace Nhea.CoreTestConsole
 {
@@ -26,25 +26,34 @@ namespace Nhea.CoreTestConsole
             var services = new ServiceCollection();
             services.AddLogging(configure =>
                 configure.AddConsole()
+                .AddNheaLogger(nheaConfigure =>
+                {
+                    nheaConfigure.AutoInform = true;
+                    nheaConfigure.ConnectionString = configuration.GetConnectionString("SqlConnectionString");
+                    nheaConfigure.PublishType = Logging.PublishTypes.Database;
+                    nheaConfigure.MailFrom = "from@domain.com";
+                    nheaConfigure.MailList = "to@domain.com;to2@domain.com";
+                    nheaConfigure.InformSubject = "test subject";
+                })
             );
-            services.AddMailService();
-            services.AddOptions();
 
-            var nheaSection = configuration.GetSection("nhea");
-
-            services.Configure<Nhea.Configuration.NheaConfigurationSettings>(configuration.GetSection("nhea"));
-
-            //Optional overrides
-            services.Configure<Nhea.Configuration.NheaConfigurationSettings>(options =>
+            services.AddMailService(configure =>
             {
-                options.DefaultLogLevel = LogLevel.Critical;
-                options.PublishType = Logging.PublishTypes.Database;
+                configure.ConnectionString = configuration.GetConnectionString("SqlConnectionString");
             });
+
+            services.AddOptions();
 
             var serviceProvider = services.BuildServiceProvider();
 
             Nhea.Logging.Logger.LogPublishing += Logger_LogPublishing;
             Nhea.Logging.Logger.LogPublished += Logger_LogPublished;
+
+            Nhea.Logging.Logger.Log("Test static log mesaj");
+            Nhea.Logging.Logger.Log(new Exception("Test static exception"));
+
+            var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
+            logger.Log(LogLevel.Information, "test core logger");
 
             Nhea.Communication.MailQueue.MailQueueing += MailQueue_MailQueueing;
             Nhea.Communication.MailQueue.MailQueued += MailQueue_MailQueued;

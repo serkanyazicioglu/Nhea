@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Nhea.Communication
+﻿namespace Nhea.Communication
 {
     public class MailQueueAttachment
     {

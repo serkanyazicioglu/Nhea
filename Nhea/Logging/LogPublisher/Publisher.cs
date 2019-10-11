@@ -1,11 +1,12 @@
 ﻿using Microsoft.Extensions.Logging;
 using Nhea.Configuration;
 using System;
+using System.Net;
 using System.Security.Principal;
 
 namespace Nhea.Logging.LogPublisher
 {
-    public abstract class Publisher : IPublisher, ILogger
+    public abstract class Publisher : IPublisher
     {
         public string Message { get; set; }
 
@@ -29,6 +30,10 @@ namespace Nhea.Logging.LogPublisher
                     else if (WindowsIdentity.GetCurrent() != null)
                     {
                         return WindowsIdentity.GetCurrent().Name;
+                    }
+                    else
+                    {
+                        return Dns.GetHostName();
                     }
                 }
                 catch
@@ -96,6 +101,11 @@ namespace Nhea.Logging.LogPublisher
         {
             if (this.AutoInform)
             {
+                if (Settings.CurrentCommunicationConfigurationSettings == null)
+                {
+                    Settings.CurrentCommunicationConfigurationSettings = new NheaCommunicationConfigurationSettings { ConnectionString = Settings.CurrentLogConfigurationSettings.ConnectionString };
+                }
+
                 Publisher publisher = PublisherFactory.CreatePublisher(PublishTypes.Email);
                 publisher.Message = this.Message;
                 publisher.Level = this.Level;
@@ -106,27 +116,6 @@ namespace Nhea.Logging.LogPublisher
             }
 
             return true;
-        }
-
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
-        {
-            string msg = $"{logLevel} :: {formatter(state, exception)} :: UserName :: {this.UserName} :: {DateTime.Now}";
-
-            this.Level = logLevel;
-            this.Exception = exception;
-            this.Message = "";
-            this.AutoInform = Settings.Log.AutoInform;
-            this.Publish();
-        }
-
-        public bool IsEnabled(LogLevel logLevel)
-        {
-            return true;
-        }
-
-        public IDisposable BeginScope<TState>(TState state)
-        {
-            return null;
         }
     }
 }

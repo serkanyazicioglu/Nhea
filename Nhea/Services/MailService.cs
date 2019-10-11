@@ -8,19 +8,9 @@ namespace Microsoft.Extensions.DependencyInjection
 {
     public class MailService : IMailService
     {
-        private readonly NheaConfigurationSettings _nheaConfigurationSettings;
-        public MailService(IOptions<NheaConfigurationSettings> nheaConfigurationSettings)
+        public MailService(IOptions<NheaCommunicationConfigurationSettings> nheaConfigurationSettings)
         {
-            _nheaConfigurationSettings = nheaConfigurationSettings.Value;
-
-            if (!String.IsNullOrEmpty(_nheaConfigurationSettings.CommunicationConnectionString))
-            {
-                MailQueue.ConnectionString = _nheaConfigurationSettings.CommunicationConnectionString;
-            }
-            else if (!String.IsNullOrEmpty(_nheaConfigurationSettings.DataConnectionString))
-            {
-                MailQueue.ConnectionString = _nheaConfigurationSettings.DataConnectionString;
-            }
+            Settings.CurrentCommunicationConfigurationSettings = nheaConfigurationSettings.Value;
         }
 
         public bool Add(string from, string toRecipient, string subject, string body)

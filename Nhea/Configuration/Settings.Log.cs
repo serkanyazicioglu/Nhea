@@ -10,6 +10,8 @@ namespace Nhea.Configuration
     /// </summary>
     public static partial class Settings
     {
+        internal static NheaLogConfigurationSettings CurrentLogConfigurationSettings { get; set; }
+
         /// <summary>
         /// Nhea Log Configuration Section Helper Class
         /// </summary>
@@ -21,6 +23,11 @@ namespace Nhea.Configuration
             {
                 get
                 {
+                    if (CurrentLogConfigurationSettings != null && !string.IsNullOrEmpty(CurrentLogConfigurationSettings.ConnectionString))
+                    {
+                        return CurrentLogConfigurationSettings.ConnectionString;
+                    }
+
                     if (!String.IsNullOrEmpty(config.ConnectionName))
                     {
                         return config.ConnectionName;
@@ -39,6 +46,11 @@ namespace Nhea.Configuration
             {
                 get
                 {
+                    if (CurrentLogConfigurationSettings != null)
+                    {
+                        return CurrentLogConfigurationSettings.PublishType;
+                    }
+
                     return config.PublishType;
                 }
             }
@@ -50,6 +62,11 @@ namespace Nhea.Configuration
             {
                 get
                 {
+                    if (CurrentLogConfigurationSettings != null)
+                    {
+                        return CurrentLogConfigurationSettings.DefaultLogLevel;
+                    }
+
                     return config.DefaultLogLevel;
                 }
             }
@@ -61,6 +78,11 @@ namespace Nhea.Configuration
             {
                 get
                 {
+                    if (CurrentLogConfigurationSettings != null && !string.IsNullOrEmpty(CurrentLogConfigurationSettings.DirectoryPath))
+                    {
+                        return CurrentLogConfigurationSettings.DirectoryPath;
+                    }
+
                     return config.DirectoryPath;
                 }
             }
@@ -72,6 +94,11 @@ namespace Nhea.Configuration
             {
                 get
                 {
+                    if (CurrentLogConfigurationSettings != null && !string.IsNullOrEmpty(CurrentLogConfigurationSettings.FileName))
+                    {
+                        return CurrentLogConfigurationSettings.FileName;
+                    }
+
                     return config.FileName;
                 }
             }
@@ -80,6 +107,11 @@ namespace Nhea.Configuration
             {
                 get
                 {
+                    if (CurrentLogConfigurationSettings != null && !string.IsNullOrEmpty(CurrentLogConfigurationSettings.MailFrom))
+                    {
+                        return CurrentLogConfigurationSettings.MailFrom;
+                    }
+
                     return config.MailFrom;
                 }
             }
@@ -91,6 +123,11 @@ namespace Nhea.Configuration
             {
                 get
                 {
+                    if (CurrentLogConfigurationSettings != null && !string.IsNullOrEmpty(CurrentLogConfigurationSettings.MailList))
+                    {
+                        return CurrentLogConfigurationSettings.MailList;
+                    }
+
                     return config.MailList;
                 }
             }
@@ -99,6 +136,11 @@ namespace Nhea.Configuration
             {
                 get
                 {
+                    if (CurrentLogConfigurationSettings != null)
+                    {
+                        return CurrentLogConfigurationSettings.AutoInform;
+                    }
+
                     return config.AutoInform;
                 }
             }
@@ -107,6 +149,11 @@ namespace Nhea.Configuration
             {
                 get
                 {
+                    if (CurrentLogConfigurationSettings != null && !string.IsNullOrEmpty(CurrentLogConfigurationSettings.InformSubject))
+                    {
+                        return CurrentLogConfigurationSettings.InformSubject;
+                    }
+
                     return config.InformSubject;
                 }
             }
