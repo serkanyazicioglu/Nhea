@@ -7,13 +7,10 @@
     <Company>Serkan Yazıcıoğlu</Company>
     <Authors>Serkan Yazıcıoğlu</Authors>
     <PackageProjectUrl>https://github.com/serkanyazicioglu/Nhea</PackageProjectUrl>
-    <Version>1.7</Version>
-    <AssemblyVersion>1.7.0.0</AssemblyVersion>
-    <FileVersion>1.7.0.0</FileVersion>
-    <PackageReleaseNotes>- Added Mailing v2
-- JsonHelper readded
-- MailQueue.Add overload fix
-- Mail sending replacing invalid chars and parsing changes</PackageReleaseNotes>
+    <Version>1.7.1</Version>
+    <AssemblyVersion>1.7.1.0</AssemblyVersion>
+    <FileVersion>1.7.1.0</FileVersion>
+    <PackageReleaseNotes>- Added Logging with DI capabilites. app.config no longer needed for logging and communication.</PackageReleaseNotes>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <RepositoryUrl>https://github.com/serkanyazicioglu/Nhea</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
