@@ -89,19 +89,21 @@ namespace Nhea.Communication
                 {
                     if (string.IsNullOrEmpty(parameters.PlainText))
                     {
-                        mailMessage.Body = parameters.PlainText;
-                    }
-                    else
-                    {
-                        mailMessage.Body = Nhea.Text.HtmlHelper.GetPlainText(parameters.Body);
+                        parameters.PlainText = Nhea.Text.HtmlHelper.GetPlainText(parameters.Body);
                     }
 
-                    mailMessage.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(parameters.Body, Encoding.UTF8, MediaTypeNames.Text.Html));
+                    mailMessage.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(parameters.PlainText, null, MediaTypeNames.Text.Plain));
+                    mailMessage.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(parameters.Body, null, MediaTypeNames.Text.Html));
                 }
                 else
                 {
                     mailMessage.Body = parameters.Body;
                     mailMessage.IsBodyHtml = true;
+                }
+
+                if (parameters.IsBulkEmail)
+                {
+                    mailMessage.Headers.Add("Precedence", "bulk");
                 }
 
                 if (!string.IsNullOrEmpty(parameters.ListUnsubscribe))
@@ -119,6 +121,11 @@ namespace Nhea.Communication
                     }
 
                     mailMessage.Headers.Add("List-Unsubscribe", listUnsubscribeHeader);
+
+                    if (parameters.UnsubscribeOneClick)
+                    {
+                        mailMessage.Headers.Add("List-Unsubscribe-Post", "List-Unsubscribe=One-Click");
+                    }
                 }
             }
             else

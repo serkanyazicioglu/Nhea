@@ -39,9 +39,9 @@ namespace Nhea.Communication
             return Add(from, toRecipient, ccRecipients, String.Empty, subject, body, GetDateByPriority(Priority.Medium), null);
         }
 
-        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, string listUnsubscribe = null, string plainText = null)
+        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, string listUnsubscribe = null, string plainText = null, bool isBulkEmail = false, bool unsubscribeOneClick = false)
         {
-            return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, GetDateByPriority(Priority.Medium), null, listUnsubscribe: listUnsubscribe, plainText: plainText);
+            return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, GetDateByPriority(Priority.Medium), null, listUnsubscribe: listUnsubscribe, plainText: plainText, isBulkEmail: isBulkEmail, unsubscribeOneClick: unsubscribeOneClick);
         }
 
         public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, List<MailQueueAttachment> attachments, string listUnsubscribe = null, string plainText = null)
@@ -54,7 +54,12 @@ namespace Nhea.Communication
             return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, GetDateByPriority(priority), null, listUnsubscribe: listUnsubscribe, plainText: plainText);
         }
 
-        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, DateTime priorityDate, List<MailQueueAttachment> attachments, string listUnsubscribe = null, string plainText = null)
+        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, DateTime priorityDate, List<MailQueueAttachment> attachments, 
+            string listUnsubscribe = null, 
+            string plainText = null,
+            bool isBulkEmail = false,
+            bool unsubscribeOneClick = false
+            )
         {
             var mail = new Mail
             {
@@ -67,7 +72,9 @@ namespace Nhea.Communication
                 Priority = priorityDate,
                 Attachments = attachments,
                 ListUnsubscribe = listUnsubscribe,
-                PlainText = plainText
+                PlainText = plainText,
+                IsBulkEmail = isBulkEmail,
+                UnsubscribeOneClick = unsubscribeOneClick
             };
 
             return Add(mail);
@@ -133,7 +140,9 @@ namespace Nhea.Communication
                         Version = "2",
                         Body = mail.Body,
                         ListUnsubscribe = mail.ListUnsubscribe,
-                        PlainText = mail.PlainText
+                        PlainText = mail.PlainText,
+                        IsBulkEmail = mail.IsBulkEmail,
+                        UnsubscribeOneClick = mail.UnsubscribeOneClick
                     };
 
                     body += JsonConvert.SerializeObject(mailParameters);
