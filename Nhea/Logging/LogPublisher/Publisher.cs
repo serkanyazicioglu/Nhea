@@ -23,24 +23,22 @@ namespace Nhea.Logging.LogPublisher
             {
                 try
                 {
-                    if (!String.IsNullOrEmpty(userName))
+                    if (string.IsNullOrEmpty(userName))
                     {
-                        return userName;
+                        userName = System.Environment.UserName + "/" + System.Environment.UserDomainName;
+
+                        if (System.Environment.UserDomainName != System.Environment.MachineName)
+                        {
+                            userName += "/" + System.Environment.MachineName;
+                        }
                     }
-                    else if (WindowsIdentity.GetCurrent() != null)
-                    {
-                        return WindowsIdentity.GetCurrent().Name;
-                    }
-                    else
-                    {
-                        return Dns.GetHostName();
-                    }
+
+                    return userName;
                 }
                 catch
                 {
+                    return null;
                 }
-
-                return null;
             }
             set
             {
