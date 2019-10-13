@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Nhea.Communication;
 using System;
 using System.IO;
+using Nhea.Localization;
 
 namespace Nhea.CoreTestConsole
 {
@@ -36,6 +37,12 @@ namespace Nhea.CoreTestConsole
                 })
             );
 
+            services.AddNheaLocalizationService(configure =>
+            {
+                configure.ConnectionString = configuration.GetConnectionString("SqlConnectionString");
+                configure.DefaultLanguageId = 1;
+            });
+
             services.AddMailService(configure =>
             {
                 configure.ConnectionString = configuration.GetConnectionString("SqlConnectionString");
@@ -65,6 +72,15 @@ namespace Nhea.CoreTestConsole
                 Name = "sample-image.jpg",
                 Data = attachmentData
             });
+
+            var localizationService = serviceProvider.GetService<ILocalizationService>();
+
+            localizationService.SaveLocalization("new translation", "NewTranslation");
+
+            var translation = localizationService.GetLocalization("NewTranslation");
+            Console.WriteLine("Tanslation: " + translation);
+
+            localizationService.DeleteLocalization("NewTranslation");
 
             Console.WriteLine("Job done!");
             Console.ReadLine();

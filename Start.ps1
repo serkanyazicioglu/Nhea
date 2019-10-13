@@ -23,7 +23,12 @@ Get-Content ".\SQL\nhea_MailQueue.sql"| foreach {
  $mailQueueScript = $mailQueueScript + $_
 }
 
-$Script = $logsScript + $mailQueueScript
+$localizationScript = ""
+Get-Content ".\SQL\Localization.sql"| foreach {
+ $localizationScript = $localizationScript + $_
+}
+
+$Script = $logsScript + $mailQueueScript + $localizationScript
 
 $batches = $Script -split "GO"
 
