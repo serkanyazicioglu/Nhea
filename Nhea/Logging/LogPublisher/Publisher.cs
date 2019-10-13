@@ -29,6 +29,13 @@ namespace Nhea.Logging.LogPublisher
                         {
                             userName += "/" + System.Environment.MachineName;
                         }
+
+                        string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+                        if (!string.IsNullOrEmpty(environment))
+                        {
+                            userName += " (" + environment + ")";
+                        }
                     }
 
                     return userName;
@@ -51,7 +58,7 @@ namespace Nhea.Logging.LogPublisher
             {
                 if (String.IsNullOrEmpty(source))
                 {
-                    source = String.Empty;
+                    source = string.Empty;
 
                     try
                     {
@@ -83,6 +90,8 @@ namespace Nhea.Logging.LogPublisher
                     catch
                     {
                     }
+
+                    source = source.Trim().Trim(',');
                 }
 
                 return source;

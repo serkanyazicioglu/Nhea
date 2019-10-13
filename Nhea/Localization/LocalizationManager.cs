@@ -6,6 +6,8 @@ namespace Nhea.Localization
 {
     public static class LocalizationManager
     {
+        #region Queries
+
         private const string SelectTranslationQuery = "SELECT [Translation] FROM [Localization] WHERE [Key] = @Key AND TargetEntityId IS NULL AND LanguageId = @LanguageId";
 
         private const string SelectTranslationWithTargetEntityIdQuery = "SELECT [Translation] FROM [Localization] WHERE [Key] = @Key AND TargetEntityId = @TargetEntityId AND LanguageId = @LanguageId";
@@ -45,6 +47,8 @@ BEGIN
 INSERT INTO [Localization]([Key],[Translation],[TargetEntityId],[LanguageId],[TargetEntityName])
 VALUES (@Key,@Translation,NULL,@LanguageId,NULL)
 END";
+
+        #endregion
 
         public static string GetLocalization(string key, int languageId)
         {
