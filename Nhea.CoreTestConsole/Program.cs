@@ -55,11 +55,10 @@ namespace Nhea.CoreTestConsole
             Nhea.Logging.Logger.LogPublishing += Logger_LogPublishing;
             Nhea.Logging.Logger.LogPublished += Logger_LogPublished;
 
-            Nhea.Logging.Logger.Log("Test static log mesaj");
-            Nhea.Logging.Logger.Log(new Exception("Test static exception"));
-
             var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
             logger.Log(LogLevel.Information, "test core logger");
+
+            logger.LogError(new Exception("Test exception"), "Test exception description");
 
             Nhea.Communication.MailQueue.MailQueueing += MailQueue_MailQueueing;
             Nhea.Communication.MailQueue.MailQueued += MailQueue_MailQueued;

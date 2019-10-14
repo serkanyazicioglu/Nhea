@@ -15,6 +15,11 @@ namespace Nhea.FrameworkTestConsole
 
             Nhea.Logging.Logger.Log("Hello World!");
 
+            var testException = new Exception("Test exception");
+            testException.Data.Add("Now", DateTime.Now.ToString());
+
+            Nhea.Logging.Logger.Log(testException);
+
             var attachmentData = File.ReadAllBytes(Path.Combine(Environment.CurrentDirectory, "Assets/sample-image.jpg"));
 
             string from = "from@domain.com";

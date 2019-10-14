@@ -23,18 +23,11 @@ namespace Nhea.Logging.LogPublisher
                 {
                     if (string.IsNullOrEmpty(userName))
                     {
-                        userName = System.Environment.UserName + "/" + System.Environment.UserDomainName;
+                        userName = System.Environment.UserDomainName + "\\" + System.Environment.UserName;
 
                         if (System.Environment.UserDomainName != System.Environment.MachineName)
                         {
-                            userName += "/" + System.Environment.MachineName;
-                        }
-
-                        string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
-                        if (!string.IsNullOrEmpty(environment))
-                        {
-                            userName += " (" + environment + ")";
+                            userName += "\\" + System.Environment.MachineName;
                         }
                     }
 
