@@ -4,6 +4,7 @@ using System.Text;
 using System.Collections;
 using System.Diagnostics;
 using System.Reflection;
+using System.Runtime.Versioning;
 
 namespace Nhea.Logging
 {
@@ -26,14 +27,66 @@ namespace Nhea.Logging
             {
                 exceptionData = String.Empty;
                 fileName = String.Empty;
+                bool isInnerException = false;
 
                 string exceptionMessage = String.Empty;
                 StringBuilder exceptionStackTrace = new StringBuilder();
 
                 while (exception != null)
                 {
-                    exceptionStackTrace.Insert(0, Environment.NewLine);
-                    exceptionStackTrace.Insert(0, Environment.NewLine);
+                    if (!isInnerException)
+                    {
+                        if (!exception.Data.Contains("Environment"))
+                        {
+                            exceptionData = String.Concat(exceptionData, "Environment : " + Nhea.Configuration.Settings.Application.EnvironmentType.ToString() + Environment.NewLine);
+                        }
+
+                        if (!exception.Data.Contains("OSVersion"))
+                        {
+                            exceptionData = String.Concat(exceptionData, "OSVersion : " + System.Environment.OSVersion + Environment.NewLine);
+                        }
+
+                        if (!exception.Data.Contains("Framework"))
+                        {
+                            //var version = System.Environment.Version;
+                            //var appContextFrameworkName = System.AppContext.TargetFrameworkName;
+                            string frameworkName = null;
+
+                            try
+                            {
+                                frameworkName = Assembly.GetEntryAssembly()?.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName;
+                            }
+                            catch
+                            { }
+
+                            if (string.IsNullOrEmpty(frameworkName))
+                            {
+                                frameworkName = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
+                            }
+
+                            exceptionData = String.Concat(exceptionData, "Framework : " + frameworkName + Environment.NewLine);
+                        }
+
+                        if (!exception.Data.Contains("OSArchitecture"))
+                        {
+                            exceptionData = String.Concat(exceptionData, "OSArchitecture : " + System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString() + Environment.NewLine);
+                        }
+
+                        if (!exception.Data.Contains("ProcessArchitecture"))
+                        {
+                            exceptionData = String.Concat(exceptionData, "ProcessArchitecture : " + System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString() + Environment.NewLine);
+                        }
+
+                        //if (!exception.Data.Contains("Is64BitOperatingSystem"))
+                        //{
+                        //    exceptionData = String.Concat(exceptionData, "Is64BitOperatingSystem : " + System.Environment.Is64BitOperatingSystem.ToString() + Environment.NewLine);
+                        //}
+
+                        //if (!exception.Data.Contains("Is64BitProcess"))
+                        //{
+                        //    exceptionData = String.Concat(exceptionData, "Is64BitProcess : " + System.Environment.Is64BitProcess.ToString() + Environment.NewLine);
+                        //}
+                    }
 
                     if (exception.Data.Count > 0)
                     {
@@ -45,6 +98,9 @@ namespace Nhea.Logging
                             }
                         }
                     }
+
+                    exceptionStackTrace.Insert(0, Environment.NewLine);
+                    exceptionStackTrace.Insert(0, Environment.NewLine);
 
                     exceptionStackTrace.Insert(0, exception.StackTrace);
                     exceptionStackTrace.Insert(0, Environment.NewLine);
@@ -95,6 +151,7 @@ namespace Nhea.Logging
                     exceptionStackTrace.Insert(0, exception.Message);
 
                     exception = exception.InnerException;
+                    isInnerException = true;
                 }
 
                 exceptionDetail = exceptionMessage + Environment.NewLine + Environment.NewLine + exceptionStackTrace;
