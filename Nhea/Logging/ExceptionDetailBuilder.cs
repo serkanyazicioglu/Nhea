@@ -38,7 +38,16 @@ namespace Nhea.Logging
                     {
                         if (!exception.Data.Contains("Environment"))
                         {
-                            exceptionData = String.Concat(exceptionData, "Environment : " + Nhea.Configuration.Settings.Application.EnvironmentType.ToString() + Environment.NewLine);
+                            string aspnetCoreEnvironmentVariable = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+
+                            if (!string.IsNullOrEmpty(aspnetCoreEnvironmentVariable))
+                            {
+                                exceptionData = String.Concat(exceptionData, "Environment : " + aspnetCoreEnvironmentVariable + Environment.NewLine);
+                            }
+                            else
+                            {
+                                exceptionData = String.Concat(exceptionData, "Environment : " + Nhea.Configuration.Settings.Application.EnvironmentType.ToString() + Environment.NewLine);
+                            }
                         }
 
                         if (!exception.Data.Contains("OSVersion"))
@@ -46,7 +55,7 @@ namespace Nhea.Logging
                             exceptionData = String.Concat(exceptionData, "OSVersion : " + System.Environment.OSVersion + Environment.NewLine);
                         }
 
-                        if (!exception.Data.Contains("Framework"))
+                        if (!exception.Data.Contains("TargetFramework"))
                         {
                             //var version = System.Environment.Version;
                             //var appContextFrameworkName = System.AppContext.TargetFrameworkName;
