@@ -99,7 +99,7 @@ namespace Nhea.Logging.LogPublisher
         {
             if (this.AutoInform)
             {
-                if (Settings.CurrentCommunicationConfigurationSettings == null)
+                if (Settings.CurrentCommunicationConfigurationSettings == null && Settings.CurrentLogConfigurationSettings != null)
                 {
                     Settings.CurrentCommunicationConfigurationSettings = new NheaCommunicationConfigurationSettings { ConnectionString = Settings.CurrentLogConfigurationSettings.ConnectionString };
                 }
