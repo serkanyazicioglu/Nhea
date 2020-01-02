@@ -1,0 +1,8 @@
+version: '3.4'
+
+services:
+  nhea.corecommunicationservice:
+    image: nhea/mailservice
+    build:
+      context: .
+      dockerfile: Nhea.CoreCommunicationService/Dockerfile
