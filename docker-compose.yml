@@ -1,7 +1,7 @@
 version: '3.4'
 
 services:
-  nhea.corecommunicationservice:
+  nhea.mailservice:
     image: nhea/mailservice
     build:
       context: .

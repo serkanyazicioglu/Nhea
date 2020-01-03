@@ -9,6 +9,7 @@ using Nhea.CoreCommunicationService.Services;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Xml.Serialization;
 
 namespace Nhea.CoreCommunicationService
@@ -52,11 +53,18 @@ namespace Nhea.CoreCommunicationService
                 }
             }
 
+            if (Environment.GetEnvironmentVariable("MAILQUEUE_IGNORE_SSL_VALIDATION") == "true")
+            {
+                ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+            }
+
             services.AddMailService(configure =>
             {
                 configure.ConnectionString = sqlConnectionString;
                 configure.SmtpSettings = smtpSettings;
             });
+
+            services.AddOptions();
 
             services.AddHostedService<MailQueueBackgroundService>();
         }
