@@ -96,7 +96,7 @@ CREATE TABLE [dbo].[nhea_MailQueueHistory](
 )WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
 ) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
 GO
-ALTER TABLE [dbo].[nhea_MailQueue] ADD  CONSTRAINT [DF_nhea_MailQueue_Id]  DEFAULT (newid()) FOR [Id]
+ALTER TABLE [dbo].[nhea_MailQueue] ADD  CONSTRAINT [DF_nhea_MailQueue_Id]  DEFAULT (newsequentialid()) FOR [Id]
 GO
 ALTER TABLE [dbo].[nhea_MailQueue] ADD  CONSTRAINT [DF_MailQueue_Priority]  DEFAULT (getdate()) FOR [Priority]
 GO
