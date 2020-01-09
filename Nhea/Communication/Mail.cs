@@ -62,8 +62,17 @@ namespace Nhea.Communication
                         }
                     }
 
-                    SmtpHelper.SendMail(From, ToRecipient, CcRecipients, BccRecipients, Subject, Body, false, attachments);
-                    MoveToHistory(MailStatus.Sent);
+                    var smtpElement = SmtpHelper.SendMail(From, ToRecipient, CcRecipients, BccRecipients, Subject, Body, false, attachments);
+
+                    if (!smtpElement.DisableLogging)
+                    {
+                        MoveToHistory(MailStatus.Sent);
+                    }
+                    else
+                    {
+                        DeleteFromQueue();
+                    }
+
                     return;
                 }
                 catch (Exception ex)
@@ -110,6 +119,23 @@ namespace Nhea.Communication
                         cmd.Parameters.Add(new SqlParameter("@MailProviderId", DBNull.Value));
                     }
 
+                    cmd.ExecuteNonQuery();
+                }
+
+                sqlConnection.Close();
+            }
+        }
+
+        private void DeleteFromQueue()
+        {
+            using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
+            {
+                sqlConnection.Open();
+
+                using (SqlCommand cmd = new SqlCommand(DeleteCommandText, sqlConnection))
+                {
+                    cmd.Parameters.Clear();
+                    cmd.Parameters.Add(new SqlParameter("@MailQueueId", Id));
                     cmd.ExecuteNonQuery();
                 }
 

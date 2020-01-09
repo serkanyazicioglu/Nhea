@@ -16,22 +16,22 @@ namespace Nhea.Communication
             //only has static methods
         }
 
-        public static void SendMail(string from, string toRecipients, string subject, string body)
+        public static SmtpElement SendMail(string from, string toRecipients, string subject, string body)
         {
-            SendMail(from, toRecipients, String.Empty, String.Empty, subject, body, false, null);
+            return SendMail(from, toRecipients, String.Empty, String.Empty, subject, body, false, null);
         }
 
-        public static void SendMail(string from, string toRecipients, string ccRecipients, string subject, string body)
+        public static SmtpElement SendMail(string from, string toRecipients, string ccRecipients, string subject, string body)
         {
-            SendMail(from, toRecipients, ccRecipients, String.Empty, subject, body, false, null);
+            return SendMail(from, toRecipients, ccRecipients, String.Empty, subject, body, false, null);
         }
 
-        public static void SendMail(string from, string toRecipients, string ccRecipients, string bccRecipients, string subject, string body)
+        public static SmtpElement SendMail(string from, string toRecipients, string ccRecipients, string bccRecipients, string subject, string body)
         {
-            SendMail(from, toRecipients, ccRecipients, bccRecipients, subject, body, false, null);
+            return SendMail(from, toRecipients, ccRecipients, bccRecipients, subject, body, false, null);
         }
 
-        public static void SendMail(string from, string toRecipients, string ccRecipients, string bccRecipients, string subject, string body, bool isHighPriority, List<Attachment> attachments)
+        public static SmtpElement SendMail(string from, string toRecipients, string ccRecipients, string bccRecipients, string subject, string body, bool isHighPriority, List<Attachment> attachments)
         {
             SmtpElement smtpElement;
 
@@ -52,10 +52,19 @@ namespace Nhea.Communication
 
                 SmtpClient smtpClient = SmtpClientBuilder.Build(smtpElement);
                 smtpClient.Send(mailMessage);
+
+                return smtpElement;
             }
             else
             {
-                throw new Exception("Related smtp setting could not found!");
+                if (!String.IsNullOrEmpty(from))
+                {
+                    throw new Exception("Related smtp setting could not found! From: " + from);
+                }
+                else
+                {
+                    throw new Exception("Default smtp setting could not found!");
+                }
             }
         }
     }

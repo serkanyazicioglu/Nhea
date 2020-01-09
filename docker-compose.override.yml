@@ -6,7 +6,7 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_URLS=https://+:443;http://+:80
       - 'MAILQUEUE_CONNECTION=data source=localhost;initial catalog=Nhea;persist security info=True;user id=sa;password=12Aa2sr13cx;MultipleActiveResultSets=True;'
-      - 'MAILQUEUE_SMTPSETTINGS=[{"From": "from@from.com", "Host": "smtp.gmail.com", "UserName": "from@from.com", "Password": "password", "Port": 587, "EnableSsl": true, "IsDefault": true, "DefaultToRecipients":"defaultto@defaultto.com", "DefaultSubject":"Default Subject", "Sender":"Sender Name", "AutoGeneratePlainText":true } } ]'
+      - 'MAILQUEUE_SMTPSETTINGS=[{"From": "from@from.com", "Host": "smtp.gmail.com", "UserName": "from@from.com", "Password": "password", "Port": 587, "EnableSsl": true, "IsDefault": true, "DefaultToRecipients":"defaultto@defaultto.com", "DefaultSubject":"Default Subject", "Sender":"Sender Name", "AutoGeneratePlainText":true, "DisableLogging":false } } ]'
       - MAILQUEUE_IGNORE_SSL_VALIDATION=true
     ports:
       - "80"
