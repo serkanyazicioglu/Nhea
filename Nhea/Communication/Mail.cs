@@ -64,7 +64,7 @@ namespace Nhea.Communication
 
                     var smtpElement = SmtpHelper.SendMail(From, ToRecipient, CcRecipients, BccRecipients, Subject, Body, false, attachments);
 
-                    if (!smtpElement.DisableLogging)
+                    if (!smtpElement.DisableHistoryLogging)
                     {
                         MoveToHistory(MailStatus.Sent);
                     }
