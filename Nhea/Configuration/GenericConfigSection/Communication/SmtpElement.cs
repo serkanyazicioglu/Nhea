@@ -280,5 +280,33 @@ namespace Nhea.Configuration.GenericConfigSection.Communication
                 autoGeneratePlainText = value;
             }
         }
+
+        private bool? disableLogging = null;
+
+        [ConfigurationProperty("disableLogging", IsRequired = false)]
+        public bool DisableLogging
+        {
+            get
+            {
+                if (disableLogging.HasValue)
+                {
+                    return disableLogging.Value;
+                }
+
+                if (!String.IsNullOrEmpty(this["disableLogging"].ToString()))
+                {
+                    return Convert.ToBoolean(this["disableLogging"]);
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            set
+            {
+                disableLogging = value;
+            }
+        }
+
     }
 }

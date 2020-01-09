@@ -122,3 +122,13 @@ REFERENCES [dbo].[nhea_MailProvider] ([Id])
 GO
 ALTER TABLE [dbo].[nhea_MailQueueHistory] CHECK CONSTRAINT [FK_MailQueueHistory_MailProvider]
 GO
+CREATE NONCLUSTERED INDEX IX_nhea_MailQueueHistory_From ON dbo.nhea_MailQueueHistory
+	(
+	[From]
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO
+CREATE NONCLUSTERED INDEX IX_nhea_MailQueueHistory_CreateDate ON dbo.nhea_MailQueueHistory
+	(
+	CreateDate
+	) WITH( STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON) ON [PRIMARY]
+GO

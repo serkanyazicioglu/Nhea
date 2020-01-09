@@ -14,7 +14,7 @@ namespace Nhea.Communication
         private const string NullableSelectCommandText = @"SET ROWCOUNT @PackageSize; SELECT TOP 100 Id, [From], [To], Cc, Bcc, Subject, Body, Priority, CreateDate, HasAttachment FROM nhea_MailQueue WHERE IsReadyToSend = 1 AND MailProviderId IS NULL";
 
         private const string DeleteCommandText = @"DELETE FROM nhea_MailQueue WHERE Id = @MailQueueId";
-        private const string InsertCommandText = @"INSERT INTO nhea_MailQueue(Id, MailProviderId, [From], [To], Cc, Bcc, Subject, Body, Priority, IsReadyToSend, HasAttachment) VALUES(@Id, @MailProviderId, @From, @To, @Cc, @Bcc, @Subject, @Body, @PriorityDate, @IsReadyToSend, @HasAttachment);";
+        private const string InsertCommandText = @"INSERT INTO nhea_MailQueue(MailProviderId, [From], [To], Cc, Bcc, Subject, Body, Priority, IsReadyToSend, HasAttachment) output INSERTED.Id VALUES(@MailProviderId, @From, @To, @Cc, @Bcc, @Subject, @Body, @PriorityDate, @IsReadyToSend, @HasAttachment);";
 
         private const string InsertAttachmentCommandText = @"INSERT INTO [nhea_MailQueueAttachment]([MailQueueId],[AttachmentName],[AttachmentData]) VALUES(@MailQueueId, @AttachmentName,@AttachmentData)";
         private const string SelectAttachmentsCommandText = "SELECT [AttachmentName],[AttachmentData] FROM [nhea_MailQueueAttachment] WHERE MailQueueId = @MailQueueId";
@@ -54,8 +54,8 @@ namespace Nhea.Communication
             return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, GetDateByPriority(priority), null, listUnsubscribe: listUnsubscribe, plainText: plainText);
         }
 
-        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, DateTime priorityDate, List<MailQueueAttachment> attachments, 
-            string listUnsubscribe = null, 
+        public static bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, DateTime priorityDate, List<MailQueueAttachment> attachments,
+            string listUnsubscribe = null,
             string plainText = null,
             bool isBulkEmail = false,
             bool unsubscribeOneClick = false
@@ -99,8 +99,6 @@ namespace Nhea.Communication
                 using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
                 using (SqlCommand cmd = new SqlCommand(InsertCommandText, sqlConnection))
                 {
-                    Guid id = Guid.NewGuid();
-
                     cmd.Connection.Open();
 
                     bool hasAttachment = false;
@@ -109,14 +107,7 @@ namespace Nhea.Communication
                     {
                         hasAttachment = true;
 
-                        foreach (var mailQueueAttachment in mail.Attachments)
-                        {
-                            SqlCommand attachmentCommand = new SqlCommand(InsertAttachmentCommandText, cmd.Connection);
-                            attachmentCommand.Parameters.Add(new SqlParameter("@MailQueueId", id));
-                            attachmentCommand.Parameters.Add(new SqlParameter("@AttachmentName", mailQueueAttachment.Name));
-                            attachmentCommand.Parameters.Add(new SqlParameter("@AttachmentData", mailQueueAttachment.Data));
-                            attachmentCommand.ExecuteNonQuery();
-                        }
+
                     }
 
                     mail.From = PrepareMailAddress(mail.From);
@@ -147,7 +138,6 @@ namespace Nhea.Communication
 
                     body += JsonConvert.SerializeObject(mailParameters);
 
-                    cmd.Parameters.Add(new SqlParameter("@Id", id));
                     cmd.Parameters.Add(new SqlParameter("@From", mail.From));
                     cmd.Parameters.Add(new SqlParameter("@To", mail.ToRecipient));
                     cmd.Parameters.Add(new SqlParameter("@Cc", mail.CcRecipients));
@@ -168,7 +158,22 @@ namespace Nhea.Communication
                         }
                     }
 
-                    cmd.ExecuteNonQuery();
+                    Guid id =  (Guid)cmd.ExecuteScalar();
+
+                    if (hasAttachment)
+                    {
+                        foreach (var mailQueueAttachment in mail.Attachments)
+                        {
+                            using (SqlCommand attachmentCommand = new SqlCommand(InsertAttachmentCommandText, cmd.Connection))
+                            {
+                                attachmentCommand.Parameters.Add(new SqlParameter("@MailQueueId", id));
+                                attachmentCommand.Parameters.Add(new SqlParameter("@AttachmentName", mailQueueAttachment.Name));
+                                attachmentCommand.Parameters.Add(new SqlParameter("@AttachmentData", mailQueueAttachment.Data));
+                                attachmentCommand.ExecuteNonQuery();
+                            }
+                        }
+                    }
+
                     cmd.Connection.Close();
 
                     result = true;

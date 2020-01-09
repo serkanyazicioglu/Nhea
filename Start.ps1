@@ -9,7 +9,7 @@ $containerName = "sqltest"
 docker pull mcr.microsoft.com/mssql/server
 docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=$password" -p 1433:1433 --name $containerName -d mcr.microsoft.com/mssql/server:latest
 
-Start-Sleep -s 3
+Start-Sleep -s 10
 
 docker exec -it $containerName /opt/mssql-tools/bin/sqlcmd -S $server -U $user -P $password -Q "CREATE DATABASE $database;"
 
