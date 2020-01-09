@@ -281,16 +281,16 @@ namespace Nhea.Configuration.GenericConfigSection.Communication
             }
         }
 
-        private bool? disableLogging = null;
+        private bool? disableHistoryLogging = null;
 
-        [ConfigurationProperty("disableLogging", IsRequired = false)]
-        public bool DisableLogging
+        [ConfigurationProperty("disableHistoryLogging", IsRequired = false)]
+        public bool DisableHistoryLogging
         {
             get
             {
-                if (disableLogging.HasValue)
+                if (disableHistoryLogging.HasValue)
                 {
-                    return disableLogging.Value;
+                    return disableHistoryLogging.Value;
                 }
 
                 if (!String.IsNullOrEmpty(this["disableLogging"].ToString()))
@@ -304,7 +304,7 @@ namespace Nhea.Configuration.GenericConfigSection.Communication
             }
             set
             {
-                disableLogging = value;
+                disableHistoryLogging = value;
             }
         }
 
