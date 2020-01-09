@@ -176,7 +176,7 @@ As of 1.6.1 I've developed new version for mailing system. This will be supporti
 
 ### Mailing Job Docker
 
-You can use the sample project in the solution to create your mailing service or directly use the docker image. Click <b><a href=https://hub.docker.com/r/nhea/mailservice>here</a></b> to visit repository docker page or run the following command to pull the image.
+You can use the sample project in the solution to create your mailing service or directly use the docker image. Click <b><a target='blank' href='https://hub.docker.com/r/nhea/mailservice'>here</a></b> to visit repository docker page or run the following command to pull the image.
 
 ```
 docker pull nhea/mailservice:latest
