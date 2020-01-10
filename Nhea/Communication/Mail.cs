@@ -66,6 +66,11 @@ namespace Nhea.Communication
 
                     if (!smtpElement.DisableHistoryLogging)
                     {
+                        if (string.IsNullOrEmpty(this.From))
+                        {
+                            this.From = smtpElement.From;
+                        }
+
                         MoveToHistory(MailStatus.Sent);
                     }
                     else

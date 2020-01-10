@@ -293,9 +293,9 @@ namespace Nhea.Configuration.GenericConfigSection.Communication
                     return disableHistoryLogging.Value;
                 }
 
-                if (!String.IsNullOrEmpty(this["disableLogging"].ToString()))
+                if (!String.IsNullOrEmpty(this["disableHistoryLogging"].ToString()))
                 {
-                    return Convert.ToBoolean(this["disableLogging"]);
+                    return Convert.ToBoolean(this["disableHistoryLogging"]);
                 }
                 else
                 {
