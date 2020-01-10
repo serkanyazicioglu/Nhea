@@ -36,6 +36,8 @@ Dependencies:
 
 ## Using Namespaces
 
+This project also supports .net core configuration. Documentation will be provided soon.
+
 ### Configuration
 
 First of all we will edit .config file to include Nhea configurations. Inside configSections we're gonna add Nhea's sectionGroup.
