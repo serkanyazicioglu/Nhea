@@ -290,7 +290,7 @@ namespace Nhea.Text
 
         public static string ReplaceNewLineWithHtml(string content)
         {
-            if (!String.IsNullOrEmpty(content))
+            if (!string.IsNullOrEmpty(content))
             {
                 content = content.Replace(Environment.NewLine, "<br/>");
             }
