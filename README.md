@@ -173,3 +173,11 @@ And then you should change the configuration. Add data to configuration list and
 ### Mailing v2
 
 As of 1.6.1 I've developed new version for mailing system. This will be supporting some more mailing functionalities by using the same table structure. What you have to do is before updating any of your projects you must update the mail sender process.
+
+### Mailing Job Docker
+
+You can use the sample project in the solution to create your mailing service or directly use the docker image. Click <b><a target='_blank' href='https://hub.docker.com/r/nhea/mailservice'>here</a></b> to visit repository docker page or run the following command to pull the image.
+
+```
+docker pull nhea/mailservice:latest
+```
