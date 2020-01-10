@@ -15,9 +15,9 @@ namespace Nhea.Logging.LogPublisher
         {
             try
             {
-                string exceptionDetail = String.Empty;
-                string exceptionData = String.Empty;
-                string fileName = String.Empty;
+                string exceptionDetail = string.Empty;
+                string exceptionData = string.Empty;
+                string fileName = string.Empty;
 
                 this.Message = Nhea.Text.HtmlHelper.ReplaceNewLineWithHtml(this.Message);
 
@@ -25,10 +25,17 @@ namespace Nhea.Logging.LogPublisher
                 {
                     ExceptionDetailBuilder.Build(this.Exception, out exceptionDetail, out exceptionData, out fileName);
 
-                    exceptionDetail = String.Format("<b>Exception Detail:</b>{1}{0}{1}", Nhea.Text.HtmlHelper.ReplaceNewLineWithHtml(exceptionDetail), HtmlNewLine);
-                    exceptionData = String.Format("<b>Exception Data:</b>{1}{0}{1}", Nhea.Text.HtmlHelper.ReplaceNewLineWithHtml(exceptionData), HtmlNewLine);
+                    if (!string.IsNullOrEmpty(exceptionDetail))
+                    {
+                        exceptionDetail = string.Format("<b>Exception Detail:</b>{1}{0}{1}", Nhea.Text.HtmlHelper.ReplaceNewLineWithHtml(exceptionDetail), HtmlNewLine);
+                    }
 
-                    if (String.IsNullOrEmpty(this.Message))
+                    if (!string.IsNullOrEmpty(exceptionData))
+                    {
+                        exceptionData = string.Format("<b>Exception Data:</b>{1}{0}{1}", Nhea.Text.HtmlHelper.ReplaceNewLineWithHtml(exceptionData), HtmlNewLine);
+                    }
+
+                    if (string.IsNullOrEmpty(this.Message))
                     {
                         this.Message = this.Exception.Message;
                     }
@@ -38,7 +45,7 @@ namespace Nhea.Logging.LogPublisher
                 detail += "<b>Log Level:</b> " + Level.ToString() + HtmlNewLine;
                 detail += "<b>Date:</b> " + DateTime.Now.ToString() + HtmlNewLine;
                 detail += "<b>Username:</b> " + UserName + HtmlNewLine;
-                
+
                 string aspnetCoreEnvironmentVariable = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
                 if (!string.IsNullOrEmpty(aspnetCoreEnvironmentVariable))
@@ -79,19 +86,28 @@ namespace Nhea.Logging.LogPublisher
 
                 detail += "<b>Source:</b> " + Source + HtmlNewLine;
 
-                if (!String.IsNullOrEmpty(fileName))
+                if (!string.IsNullOrEmpty(fileName))
                 {
                     detail += "<b>File Name:</b> " + fileName + HtmlNewLine;
                 }
 
                 detail += HtmlNewLine + HtmlNewLine;
-                detail += exceptionData;
-                detail += exceptionDetail;
+
+                if (!string.IsNullOrEmpty(exceptionData))
+                {
+                    detail += exceptionData;
+                }
+
+                if (!string.IsNullOrEmpty(exceptionData))
+                {
+                    detail += exceptionDetail;
+                }
+
                 detail += "<b>----------------------------------end----------------------------------</b>";
 
                 string subject = String.Empty;
 
-                if (String.IsNullOrEmpty(Settings.Log.MailList))
+                if (string.IsNullOrEmpty(Settings.Log.MailList))
                 {
                     subject = Settings.Log.InformSubject;
                 }
@@ -100,9 +116,9 @@ namespace Nhea.Logging.LogPublisher
                     subject = this.Message;
                 }
 
-                string mailFrom = String.Empty;
+                string mailFrom = string.Empty;
 
-                if (!String.IsNullOrEmpty(Settings.Log.MailFrom))
+                if (!string.IsNullOrEmpty(Settings.Log.MailFrom))
                 {
                     mailFrom = Settings.Log.MailFrom;
                 }
