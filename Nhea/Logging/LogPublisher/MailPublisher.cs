@@ -50,14 +50,14 @@ namespace Nhea.Logging.LogPublisher
 
                 if (!string.IsNullOrEmpty(aspnetCoreEnvironmentVariable))
                 {
-                    detail += "<b>Environment :</b> " + aspnetCoreEnvironmentVariable + HtmlNewLine;
+                    detail += "<b>Environment:</b> " + aspnetCoreEnvironmentVariable + HtmlNewLine;
                 }
                 else
                 {
-                    detail += "<b>Environment :</b> " + Nhea.Configuration.Settings.Application.EnvironmentType.ToString() + HtmlNewLine;
+                    detail += "<b>Environment:</b> " + Nhea.Configuration.Settings.Application.EnvironmentType.ToString() + HtmlNewLine;
                 }
 
-                detail += "<b>OSVersion :</b> " + System.Environment.OSVersion + HtmlNewLine;
+                detail += "<b>OSVersion:</b> " + System.Environment.OSVersion + HtmlNewLine;
 
                 //var version = System.Environment.Version;
                 //var appContextFrameworkName = System.AppContext.TargetFrameworkName;
@@ -75,11 +75,11 @@ namespace Nhea.Logging.LogPublisher
                     frameworkName = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
                 }
 
-                detail += "<b>Framework :</b> " + frameworkName + HtmlNewLine;
+                detail += "<b>Framework:</b> " + frameworkName + HtmlNewLine;
 
-                detail += "<b>OSArchitecture :</b> " + System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString() + HtmlNewLine;
+                detail += "<b>OSArchitecture:</b> " + System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString() + HtmlNewLine;
 
-                detail += "<b>ProcessArchitecture :</b> " + System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString() + HtmlNewLine;
+                detail += "<b>ProcessArchitecture:</b> " + System.Runtime.InteropServices.RuntimeInformation.ProcessArchitecture.ToString() + HtmlNewLine;
 
                 //detail += "Is64BitOperatingSystem : " + System.Environment.Is64BitOperatingSystem.ToString() + HtmlNewLine;
                 //detail += "Is64BitProcess : " + System.Environment.Is64BitProcess.ToString() + HtmlNewLine;
