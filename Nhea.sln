@@ -23,9 +23,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{51C42E8D-6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nhea.FrameworkTestConsole", "Nhea.FrameworkTestConsole\Nhea.FrameworkTestConsole.csproj", "{6FBDA136-6FE7-4C51-8DA7-74750A087274}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nhea.CoreCommunicationService", "Nhea.CoreCommunicationService\Nhea.CoreCommunicationService.csproj", "{7E377E0F-91C0-4F0A-A0F3-6F735AB59E01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Nhea.CoreCommunicationService", "Nhea.CoreCommunicationService\Nhea.CoreCommunicationService.csproj", "{7E377E0F-91C0-4F0A-A0F3-6F735AB59E01}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{50C0B1EA-9966-4C3F-BBB6-63588BECDD9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nhea.FrameworkCommunicationService", "Nhea.FrameworkCommunicationService\Nhea.FrameworkCommunicationService.csproj", "{9C9A4C48-D6A0-4C66-80FC-E9DC3494748D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{50C0B1EA-9966-4C3F-BBB6-63588BECDD9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{50C0B1EA-9966-4C3F-BBB6-63588BECDD9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{50C0B1EA-9966-4C3F-BBB6-63588BECDD9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C9A4C48-D6A0-4C66-80FC-E9DC3494748D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C9A4C48-D6A0-4C66-80FC-E9DC3494748D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C9A4C48-D6A0-4C66-80FC-E9DC3494748D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C9A4C48-D6A0-4C66-80FC-E9DC3494748D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -66,6 +72,7 @@ Global
 		{8E9816E4-A3A6-41E7-824C-AFF8284638DD} = {51C42E8D-640F-430B-97D2-B157EE903025}
 		{6FBDA136-6FE7-4C51-8DA7-74750A087274} = {51C42E8D-640F-430B-97D2-B157EE903025}
 		{7E377E0F-91C0-4F0A-A0F3-6F735AB59E01} = {51C42E8D-640F-430B-97D2-B157EE903025}
+		{9C9A4C48-D6A0-4C66-80FC-E9DC3494748D} = {51C42E8D-640F-430B-97D2-B157EE903025}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {DFD74DAA-DC85-468B-9C3D-9DFF5A119C9D}
