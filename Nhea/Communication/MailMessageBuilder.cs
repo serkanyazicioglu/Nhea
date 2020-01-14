@@ -93,11 +93,11 @@ namespace Nhea.Communication
                     }
 
                     mailMessage.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(parameters.PlainText, null, MediaTypeNames.Text.Plain));
-                    mailMessage.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(parameters.Body, null, MediaTypeNames.Text.Html));
+                    mailMessage.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(ParseBody(parameters.Body), null, MediaTypeNames.Text.Html));
                 }
                 else
                 {
-                    mailMessage.Body = parameters.Body;
+                    mailMessage.Body = ParseBody(parameters.Body);
                     mailMessage.IsBodyHtml = true;
                 }
 
@@ -130,11 +130,30 @@ namespace Nhea.Communication
             }
             else
             {
-                mailMessage.Body = body;
+                mailMessage.Body = ParseBody(body);
                 mailMessage.IsBodyHtml = true;
             }
 
             return mailMessage;
+        }
+
+        private static string ParseBody(string body)
+        {
+            if (!string.IsNullOrEmpty(body))
+            {
+                body = body.Replace(Environment.NewLine, string.Empty)
+                    .Replace("\r", string.Empty)
+                    .Replace("\n", string.Empty)
+                    .Replace("\t", " ")
+                    .Replace("﻿", string.Empty);
+
+                while (body.Contains("  "))
+                {
+                    body = body.Replace("  ", " ");
+                }
+            }
+
+            return body;
         }
 
         public static MailAddressCollection ParseRecipients(string address)
