@@ -7,9 +7,9 @@
     <Company>Serkan Yazıcıoğlu</Company>
     <Authors>Serkan Yazıcıoğlu</Authors>
     <PackageProjectUrl>https://github.com/serkanyazicioglu/Nhea</PackageProjectUrl>
-    <Version>1.7.9</Version>
-    <AssemblyVersion>1.7.9.0</AssemblyVersion>
-    <FileVersion>1.7.9.0</FileVersion>
+    <Version>1.7.10</Version>
+    <AssemblyVersion>1.7.10.0</AssemblyVersion>
+    <FileVersion>1.7.10.0</FileVersion>
     <PackageReleaseNotes>- Added Logging with DI capabilites.
 - Added Localization with DI capabilities.
 - app.config no longer needed for logging and communication.</PackageReleaseNotes>
