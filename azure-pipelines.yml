@@ -13,19 +13,19 @@ variables:
   buildPlatform: 'linux-x64'
   buildConfiguration: 'Release'
 
-services:
-    db:
-      image: "mcr.microsoft.com/mssql/server"
-      environment:
-        - SA_PASSWORD: "12345678"
-        - ACCEPT_EULA: "Y"
-      ports:
-        - 1433:1433/tcp
+# services:
+#     db:
+#       image: "mcr.microsoft.com/mssql/server"
+#       environment:
+#         - SA_PASSWORD: "12345678"
+#         - ACCEPT_EULA: "Y"
+#       ports:
+#         - 1433:1433/tcp
         
 steps:
 - script: dotnet restore
 - script: dotnet build --configuration $(buildConfiguration)
-- script: dotnet test TestProject --configuration $(buildConfiguration)
+# - script: dotnet test TestProject --configuration $(buildConfiguration)
 
 - task: DotNetCoreCLI@2
   displayName: "Publish Web Project"
