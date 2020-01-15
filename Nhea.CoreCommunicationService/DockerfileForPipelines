@@ -4,4 +4,4 @@ COPY . /app/
 
 WORKDIR /app/
 
-ENTRYPOINT dotnet  Nhea.CoreCommunicationService.dll
+ENTRYPOINT dotnet Nhea.CoreCommunicationService
