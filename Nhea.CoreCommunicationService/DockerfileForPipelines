@@ -3,5 +3,5 @@ FROM mcr.microsoft.com/dotnet/core/runtime-deps:3.1-bionic
 COPY . /app/
 
 WORKDIR /app/
-
+RUN chmod +x /app/Nhea.CoreCommunicationService
 ENTRYPOINT ["./Nhea.CoreCommunicationService", "--urls", "http://0.0.0.0:80"]
