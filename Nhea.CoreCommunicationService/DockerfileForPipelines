@@ -4,4 +4,4 @@ COPY . /app/
 
 WORKDIR /app/
 
-ENTRYPOINT dotnet Nhea.CoreCommunicationService
+ENTRYPOINT ["./Nhea.CoreCommunicationService", "--urls", "http://0.0.0.0:80"]
