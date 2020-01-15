@@ -7,7 +7,7 @@ trigger:
 - master
 
 pool:
-  vmImage: 'ubuntu-16.04'
+  vmImage: 'ubuntu-latest'
 
 services:
     db:
@@ -19,10 +19,27 @@ services:
       - 1433:1433/tcp
 
 variables:
+  buildPlatform: 'linux-x64'
   buildConfiguration: 'Release'
 
 steps:
 - script: dotnet restore
 - script: dotnet build --configuration $(buildConfiguration)
 - script: dotnet test TestProject --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+
+- task: DotNetCoreCLI@2
+  displayName: "Publish Web Project"
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: |
+      **/Nhea.CoreCommunicationService.csproj
+    arguments: '--configuration $(buildConfiguration) --runtime $(buildPlatform) --output $(Build.ArtifactStagingDirectory) --self-contained true'
+    zipAfterPublish: false
+
+- task: PublishBuildArtifacts@1
+  displayName: "Publish Artifact"
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop-backend-linux-core'
+    publishLocation: 'Container'
