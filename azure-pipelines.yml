@@ -11,12 +11,12 @@ pool:
 
 services:
     db:
-     image: "mcr.microsoft.com/mssql/server"
-     environment:
-        SA_PASSWORD: "12345678"
-        ACCEPT_EULA: "Y"
-     ports:
-      - 1433:1433/tcp
+      image: "mcr.microsoft.com/mssql/server"
+      environment:
+        - SA_PASSWORD: "12345678"
+        - ACCEPT_EULA: "Y"
+      ports:
+        - 1433:1433/tcp
 
 variables:
   buildPlatform: 'linux-x64'
