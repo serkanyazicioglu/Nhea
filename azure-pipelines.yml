@@ -41,7 +41,10 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    projects: '**/*.csproj'
+    projects: |
+      **/Nhea.csproj
+      **/Nhea.CoreCommunicationService.csproj
+      **/Nhea.CoreTestConsole.csproj
     arguments: '-c $(buildConfiguration) -r $(buildPlatform)'
   
 
