@@ -55,7 +55,7 @@ steps:
 - task: CopyFiles@2
   inputs:
     Contents: '**/DockerfileForPipelines'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/Nhea.CoreCommunicationService/'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/Nhea.CoreCommunicationServiceDockerFile/'
 
 - task: DotNetCoreCLI@2
   displayName: "Publish Web Project"
