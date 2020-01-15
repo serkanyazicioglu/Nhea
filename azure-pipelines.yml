@@ -52,6 +52,11 @@ steps:
 # - script: dotnet build --configuration $(buildConfiguration)
 # - script: dotnet test TestProject --configuration $(buildConfiguration)
 
+- task: CopyFiles@2
+  inputs:
+    Contents: '**/DockerfileForPipelines'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/Nhea.CoreCommunicationServiceDockerFile/'
+
 - task: DotNetCoreCLI@2
   displayName: "Publish Web Project"
   inputs:
@@ -68,3 +73,4 @@ steps:
     PathtoPublish: '$(Build.ArtifactStagingDirectory)'
     ArtifactName: 'drop-backend-linux-core'
     publishLocation: 'Container'
+
