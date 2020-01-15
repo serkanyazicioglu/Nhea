@@ -42,7 +42,7 @@ steps:
   inputs:
     command: 'build'
     projects: '**/*.csproj'
-    arguments: '-co $(buildConfiguration) -r $(buildPlatform)'
+    arguments: '-c $(buildConfiguration) -r $(buildPlatform)'
   
 
 # - script: dotnet restore
