@@ -24,6 +24,10 @@ Nhea is on NuGet. You may install Nhea via NuGet Package manager.
 
 https://www.nuget.org/packages/Nhea/
 
+```
+Install-Package Nhea
+```
+
 ### Prerequisites
 
 Project is built with .NET Framework Standard. 
