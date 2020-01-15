@@ -23,8 +23,21 @@ variables:
 #         - 1433:1433/tcp
         
 steps:
-- script: dotnet restore
-- script: dotnet build --configuration $(buildConfiguration)
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'restore'
+    feedsToUse: 'select'
+
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    arguments: '-c $(buildConfiguration)'
+    
+
+
+# - script: dotnet restore
+# - script: dotnet build --configuration $(buildConfiguration)
 # - script: dotnet test TestProject --configuration $(buildConfiguration)
 
 - task: DotNetCoreCLI@2
