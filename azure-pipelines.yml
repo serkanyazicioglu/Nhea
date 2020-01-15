@@ -64,7 +64,7 @@ steps:
     publishWebProjects: false
     projects: |
       **/Nhea.CoreCommunicationService.csproj
-    arguments: '--configuration $(buildConfiguration) --runtime $(buildPlatform) --output $(Build.ArtifactStagingDirectory) /p:PublishSingleFile=true'
+    arguments: '--configuration $(buildConfiguration) --runtime $(buildPlatform) --output $(Build.ArtifactStagingDirectory) /p:PublishSingleFile=true /p:PublishTrimmed=true'
     zipAfterPublish: false
 
 - task: PublishBuildArtifacts@1
