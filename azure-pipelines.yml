@@ -9,6 +9,10 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  buildPlatform: 'linux-x64'
+  buildConfiguration: 'Release'
+
 services:
     db:
       image: "mcr.microsoft.com/mssql/server"
@@ -17,11 +21,7 @@ services:
         - ACCEPT_EULA: "Y"
       ports:
         - 1433:1433/tcp
-
-variables:
-  buildPlatform: 'linux-x64'
-  buildConfiguration: 'Release'
-
+        
 steps:
 - script: dotnet restore
 - script: dotnet build --configuration $(buildConfiguration)
