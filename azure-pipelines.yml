@@ -64,7 +64,7 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '**/Nhea.CoreCommunicationService'
+    SourceFolder: '$(agent.builddirectory)/Nhea.CoreCommunicationService'
     Contents: '**/DockerfileForPipelines'
     TargetFolder: '$(Build.ArtifactStagingDirectory)/Nhea.CoreCommunicationService/'
 
