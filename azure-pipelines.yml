@@ -23,6 +23,12 @@ variables:
 #         - 1433:1433/tcp
         
 steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '3.1.x'
+
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
