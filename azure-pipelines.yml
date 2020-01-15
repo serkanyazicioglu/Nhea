@@ -41,7 +41,8 @@ steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
-    arguments: '-c $(buildConfiguration)'
+    projects: '**/*.csproj'
+    arguments: '-co $(buildConfiguration) -r $(buildPlatform)'
   
 
 # - script: dotnet restore
