@@ -52,6 +52,11 @@ steps:
 # - script: dotnet build --configuration $(buildConfiguration)
 # - script: dotnet test TestProject --configuration $(buildConfiguration)
 
+- task: CopyFiles@2
+  inputs:
+    Contents: '**/DockerfileForPipelines'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)/Nhea.CoreCommunicationService/'
+
 - task: DotNetCoreCLI@2
   displayName: "Publish Web Project"
   inputs:
@@ -61,11 +66,6 @@ steps:
       **/Nhea.CoreCommunicationService.csproj
     arguments: '--configuration $(buildConfiguration) --runtime $(buildPlatform) --output $(Build.ArtifactStagingDirectory) --self-contained true'
     zipAfterPublish: false
-
-- task: CopyFiles@2
-  inputs:
-    Contents: '**/DockerfileForPipelines'
-    TargetFolder: '$(Build.ArtifactStagingDirectory)/Nhea.CoreCommunicationService/'
 
 - task: PublishBuildArtifacts@1
   displayName: "Publish Artifact"
