@@ -26,10 +26,4 @@
     <ProjectReference Include="..\Nhea\Nhea.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <None Update="DockerfileForPipelines">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-
 </Project>
