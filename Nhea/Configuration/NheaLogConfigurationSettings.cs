@@ -49,5 +49,10 @@ namespace Nhea.Configuration
         /// Gets or sets default addresses to be sent to.
         /// </summary>
         public string MailList { get; set; }
+
+        /// <summary>
+        /// Gets or sets a friendly name for the instance.
+        /// </summary>
+        public string FriendlyName { get; set; }
     }
 }

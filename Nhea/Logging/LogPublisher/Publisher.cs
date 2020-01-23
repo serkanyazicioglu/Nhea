@@ -29,6 +29,11 @@ namespace Nhea.Logging.LogPublisher
                         {
                             userName += "\\" + System.Environment.MachineName;
                         }
+
+                        if (Settings.CurrentLogConfigurationSettings != null && !string.IsNullOrEmpty(Settings.CurrentLogConfigurationSettings.FriendlyName))
+                        {
+                            userName += " (" + Settings.CurrentLogConfigurationSettings.FriendlyName + ")";
+                        }
                     }
 
                     return userName;

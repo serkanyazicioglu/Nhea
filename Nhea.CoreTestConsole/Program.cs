@@ -34,6 +34,7 @@ namespace Nhea.CoreTestConsole
                     nheaConfigure.MailFrom = "from@domain.com";
                     nheaConfigure.MailList = "to@domain.com;to2@domain.com";
                     nheaConfigure.InformSubject = "test subject";
+                    nheaConfigure.FriendlyName = "Nhea Test Core App";
                 })
             );
 
@@ -58,7 +59,7 @@ namespace Nhea.CoreTestConsole
             var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
             logger.Log(LogLevel.Information, "test core logger");
 
-            logger.LogError(new Exception("Test exception"), "Test exception description");
+            logger.LogError(new Exception("Test exception", new Exception("Inner exception message")), "Test exception description");
 
             Nhea.Communication.MailQueue.MailQueueing += MailQueue_MailQueueing;
             Nhea.Communication.MailQueue.MailQueued += MailQueue_MailQueued;

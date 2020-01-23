@@ -98,7 +98,7 @@ namespace Nhea.Logging.LogPublisher
                     detail += exceptionData;
                 }
 
-                if (!string.IsNullOrEmpty(exceptionData))
+                if (!string.IsNullOrEmpty(exceptionDetail))
                 {
                     detail += exceptionDetail;
                 }
