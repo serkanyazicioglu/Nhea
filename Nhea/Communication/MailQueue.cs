@@ -101,15 +101,12 @@ namespace Nhea.Communication
                 using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
                 using (SqlCommand cmd = new SqlCommand(InsertCommandText, sqlConnection))
                 {
-                    cmd.Connection.Open();
-                    
+                    cmd.Connection.Open();                     
                     bool hasAttachment = false;
-
+                    
                     if (mail.Attachments != null && mail.Attachments.Any())
                     {
                         hasAttachment = true;
-
-
                     }
 
                     mail.From = PrepareMailAddress(mail.From);
@@ -148,7 +145,7 @@ namespace Nhea.Communication
                     cmd.Parameters.Add(new SqlParameter("@Body", body));
                     cmd.Parameters.Add(new SqlParameter("@PriorityDate", mail.Priority));
                     cmd.Parameters.Add(new SqlParameter("@MailProviderId", DBNull.Value));
-                    cmd.Parameters.Add(new SqlParameter("@IsReadyToSend", hasAttachment?false:true));
+                    cmd.Parameters.Add(new SqlParameter("@IsReadyToSend", !hasAttachment));
                     cmd.Parameters.Add(new SqlParameter("@HasAttachment", hasAttachment));
 
                     if (!String.IsNullOrEmpty(mail.ToRecipient))
