@@ -19,6 +19,8 @@ namespace Nhea.Communication
         private const string InsertAttachmentCommandText = @"INSERT INTO [nhea_MailQueueAttachment]([MailQueueId],[AttachmentName],[AttachmentData]) VALUES(@MailQueueId, @AttachmentName,@AttachmentData)";
         private const string SelectAttachmentsCommandText = "SELECT [AttachmentName],[AttachmentData] FROM [nhea_MailQueueAttachment] WHERE MailQueueId = @MailQueueId";
 
+        private const string UpdateStatusCommandText = @"UPDATE nhea_MailQueue SET IsReadyToSend = {0} WHERE Id = @MailQueueId";
+
         public static bool Add(string from, string toRecipient, string subject, string body)
         {
             return Add(from, toRecipient, String.Empty, String.Empty, subject, body, GetDateByPriority(Priority.Medium), null);
@@ -100,7 +102,7 @@ namespace Nhea.Communication
                 using (SqlCommand cmd = new SqlCommand(InsertCommandText, sqlConnection))
                 {
                     cmd.Connection.Open();
-
+                    
                     bool hasAttachment = false;
 
                     if (mail.Attachments != null && mail.Attachments.Any())
@@ -146,7 +148,7 @@ namespace Nhea.Communication
                     cmd.Parameters.Add(new SqlParameter("@Body", body));
                     cmd.Parameters.Add(new SqlParameter("@PriorityDate", mail.Priority));
                     cmd.Parameters.Add(new SqlParameter("@MailProviderId", DBNull.Value));
-                    cmd.Parameters.Add(new SqlParameter("@IsReadyToSend", true));
+                    cmd.Parameters.Add(new SqlParameter("@IsReadyToSend", hasAttachment?false:true));
                     cmd.Parameters.Add(new SqlParameter("@HasAttachment", hasAttachment));
 
                     if (!String.IsNullOrEmpty(mail.ToRecipient))
@@ -171,6 +173,13 @@ namespace Nhea.Communication
                                 attachmentCommand.Parameters.Add(new SqlParameter("@AttachmentData", mailQueueAttachment.Data));
                                 attachmentCommand.ExecuteNonQuery();
                             }
+                        }
+
+                        using (SqlCommand setStatusCommand = new SqlCommand(String.Format(UpdateStatusCommandText, "1"), sqlConnection))
+                        {
+                            setStatusCommand.Parameters.Add(new SqlParameter("@MailQueueId", id));
+                            setStatusCommand.ExecuteNonQuery();
+                            sqlConnection.Close();
                         }
                     }
 
