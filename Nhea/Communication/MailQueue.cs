@@ -172,11 +172,10 @@ namespace Nhea.Communication
                             }
                         }
 
-                        using (SqlCommand setStatusCommand = new SqlCommand(String.Format(UpdateStatusCommandText, "1"), sqlConnection))
+                        using (SqlCommand setStatusCommand = new SqlCommand(string.Format(UpdateStatusCommandText, "1"), cmd.Connection))
                         {
                             setStatusCommand.Parameters.Add(new SqlParameter("@MailQueueId", id));
                             setStatusCommand.ExecuteNonQuery();
-                            sqlConnection.Close();
                         }
                     }
 
