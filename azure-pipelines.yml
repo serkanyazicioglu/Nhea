@@ -56,20 +56,20 @@ steps:
 # - script: dotnet build --configuration $(buildConfiguration)
 # - script: dotnet test TestProject --configuration $(buildConfiguration)
 
-- task: SonarCloudPrepare@1
-  inputs:
-    SonarCloud: 'SonarCloud SC'
-    organization: 'serkanyazicioglu'
-    scannerMode: 'MSBuild'
-    projectKey: 'sonar.Nhea'
-    projectName: 'Nhea'
-    projectVersion: '$(Build.BuildNumber)'
+# - task: SonarCloudPrepare@1
+#   inputs:
+#     SonarCloud: 'SonarCloud SC'
+#     organization: 'serkanyazicioglu'
+#     scannerMode: 'MSBuild'
+#     projectKey: 'sonar.Nhea'
+#     projectName: 'Nhea'
+#     projectVersion: '$(Build.BuildNumber)'
 
-- task: SonarCloudAnalyze@1
+# - task: SonarCloudAnalyze@1
 
-- task: SonarCloudPublish@1
-  inputs:
-    pollingTimeoutSec: '300'
+# - task: SonarCloudPublish@1
+#   inputs:
+#     pollingTimeoutSec: '300'
 
 - task: CopyFiles@2
   inputs:
