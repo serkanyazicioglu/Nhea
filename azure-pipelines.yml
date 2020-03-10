@@ -63,6 +63,7 @@ steps:
     scannerMode: 'MSBuild'
     projectKey: 'sonar.Nhea'
     projectName: 'Nhea'
+    projectVersion: '$(Build.BuildNumber)'
 
 - task: SonarCloudAnalyze@1
 
