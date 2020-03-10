@@ -52,6 +52,20 @@ steps:
 # - script: dotnet build --configuration $(buildConfiguration)
 # - script: dotnet test TestProject --configuration $(buildConfiguration)
 
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloud SC'
+    organization: 'serkanyazicioglu'
+    scannerMode: 'MSBuild'
+    projectKey: 'sonar.Nhea'
+    projectName: 'Nhea'
+
+- task: SonarCloudAnalyze@1
+
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
+
 - task: CopyFiles@2
   inputs:
     Contents: '**/DockerfileForPipelines'
