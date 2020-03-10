@@ -42,19 +42,6 @@ steps:
     restoreSolution: '$(solution)'
     feedsToUse: 'select'
 
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'build'
-    projects: |
-      **/Nhea.csproj
-      **/Nhea.CoreCommunicationService.csproj
-      **/Nhea.CoreTestConsole.csproj
-    arguments: '-c $(buildConfiguration) -r $(buildPlatform)'
-  
-
-# - script: dotnet restore
-# - script: dotnet build --configuration $(buildConfiguration)
-# - script: dotnet test TestProject --configuration $(buildConfiguration)
 
 - task: SonarCloudPrepare@1
   inputs:
@@ -64,6 +51,20 @@ steps:
     projectKey: 'serkanyazicioglu_Nhea'
     projectName: 'Nhea'
     projectVersion: '$(Build.BuildNumber)'
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: |
+      **/Nhea.csproj
+      **/Nhea.CoreCommunicationService.csproj
+      **/Nhea.CoreTestConsole.csproj
+    arguments: '-c $(buildConfiguration) -r $(buildPlatform) /p:CollectCoverage=true /p:CoverletOutputFormat="cobertura%2copencover" /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
+  
+
+# - script: dotnet restore
+# - script: dotnet build --configuration $(buildConfiguration)
+# - script: dotnet test TestProject --configuration $(buildConfiguration)
 
 - task: SonarCloudAnalyze@1
 
@@ -83,7 +84,7 @@ steps:
     publishWebProjects: false
     projects: |
       **/Nhea.CoreCommunicationService.csproj
-    arguments: '--configuration $(buildConfiguration) --runtime $(buildPlatform) --output $(Build.ArtifactStagingDirectory) /p:PublishSingleFile=true /p:PublishTrimmed=true'
+    arguments: '--configuration $(buildConfiguration) --runtime $(buildPlatform) --output $(Build.ArtifactStagingDirectory) /p:PublishSingleFile=true /p:PublishTrimmed=true '
     zipAfterPublish: false
 
 - task: PublishBuildArtifacts@1
