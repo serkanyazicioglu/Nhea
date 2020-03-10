@@ -29,6 +29,10 @@ steps:
     packageType: 'sdk'
     version: '3.1.x'
 
+- task: UseDotNet@2
+  displayName: 'Use .NET Core SDK 2.1.505 for SonarCloud'
+  inputs:
+    version: '2.1.505'
 
 - task: NuGetToolInstaller@1
 
@@ -38,6 +42,16 @@ steps:
     restoreSolution: '$(solution)'
     feedsToUse: 'select'
 
+
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'SonarCloud SC'
+    organization: 'serkanyazicioglu'
+    scannerMode: 'MSBuild'
+    projectKey: 'serkanyazicioglu_Nhea'
+    projectName: 'Nhea'
+    projectVersion: '$(Build.BuildNumber)'
+
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
@@ -45,12 +59,18 @@ steps:
       **/Nhea.csproj
       **/Nhea.CoreCommunicationService.csproj
       **/Nhea.CoreTestConsole.csproj
-    arguments: '-c $(buildConfiguration) -r $(buildPlatform)'
+    arguments: '-c $(buildConfiguration) -r $(buildPlatform) /p:CollectCoverage=true /p:CoverletOutputFormat="cobertura%2copencover" /p:CoverletOutput=$(Build.SourcesDirectory)/TestResults/Coverage/'
   
 
 # - script: dotnet restore
 # - script: dotnet build --configuration $(buildConfiguration)
 # - script: dotnet test TestProject --configuration $(buildConfiguration)
+
+- task: SonarCloudAnalyze@1
+
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
 
 - task: CopyFiles@2
   inputs:
@@ -64,7 +84,7 @@ steps:
     publishWebProjects: false
     projects: |
       **/Nhea.CoreCommunicationService.csproj
-    arguments: '--configuration $(buildConfiguration) --runtime $(buildPlatform) --output $(Build.ArtifactStagingDirectory) /p:PublishSingleFile=true /p:PublishTrimmed=true'
+    arguments: '--configuration $(buildConfiguration) --runtime $(buildPlatform) --output $(Build.ArtifactStagingDirectory) /p:PublishSingleFile=true /p:PublishTrimmed=true '
     zipAfterPublish: false
 
 - task: PublishBuildArtifacts@1
