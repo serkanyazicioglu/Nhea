@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Nhea.Data
 {
@@ -17,9 +18,15 @@ namespace Nhea.Data
 
         T GetById(object id);
 
+        Task<T> GetByIdAsync(object id);
+
         T GetSingle(Expression<Func<T, bool>> filter);
 
+        Task<T> GetSingleAsync(Expression<Func<T, bool>> filter);
+
         T GetSingle(Expression<Func<T, bool>> filter, bool getDefaultFilter);
+
+        Task<T> GetSingleAsync(Expression<Func<T, bool>> filter, bool getDefaultFilter);
 
         #endregion
 
@@ -49,9 +56,19 @@ namespace Nhea.Data
 
         int Count();
 
+        Task<int> CountAsync();
+
         int Count(Expression<Func<T, bool>> filter);
 
+        Task<int> CountAsync(Expression<Func<T, bool>> filter);
+
+        int Count(Expression<Func<T, bool>> filter, bool getDefaultFilter);
+
+        Task<int> CountAsync(Expression<Func<T, bool>> filter, bool getDefaultFilter);
+
         bool Any(Expression<Func<T, bool>> filter);
+
+        Task<bool> AnyAsync(Expression<Func<T, bool>> filter);
 
         #endregion
 
@@ -72,6 +89,8 @@ namespace Nhea.Data
         #region Save
 
         void Save();
+
+        Task SaveAsync();
 
         #endregion
 

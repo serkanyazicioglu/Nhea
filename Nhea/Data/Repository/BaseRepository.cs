@@ -2,11 +2,19 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Nhea.Data.Repository
 {
     public abstract class BaseRepository<T> : IDisposable, IRepository<T> where T : class, new()
     {
+        public BaseRepository(bool isReadOnly = false)
+        {
+            this.IsReadOnly = isReadOnly;
+        }
+
+        public virtual bool IsReadOnly { get; set; }
+
         public enum StatusType
         {
             Deleted = -1,
@@ -55,6 +63,8 @@ namespace Nhea.Data.Repository
 
         public abstract T GetById(object id);
 
+        public abstract Task<T> GetByIdAsync(object id);
+
         public T GetSingle(Expression<Func<T, bool>> filter)
         {
             return GetSingleCore(filter, true);
@@ -66,6 +76,18 @@ namespace Nhea.Data.Repository
         }
 
         protected internal abstract T GetSingleCore(Expression<Func<T, bool>> filter, bool getDefaultFilter);
+
+        public async Task<T> GetSingleAsync(Expression<Func<T, bool>> filter)
+        {
+            return await GetSingleCoreAsync(filter, true);
+        }
+
+        public async Task<T> GetSingleAsync(Expression<Func<T, bool>> filter, bool getDefaultFilter)
+        {
+            return await GetSingleCoreAsync(filter, getDefaultFilter);
+        }
+
+        protected internal abstract Task<T> GetSingleCoreAsync(Expression<Func<T, bool>> filter, bool getDefaultFilter);
 
         #endregion
 
@@ -145,8 +167,25 @@ namespace Nhea.Data.Repository
 
         protected abstract int CountCore(Expression<Func<T, bool>> filter, bool getDefaultFilter);
 
+        public async Task<int> CountAsync()
+        {
+            return await CountCoreAsync(null, true);
+        }
+
+        public async Task<int> CountAsync(Expression<Func<T, bool>> filter)
+        {
+            return await CountCoreAsync(filter, true);
+        }
+
+        public async Task<int> CountAsync(Expression<Func<T, bool>> filter, bool getDefaultFilter)
+        {
+            return await CountCoreAsync(filter, getDefaultFilter);
+        }
+
+        protected abstract Task<int> CountCoreAsync(Expression<Func<T, bool>> filter, bool getDefaultFilter);
+
         public bool Any(Expression<Func<T, bool>> filter)
-        { 
+        {
             return AnyCore(filter, true);
         }
 
@@ -156,6 +195,18 @@ namespace Nhea.Data.Repository
         }
 
         protected abstract bool AnyCore(Expression<Func<T, bool>> filter, bool getDefaultFilter);
+
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>> filter)
+        {
+            return await AnyCoreAsync(filter, true);
+        }
+
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>> filter, bool getDefaultFilter)
+        {
+            return await AnyCoreAsync(filter, getDefaultFilter);
+        }
+
+        protected abstract Task<bool> AnyCoreAsync(Expression<Func<T, bool>> filter, bool getDefaultFilter);
 
         #endregion
 
@@ -176,6 +227,8 @@ namespace Nhea.Data.Repository
         #region Save
 
         public abstract void Save();
+
+        public abstract Task SaveAsync();
 
         #endregion
 

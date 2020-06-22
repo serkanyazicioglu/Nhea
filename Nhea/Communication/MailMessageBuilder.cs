@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Net.Mail;
 using Nhea.Configuration.GenericConfigSection.Communication;
-using Newtonsoft.Json;
 using System.Net.Mime;
 
 namespace Nhea.Communication
@@ -83,7 +82,7 @@ namespace Nhea.Communication
             {
                 body = body.Replace(MailQueue.NheaMailingStarter, String.Empty);
 
-                var parameters = JsonConvert.DeserializeObject<MailParameters>(body);
+                var parameters = System.Text.Json.JsonSerializer.Deserialize<MailParameters>(body);
 
                 if (!string.IsNullOrEmpty(parameters.PlainText) || smtpElement.AutoGeneratePlainText)
                 {

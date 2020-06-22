@@ -1,4 +1,3 @@
-using Newtonsoft.Json;
 using Nhea.Logging;
 using Nhea.Utils;
 using System;
@@ -135,7 +134,7 @@ namespace Nhea.Communication
                         UnsubscribeOneClick = mail.UnsubscribeOneClick
                     };
 
-                    body += JsonConvert.SerializeObject(mailParameters);
+                    body += System.Text.Json.JsonSerializer.Serialize(mailParameters);
 
                     cmd.Parameters.Add(new SqlParameter("@From", mail.From));
                     cmd.Parameters.Add(new SqlParameter("@To", mail.ToRecipient));
