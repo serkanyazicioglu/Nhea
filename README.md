@@ -31,14 +31,14 @@ Install-Package Nhea
 
 ### Prerequisites
 
-Project is built with .NET Framework Standard. 
+Project is built with .NET Core 3.1
 
 Dependencies:
-- Newtonsoft.Json (>= 11.0.2)
-- System.Configuration.ConfigurationManager (>= 4.5.0)
+- Newtonsoft.Json (>= 12.0.3)
+- System.Configuration.ConfigurationManager (>= 4.7.0)
 - System.Data.Common (>= 4.3.0)
-- System.Data.SqlClient (>= 4.5.1)
-- System.Drawing.Common (>= 4.5.1)
+- System.Data.SqlClient (>= 4.8.1)
+- System.Drawing.Common (>= 4.7.0)
 
 ## Using Namespaces
 
