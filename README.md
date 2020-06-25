@@ -137,7 +137,7 @@ services.AddNheaLocalizationService(configure =>
     configure.DefaultLanguageId = 1;
 });
 ```
-Later you can inject IMailService to access the mail service.
+Later you can inject ILocalizationService to access the localization service.
 ```
 private readonly ILocalizationService localizationService;
 private readonly ILogger<HomeController> logger;
@@ -150,7 +150,7 @@ public HomeController(ILocalizationService localizationService, ILogger<HomeCont
 ```
 Then you can fill the Localization table on the SQL manually or via code.
 
-- To insert global variables;
+- To insert global translations;
 
 ```
 localizationService.SaveLocalization("new translation", "NewTranslation");
@@ -160,7 +160,7 @@ Console.WriteLine("Tanslation: " + translation);
 
 localizationService.DeleteLocalization("NewTranslation");
 ```
-- To insert record variables;
+- To insert record bound translations;
 ```
 Guid recordId = Guid.NewGuid();
 int languageId = 1;
@@ -171,11 +171,11 @@ Console.WriteLine("Tanslation: " + translation);
 
 localizationService.DeleteLocalization(recordId, "NewTranslation", languageId);
 ```
-TargetEntityId must be Guid in this context. You can insert your primary key if it's Guid directly or can have another localization guid column. TargetEntityName must be table name.
+TargetEntityId must be Guid in this context. You can directly insert your primary key if it's Guid or can have another localization guid column. TargetEntityName must be table's name.
 
 ### .Net Framework Configuration
 
-Important Note: Nhea won't be supporting .Net Framework since .Net Core took a lot of ground on the .Net community.
+Important Note: Nhea won't be supporting .Net Framework since .Net Core took a lot of ground on the community.
 
 First of all we will edit .config file to include Nhea configurations. Inside configSections we're gonna add Nhea's sectionGroup.
 
