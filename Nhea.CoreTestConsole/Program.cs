@@ -82,6 +82,15 @@ namespace Nhea.CoreTestConsole
 
             localizationService.DeleteLocalization("NewTranslation");
 
+            Guid recordId = Guid.NewGuid();
+            int languageId = 1;
+            localizationService.SaveLocalization("new translation", "NewTranslation", recordId, "Member", languageId);
+
+            var memberTranslation = localizationService.GetLocalization("NewTranslation", recordId, languageId);
+            Console.WriteLine("Tanslation: " + translation);
+
+            localizationService.DeleteLocalization(recordId, "NewTranslation", languageId);
+
             Console.WriteLine("Job done!");
             Console.ReadLine();
         }

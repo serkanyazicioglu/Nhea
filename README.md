@@ -45,7 +45,137 @@ Dependencies:
 
 This project also supports .net core configuration. Documentation will be provided soon.
 
-### Configuration
+### .Net Core Configuration
+
+There are 3 different configuration blocks for .Net Core. Logging, mailing and localization.
+
+#### Logging Configuration
+
+Nhea has three different kind of logging: File, Database (SQL) and E-Mail. .Net Core DI logging is supported. 
+
+By default Logging targets File.
+
+For file publishing you can change the file name to provide a unique name. By defaylt log file will be created in the executing folder. If you want to change the path or the file name you can override these settings. Directory will be automatically created by Nhea.
+
+```
+services.AddLogging(configure =>
+    configure.AddNheaLogger(nheaConfigure =>
+    {
+        nheaConfigure.PublishType = Nhea.Logging.PublishTypes.File;
+        nheaConfigure.FileName = "loggingfile.txt";
+    })
+);
+```
+For directory overriding;
+```
+services.AddLogging(configure =>
+    configure.AddNheaLogger(nheaConfigure =>
+    {
+        nheaConfigure.PublishType = Nhea.Logging.PublishTypes.File;
+        nheaConfigure.DirectoryPath = "C:\Projects\";
+        nheaConfigure.FileName = "loggingfile.txt";
+    })
+);
+```
+You can also format file name dynamically by datetime.
+```
+services.AddLogging(configure =>
+    configure.AddNheaLogger(nheaConfigure =>
+    {
+        nheaConfigure.PublishType = Nhea.Logging.PublishTypes.File;
+        nheaConfigure.DirectoryPath = "C:\Projects\";
+        nheaConfigure.FileName = "NheaLog-{0:dd.MM.yyyy-HH:mm}.txt";
+    })
+);
+```
+
+For DB publishing you have to provide a sql connection string. In order to use SQL first you have to create Nhea's <a href=https://github.com/serkanyazicioglu/Nhea/blob/master/SQL/nhea_Log.sql>log table</a>. Execute the nhea_Log.sql which creates the schema of the table.
+
+```
+services.AddLogging(configure => configure.AddNheaLogger(nhea =>
+{
+    nhea.ConnectionString = "sql connection string";
+    nhea.PublishType = Nhea.Logging.PublishTypes.Database;
+}));
+```
+
+#### Mailing Configuration
+
+Nhea has a mailing as a service and logging is directly intergrated with it. In order to use this service first you have to create Nhea's <a href=https://github.com/serkanyazicioglu/Nhea/blob/master/SQL/nhea_MailQueue.sql>mail tables</a>. Execute the nhea_MailQueue.sql which creates the schema of the tables.
+
+```
+services.AddMailService(configure =>
+{
+    configure.ConnectionString = "sql connection string";
+});
+```
+Later you can inject IMailService to access the mail service.
+```
+private readonly IMailService mailService;
+private readonly ILogger<HomeController> logger;
+
+public HomeController(IMailService mailService, ILogger<HomeController> logger)
+{
+    this.mailService = mailService;
+    this.logger = logger;
+}
+```
+By calling the add method a mail record will be inserted to database.
+```
+mailService.Add(Environment.GetEnvironmentVariable("from@from.com", "to@to.com", "Mail Subject", "mail <b>body</b>");
+```
+Please refer to the <a href="https://github.com/serkanyazicioglu/Nhea#mailing-job-docker">mailing service section</a> for running the mail service via Docker.
+
+#### Localization Configuration
+
+For configuring the localization service you can use the following sample code. In order to use this service first you have to create Nhea's <a href=https://github.com/serkanyazicioglu/Nhea/blob/master/SQL/Localization.sql>localization table</a>. Execute the Localization.sql which creates the schema of the table.
+
+```
+services.AddNheaLocalizationService(configure =>
+{
+    configure.ConnectionString = "sql connection string";
+    configure.DefaultLanguageId = 1;
+});
+```
+Later you can inject IMailService to access the mail service.
+```
+private readonly ILocalizationService localizationService;
+private readonly ILogger<HomeController> logger;
+
+public HomeController(ILocalizationService localizationService, ILogger<HomeController> logger)
+{
+    this.localizationService = localizationService;
+    this.logger = logger;
+}
+```
+Then you can fill the Localization table on the SQL manually or via code.
+
+- To insert global variables;
+
+```
+localizationService.SaveLocalization("new translation", "NewTranslation");
+
+var translation = localizationService.GetLocalization("NewTranslation");
+Console.WriteLine("Tanslation: " + translation);
+
+localizationService.DeleteLocalization("NewTranslation");
+```
+- To insert record variables;
+```
+Guid recordId = Guid.NewGuid();
+int languageId = 1;
+localizationService.SaveLocalization("new translation", "NewTranslation", recordId, "Member", languageId);
+
+var memberTranslation = localizationService.GetLocalization("NewTranslation", recordId, languageId);
+Console.WriteLine("Tanslation: " + translation);
+
+localizationService.DeleteLocalization(recordId, "NewTranslation", languageId);
+```
+TargetEntityId must be Guid in this context. You can insert your primary key if it's Guid directly or can have another localization guid column. TargetEntityName must be table name.
+
+### .Net Framework Configuration
+
+Important Note: Nhea won't be supporting .Net Framework since .Net Core took a lot of ground on the .Net community.
 
 First of all we will edit .config file to include Nhea configurations. Inside configSections we're gonna add Nhea's sectionGroup.
 
@@ -192,3 +322,4 @@ You can use the sample project in the solution to create your mailing service or
 ```
 docker pull nhea/mailservice:latest
 ```
+Please refer to the documentation on Docker Hub for running the service.
