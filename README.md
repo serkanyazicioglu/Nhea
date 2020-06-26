@@ -323,3 +323,36 @@ You can use the sample project in the solution to create your mailing service or
 docker pull nhea/mailservice:latest
 ```
 Please refer to the documentation on Docker Hub for running the service.
+
+### Enumeration Helpers
+
+As an old but useful practice you can set additional details for your enums. Simply put Detail attribute on to the header of your enumeraions.
+
+```
+public enum StatusType
+{
+    [Detail("Canceled")]
+    Canceled = -10,
+    [Detail("Planned")]
+    Planned = -2,
+    [Detail("In Production")]
+    InProduction = -1,
+    [Detail("Post Production")]
+    PostProduction = 0,
+    [Detail("Released")]
+    Released = 1
+}
+```
+Later you can use the following enumeration helper methods.
+```
+List<Nhea.Enumeration.Enumeration> enumerations = Nhea.Enumeration.EnumHelper.GetEnumerations<StatusType>();
+
+foreach (var enumeration in enumerations)
+{
+    Console.WriteLine("Name: " + enumeration.Name + " .Detail: " + enumeration.Detail + " .Value: " + enumeration.Value.ToString());
+}
+
+StatusType enumByValue = Nhea.Enumeration.EnumHelper.GetEnum<StatusType>(1);
+
+string enumDetail = Nhea.Enumeration.EnumHelper.GetDetail<StatusType>(1);
+```

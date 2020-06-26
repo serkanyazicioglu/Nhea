@@ -5,11 +5,26 @@ using Nhea.Communication;
 using System;
 using System.IO;
 using Nhea.Localization;
+using Nhea.Enumeration;
+using System.Collections.Generic;
 
 namespace Nhea.CoreTestConsole
 {
     class Program
     {
+        public enum StatusType
+        {
+            [Detail("Canceled")]
+            Canceled = -10,
+            [Detail("Planned")]
+            Planned = -2,
+            [Detail("In Production")]
+            InProduction = -1,
+            [Detail("Post Production")]
+            PostProduction = 0,
+            [Detail("Released")]
+            Released = 1
+        }
 
         /// <summary>
         /// Mail kaydetme, mail queue, loglama ve localization servisi var. 
@@ -93,6 +108,17 @@ namespace Nhea.CoreTestConsole
 
             Console.WriteLine("Job done!");
             Console.ReadLine();
+
+            List<Nhea.Enumeration.Enumeration> enumerations = Nhea.Enumeration.EnumHelper.GetEnumerations<StatusType>();
+
+            foreach (var enumeration in enumerations)
+            {
+                Console.WriteLine("Name: " + enumeration.Name + " .Detail: " + enumeration.Detail + " .Value: " + enumeration.Value.ToString());
+            }
+
+            StatusType enumByValue = Nhea.Enumeration.EnumHelper.GetEnum<StatusType>(1);
+
+            string enumDetail = Nhea.Enumeration.EnumHelper.GetDetail<StatusType>(1);
         }
 
         private static void MailQueue_MailQueueing(Communication.Mail mail)
