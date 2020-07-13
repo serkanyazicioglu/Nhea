@@ -7,15 +7,10 @@ using System.Net.Mail;
 namespace Nhea.Communication
 {
     /// <summary>
-    /// Email gönderme iþlerini yönetir
+    /// Manages e-mail sending processes.
     /// </summary>
     public sealed class SmtpHelper
     {
-        private SmtpHelper()
-        {
-            //only has static methods
-        }
-
         public static SmtpElement SendMail(string from, string toRecipients, string subject, string body)
         {
             return SendMail(from, toRecipients, String.Empty, String.Empty, subject, body, false, null);
@@ -35,9 +30,9 @@ namespace Nhea.Communication
         {
             SmtpElement smtpElement;
 
-            if (!String.IsNullOrEmpty(from))
+            if (!string.IsNullOrEmpty(from))
             {
-                from = Nhea.Text.StringHelper.ReplaceTurkishCharacters(from.ToLower().Trim());
+                from = Nhea.Text.StringHelper.ReplaceNonInvariantCharacters(Nhea.Text.StringHelper.TrimText(from, true, Text.TextCaseMode.lowercase));
 
                 smtpElement = Nhea.Configuration.Settings.Communication.SmtpSettings.Where(smtpElementQuery => smtpElementQuery.From == from).First();
             }
@@ -57,7 +52,7 @@ namespace Nhea.Communication
             }
             else
             {
-                if (!String.IsNullOrEmpty(from))
+                if (!string.IsNullOrEmpty(from))
                 {
                     throw new Exception("Related smtp setting could not found! From: " + from);
                 }

@@ -1,22 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Text.RegularExpressions;
 using Nhea.Text.Password;
 
 namespace Nhea.Text
 {
     public static class StringHelper
     {
-        /// <summary>
-        /// Replaces all Turkish characters with the culture invariant characters.
-        /// </summary>
-        /// <param name="text"></param>
-        /// <returns></returns>
-        public static string ReplaceTurkishCharacters(string text)
-        {
-            return CharacterReplace.ReplaceTurkishCharacters(text);
-        }
-
         /// <summary>
         /// Replaces all non-invariant characters to the invariant characters.
         /// </summary>
@@ -200,22 +191,21 @@ namespace Nhea.Text
             return TrimText(text, false, TextCaseMode.None);
         }
 
-        public static string TrimText(string text, bool replaceAllBlanks)
+        public static string TrimText(string text, bool removeAllWhitespaces)
         {
-            return TrimText(text, replaceAllBlanks, TextCaseMode.None);
+            return TrimText(text, removeAllWhitespaces, TextCaseMode.None);
         }
 
-        public static string TrimText(string text, bool replaceAllBlanks, TextCaseMode textCase)
+        public static string TrimText(string text, bool removeAllWhitespaces, TextCaseMode textCase)
         {
-            if (!String.IsNullOrEmpty(text))
+            if (!string.IsNullOrEmpty(text))
             {
-                if (replaceAllBlanks)
+                text = text.Trim().Trim(Environment.NewLine.ToCharArray()).Replace("﻿", string.Empty);
+
+                if (removeAllWhitespaces)
                 {
-                    text = text.Replace(" ", String.Empty);
-                }
-                else
-                {
-                    text = text.Trim();
+                    //text = text.Replace(" ", string.Empty);
+                    text = Regex.Replace(text, @"\s+", string.Empty);
                 }
 
                 if (textCase != TextCaseMode.None)

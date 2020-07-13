@@ -18,7 +18,7 @@
         {
             get
             {
-                return Nhea.Text.StringHelper.ReplaceTurkishCharacters(Translation.Trim()).ToLower();
+                return Nhea.Text.StringHelper.ReplaceNonInvariantCharacters(Translation.Trim()).ToLower();
             }
         }
 
