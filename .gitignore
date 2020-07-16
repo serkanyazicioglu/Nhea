@@ -165,4 +165,3 @@ pip-log.txt
 .DS_Store
 /packages
 /Nhea.CoreCommunicationService/Logs
-/docker-compose.override.yml
