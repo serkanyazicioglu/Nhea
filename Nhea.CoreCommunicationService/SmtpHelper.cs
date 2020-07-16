@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Mail;
 
-namespace Nhea.Communication
+namespace Nhea.CoreCommunicationService
 {
     /// <summary>
     /// Manages e-mail sending processes.
@@ -43,10 +43,36 @@ namespace Nhea.Communication
 
             if (smtpElement != null)
             {
-                MailMessage mailMessage = MailMessageBuilder.Build(smtpElement, toRecipients, ccRecipients, bccRecipients, subject, body, isHighPriority, attachments);
+                var mailMessage = MailMessageBuilder.Build(smtpElement, toRecipients, ccRecipients, bccRecipients, subject, body, isHighPriority, attachments);
 
-                SmtpClient smtpClient = SmtpClientBuilder.Build(smtpElement);
-                smtpClient.Send(mailMessage);
+                if (string.IsNullOrEmpty(smtpElement.SmtpLibrary) || smtpElement.SmtpLibrary == "default")
+                {
+                    using (var smtpClient = SmtpClientBuilder.Build(smtpElement))
+                    {
+                        smtpClient.Send(mailMessage);
+                    }
+                }
+                else if (smtpElement.SmtpLibrary == "mailkit")
+                {
+                    using (var smtpClient = SmtpClientBuilder.BuildForMailKit(smtpElement))
+                    {
+                        try
+                        {
+                            smtpClient.Send(mailMessage.ConvertToMimeMessage());
+                        }
+                        finally
+                        {
+                            if (smtpClient.IsConnected)
+                            {
+                                smtpClient.Disconnect(true);
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    throw new Exception("Smtp library not found! Library: " + smtpElement.SmtpLibrary);
+                }
 
                 return smtpElement;
             }

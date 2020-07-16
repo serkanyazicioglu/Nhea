@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Text;
 using System.Globalization;
-using System.Linq;
 
 namespace Nhea.Text
 {

@@ -5,6 +5,27 @@ namespace Nhea.Configuration.GenericConfigSection.Communication
 {
     public class SmtpElement : ConfigurationElement
     {
+        private string smtpLibrary = null;
+
+        [ConfigurationProperty("smtpLibrary", IsRequired = false, DefaultValue = "")]
+        public string SmtpLibrary
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(smtpLibrary))
+                {
+                    return smtpLibrary;
+                }
+
+                return this["smtpLibrary"].ToString();
+            }
+            set
+            {
+                smtpLibrary = value;
+            }
+        }
+
+
         private string from = null;
 
         [ConfigurationProperty("from", IsRequired = true, IsKey = true)]
