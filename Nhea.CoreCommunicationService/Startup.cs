@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Nhea.Configuration.GenericConfigSection.Communication;
 using Nhea.CoreCommunicationService.Services;
 using System;
@@ -62,6 +63,15 @@ namespace Nhea.CoreCommunicationService
                 configure.ConnectionString = sqlConnectionString;
                 configure.SmtpSettings = smtpSettings;
             });
+
+            services.AddLogging(configure => configure.AddConsole());
+
+            services.AddLogging(configure => configure.AddNheaLogger(nhea =>
+            {
+                nhea.PublishType = Nhea.Logging.PublishTypes.File;
+                nhea.AutoInform = false;
+                nhea.FriendlyName = "nhea mail service";
+            }));
 
             services.AddOptions();
 

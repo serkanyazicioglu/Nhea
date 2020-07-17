@@ -26,7 +26,7 @@ namespace Nhea.CoreCommunicationService.Services
                 {
                     await Task.Run(() =>
                     {
-                        Nhea.Web.Services.ScheduledServices.MailQueueService mailQueueService = new Web.Services.ScheduledServices.MailQueueService();
+                        Nhea.Web.Services.ScheduledServices.MailQueueService mailQueueService = new Web.Services.ScheduledServices.MailQueueService(Logger);
                         mailQueueService.StartService();
 
                     }, stoppingToken);

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Mail;
 using System.Security.Authentication;
+using MailKit.Security;
 using Nhea.Configuration.GenericConfigSection.Communication;
 
 namespace Nhea.CoreCommunicationService
@@ -21,15 +22,18 @@ namespace Nhea.CoreCommunicationService
         {
             var smtpClient = new MailKit.Net.Smtp.SmtpClient();
 
-            if (smtpElement.EnableSsl && Environment.GetEnvironmentVariable("MAILQUEUE_IGNORE_SSL_VALIDATION") == "true")
+            if (smtpElement.EnableSsl)
             {
-                smtpClient.CheckCertificateRevocation = false;
-                smtpClient.ServerCertificateValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
+                smtpClient.SslProtocols = SslProtocols.Ssl3 | SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Tls13;
 
-                //smtpClient.SslProtocols = SslProtocols.Ssl3 | SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Tls13;
+                if (Environment.GetEnvironmentVariable("MAILQUEUE_IGNORE_SSL_VALIDATION") == "true")
+                {
+                    smtpClient.CheckCertificateRevocation = false;
+                    smtpClient.ServerCertificateValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
+                }
             }
 
-            smtpClient.Connect(smtpElement.Host, smtpElement.Port, smtpElement.EnableSsl);
+            smtpClient.Connect(smtpElement.Host, smtpElement.Port, SecureSocketOptions.Auto);
             smtpClient.Authenticate(smtpElement.UserName, smtpElement.Password);
 
             return smtpClient;
