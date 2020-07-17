@@ -34,11 +34,11 @@ namespace Nhea.CoreCommunicationService
             {
                 from = Nhea.Text.StringHelper.ReplaceNonInvariantCharacters(Nhea.Text.StringHelper.TrimText(from, true, Text.TextCaseMode.lowercase));
 
-                smtpElement = Nhea.Configuration.Settings.Communication.SmtpSettings.Where(smtpElementQuery => smtpElementQuery.From == from).First();
+                smtpElement = Nhea.Configuration.Settings.Communication.SmtpSettings.Where(smtpElementQuery => smtpElementQuery.From == from).FirstOrDefault();
             }
             else
             {
-                smtpElement = Nhea.Configuration.Settings.Communication.SmtpSettings.Where(smtpElementQuery => smtpElementQuery.IsDefault == true).First();
+                smtpElement = Nhea.Configuration.Settings.Communication.SmtpSettings.Where(smtpElementQuery => smtpElementQuery.IsDefault == true).FirstOrDefault();
             }
 
             if (smtpElement != null)
