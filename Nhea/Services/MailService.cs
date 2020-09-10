@@ -15,40 +15,64 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public bool Add(string from, string toRecipient, string subject, string body)
         {
-            return Add(from, toRecipient, String.Empty, String.Empty, subject, body, MailQueue.GetDateByPriority(Priority.Medium), null);
+            return AddCore(from, toRecipient, String.Empty, String.Empty, subject, body, MailQueue.GetDateByPriority(Priority.Medium), null);
         }
 
         public bool Add(string from, string toRecipient, string subject, string body, MailQueueAttachment attachment)
         {
-            return Add(from, toRecipient, String.Empty, String.Empty, subject, body, MailQueue.GetDateByPriority(Priority.Medium), new List<MailQueueAttachment> { attachment });
+            return AddCore(from, toRecipient, String.Empty, String.Empty, subject, body, MailQueue.GetDateByPriority(Priority.Medium), new List<MailQueueAttachment> { attachment });
         }
 
         public bool Add(string from, string toRecipient, string subject, string body, List<MailQueueAttachment> attachments)
         {
-            return Add(from, toRecipient, String.Empty, String.Empty, subject, body, MailQueue.GetDateByPriority(Priority.Medium), attachments);
+            return AddCore(from, toRecipient, String.Empty, String.Empty, subject, body, MailQueue.GetDateByPriority(Priority.Medium), attachments);
         }
 
         public bool Add(string from, string toRecipient, string ccRecipients, string subject, string body)
         {
-            return Add(from, toRecipient, ccRecipients, String.Empty, subject, body, MailQueue.GetDateByPriority(Priority.Medium), null);
+            return AddCore(from, toRecipient, ccRecipients, String.Empty, subject, body, MailQueue.GetDateByPriority(Priority.Medium), null);
         }
 
         public bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body)
         {
-            return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, MailQueue.GetDateByPriority(Priority.Medium), null);
+            return AddCore(from, toRecipient, ccRecipients, bccRecipients, subject, body, MailQueue.GetDateByPriority(Priority.Medium), null);
+        }
+
+        public bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, string listUnsubscribe = null, string plainText = null, bool isBulkEmail = false, bool unsubscribeOneClick = false)
+        {
+            return AddCore(from, toRecipient, ccRecipients, bccRecipients, subject, body, MailQueue.GetDateByPriority(Priority.Medium), null,
+                listUnsubscribe: listUnsubscribe,
+                plainText: plainText,
+                isBulkEmail: isBulkEmail,
+                unsubscribeOneClick: unsubscribeOneClick);
         }
 
         public bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, List<MailQueueAttachment> attachments)
         {
-            return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, MailQueue.GetDateByPriority(Priority.Medium), attachments);
+            return AddCore(from, toRecipient, ccRecipients, bccRecipients, subject, body, MailQueue.GetDateByPriority(Priority.Medium), attachments);
+        }
+
+        public bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, List<MailQueueAttachment> attachments, string listUnsubscribe = null, string plainText = null, bool isBulkEmail = false, bool unsubscribeOneClick = false)
+        {
+            return AddCore(from, toRecipient, ccRecipients, bccRecipients, subject, body, MailQueue.GetDateByPriority(Priority.Medium), attachments,
+                listUnsubscribe: listUnsubscribe,
+                plainText: plainText,
+                isBulkEmail: isBulkEmail,
+                unsubscribeOneClick: unsubscribeOneClick);
         }
 
         public bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, Priority priority)
         {
-            return Add(from, toRecipient, ccRecipients, bccRecipients, subject, body, MailQueue.GetDateByPriority(priority), null);
+            return AddCore(from, toRecipient, ccRecipients, bccRecipients, subject, body, MailQueue.GetDateByPriority(priority), null);
         }
 
         public bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, DateTime priorityDate, List<MailQueueAttachment> attachments)
+        {
+            return AddCore(from, toRecipient, ccRecipients, bccRecipients, subject, body, priorityDate, attachments);
+        }
+
+        private bool AddCore(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, DateTime priorityDate, List<MailQueueAttachment> attachments,
+            string listUnsubscribe = null, string plainText = null, bool isBulkEmail = false, bool unsubscribeOneClick = false)
         {
             var mail = new Mail
             {
@@ -59,7 +83,11 @@ namespace Microsoft.Extensions.DependencyInjection
                 Subject = subject,
                 Body = body,
                 Priority = priorityDate,
-                Attachments = attachments
+                Attachments = attachments,
+                ListUnsubscribe = listUnsubscribe,
+                PlainText = plainText,
+                IsBulkEmail = isBulkEmail,
+                UnsubscribeOneClick = unsubscribeOneClick
             };
 
             return Add(mail);
