@@ -31,7 +31,23 @@ namespace Nhea.Communication
 
         bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, Priority priority);
 
+        bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, Priority priority, string listUnsubscribe = null,
+            string plainText = null,
+            bool isBulkEmail = false,
+            bool unsubscribeOneClick = false);
+
+        bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, Priority priority, List<MailQueueAttachment> attachments, 
+            string listUnsubscribe = null,
+            string plainText = null,
+            bool isBulkEmail = false,
+            bool unsubscribeOneClick = false);
+
         bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, DateTime priorityDate, List<MailQueueAttachment> attachments);
+
+        bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body, DateTime priorityDate, List<MailQueueAttachment> attachments, string listUnsubscribe = null,
+            string plainText = null,
+            bool isBulkEmail = false,
+            bool unsubscribeOneClick = false);
 
         bool Add(Mail mail);
     }
