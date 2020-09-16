@@ -36,12 +36,11 @@ steps:
 
 - task: NuGetToolInstaller@1
 
-- task: NuGetCommand@2
+- task: DotNetCoreCLI@2
+  displayName: "Restore packages"
   inputs:
-    command: 'restore'
-    restoreSolution: '$(solution)'
-    feedsToUse: 'select'
-
+    command: restore
+    projects: '**/*.csproj'
 
 - task: SonarCloudPrepare@1
   inputs:
