@@ -5,22 +5,22 @@ namespace Nhea.Text
 {
     internal static class TextValidator
     {
-        internal const string AlphabeticPattern = @"^\D*[a-zA-Z]?$";
+        private static Regex AlphabeticRegex = new Regex(@"^\D*[a-zA-Z]?$", RegexOptions.Compiled);
 
-        internal const string NumericPattern = @"^[0-9]+$";
+        private static Regex NumericRegex = new Regex(@"^[0-9]+$", RegexOptions.Compiled);
 
-        internal const string SingleEmailPattern = @"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*";
+        private static Regex SingleEmailRegex = new Regex(@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*", RegexOptions.Compiled);
 
-        internal const string MultipleEmailPattern = @"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*(\s*[,;]\s*\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)*\s*";
+        private static Regex MultipleEmailRegex = new Regex(@"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*(\s*[,;]\s*\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)*\s*", RegexOptions.Compiled);
 
         internal static bool IsAlphabetic(string text)
         {
-            return ValidateText(text, AlphabeticPattern);
+            return ValidateText(text, AlphabeticRegex);
         }
 
         internal static bool IsNumeric(string text)
         {
-            return ValidateText(text, NumericPattern);
+            return ValidateText(text, NumericRegex);
         }
 
         internal static bool IsEmail(string text)
@@ -42,24 +42,18 @@ namespace Nhea.Text
                 return false;
             }
 
-            if (Nhea.Text.StringHelper.ReplaceNonInvariantCharacters(text) != text)
-            {
-                return false;
-            }
-
             if (!isMultiple)
             {
-                return ValidateText(text, SingleEmailPattern);
+                return ValidateText(text, SingleEmailRegex);
             }
             else
             {
-                return ValidateText(text, MultipleEmailPattern);
+                return ValidateText(text, MultipleEmailRegex);
             }
         }
 
-        private static bool ValidateText(string text, string pattern)
+        private static bool ValidateText(string text, Regex regex)
         {
-            Regex regex = new Regex(pattern);
             Match match = regex.Match(text);
 
             return match.Success;
