@@ -27,7 +27,6 @@ namespace Nhea.Communication
         public static MailAddressCollection ParseRecipients(string address)
         {
             address = Nhea.Text.StringHelper.TrimText(address, true, Nhea.Text.TextCaseMode.lowercase).Trim(',').Trim(';');
-            address = Nhea.Text.StringHelper.ReplaceNonInvariantCharacters(address);
 
             MailAddressCollection mailAddressCollection = new MailAddressCollection();
 
