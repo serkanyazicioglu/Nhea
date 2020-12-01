@@ -7,9 +7,9 @@
     <Company>Serkan Yazıcıoğlu</Company>
     <Authors>Serkan Yazıcıoğlu</Authors>
     <PackageProjectUrl>https://github.com/serkanyazicioglu/Nhea</PackageProjectUrl>
-    <Version>2.0.0.9</Version>
-    <AssemblyVersion>2.0.0.9</AssemblyVersion>
-    <FileVersion>2.0.0.9</FileVersion>
+    <Version>2.0.0.10</Version>
+    <AssemblyVersion>2.0.0.10</AssemblyVersion>
+    <FileVersion>2.0.0.10</FileVersion>
     <PackageReleaseNotes>- Nhea is now .Net Standard 2.1
 - Added async methods for repositories
 - Added readonly constructor for repositories</PackageReleaseNotes>
