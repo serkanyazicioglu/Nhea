@@ -32,7 +32,7 @@ namespace Nhea.CoreCommunicationService
 
             if (!string.IsNullOrEmpty(from))
             {
-                from = Nhea.Text.StringHelper.ReplaceNonInvariantCharacters(Nhea.Text.StringHelper.TrimText(from, true, Text.TextCaseMode.lowercase));
+                from = Nhea.Text.StringHelper.TrimText(from, true, Text.TextCaseMode.lowercase);
 
                 smtpElement = Nhea.Configuration.Settings.Communication.SmtpSettings.Where(smtpElementQuery => smtpElementQuery.From == from).FirstOrDefault();
             }
