@@ -35,8 +35,6 @@ Project is built with .NET 6
 
 ## Using Namespaces
 
-This project also supports .net core configuration. Documentation will be provided soon.
-
 ### .Net Core Configuration
 
 There are 3 different configuration blocks for .Net Core. Logging, mailing and localization.
