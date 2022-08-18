@@ -1,37 +1,29 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <PackageTags>logging, mailqueue, enum, localization, globalization, repository</PackageTags>
-    <Description>A .Net standard library which provides logging, mailing, convertion and base repository classes.</Description>
-    <Company>Serkan Yazıcıoğlu</Company>
-    <Authors>Serkan Yazıcıoğlu</Authors>
-    <PackageProjectUrl>https://github.com/serkanyazicioglu/Nhea</PackageProjectUrl>
-    <Version>2.0.0.10</Version>
-    <AssemblyVersion>2.0.0.10</AssemblyVersion>
-    <FileVersion>2.0.0.10</FileVersion>
-    <PackageReleaseNotes>- Nhea is now .Net Standard 2.1
-- Added async methods for repositories
-- Added readonly constructor for repositories</PackageReleaseNotes>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <RepositoryUrl>https://github.com/serkanyazicioglu/Nhea</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <ProjectGuid>{c7d4ab79-be4a-464d-b048-b15ad73eee65}</ProjectGuid>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<PackageTags>logging, mailqueue, enum, localization, globalization, repository</PackageTags>
+		<Description>A .Net Core library which provides logging, mailing, convertion and base repository classes.</Description>
+		<Company>Serkan Yazıcıoğlu</Company>
+		<Authors>Serkan Yazıcıoğlu</Authors>
+		<Version>3.0.0.0</Version>
+		<PackageReleaseNotes>
+			- Nhea is now .Net 6
+			- Updated related dependencies
+		</PackageReleaseNotes>
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<PackageProjectUrl>https://github.com/serkanyazicioglu/Nhea</PackageProjectUrl>
+		<RepositoryUrl>https://github.com/serkanyazicioglu/Nhea</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<ProjectGuid>{c7d4ab79-be4a-464d-b048-b15ad73eee65}</ProjectGuid>
+	</PropertyGroup>
 
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-	 <DebugType>Portable</DebugType>
-  </PropertyGroup>
-  
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.3" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.7.0" />
-    <PackageReference Include="System.Data.Common" Version="4.3.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.1" />
-    <PackageReference Include="System.Drawing.Common" Version="4.7.0" />
-    <PackageReference Include="System.Text.Json" Version="4.7.2" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
+		<PackageReference Include="System.Data.Common" Version="4.3.0" />
+		<PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
+		<PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+	</ItemGroup>
 
 </Project>

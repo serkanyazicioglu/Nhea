@@ -31,15 +31,7 @@ Install-Package Nhea
 
 ### Prerequisites
 
-Project is built with .NET Standard 2.1
-
-Dependencies:
-- Newtonsoft.Json (>= 12.0.3)
-- System.Configuration.ConfigurationManager (>= 4.7.0)
-- System.Data.Common (>= 4.3.0)
-- System.Data.SqlClient (>= 4.8.1)
-- System.Drawing.Common (>= 4.7.0)
-- System.Text.Json (>= 4.7.2)
+Project is built with .NET 6
 
 ## Using Namespaces
 
