@@ -22,5 +22,14 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore Nhea.sln
       
+    - name: Instal sonarscanner
+      run: dotnet tool install --global dotnet-sonarscanner
+  
+    - name: Sonarscanner begin
+      run: dotnet sonarscanner begin /k:"serkanyazicioglu_Nhea" /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+  
     - name: Build
-      run: dotnet build Nhea.sln --no-restore
+      run: dotnet build Nhea.sln --no-restore --configuration Release
+      
+    - name: Sonarscanner end
+      run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}" 
