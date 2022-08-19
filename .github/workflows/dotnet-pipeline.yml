@@ -26,7 +26,7 @@ jobs:
       run: dotnet tool install --global dotnet-sonarscanner
   
     - name: Sonarscanner begin
-      run: dotnet sonarscanner begin /k:"serkanyazicioglu_Nhea" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
+      run: dotnet sonarscanner begin /o:"serkanyazicioglu" /k:"serkanyazicioglu_Nhea" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
   
     - name: Build
       run: dotnet build Nhea.sln --no-restore --configuration Release
