@@ -20,7 +20,7 @@ jobs:
         dotnet-version: 6.0.x
         
     - name: Restore dependencies
-      run: dotnet restore Nhea.sln
+      run: dotnet restore *.sln
       
     - name: Instal sonarscanner
       run: dotnet tool install --global dotnet-sonarscanner
@@ -29,7 +29,7 @@ jobs:
       run: dotnet sonarscanner begin /o:"${{ secrets.SONAR_ORGANIZATION }}" /k:"${{ secrets.SONAR_PROJECT_KEY }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
   
     - name: Build
-      run: dotnet build Nhea.sln --no-restore --configuration Release
+      run: dotnet build *.sln --no-restore --configuration Release
       
     - name: Sonarscanner end
       run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
