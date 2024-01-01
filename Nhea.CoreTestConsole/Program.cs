@@ -93,7 +93,7 @@ namespace Nhea.CoreTestConsole
             localizationService.SaveLocalization("new translation", "NewTranslation");
 
             var translation = localizationService.GetLocalization("NewTranslation");
-            Console.WriteLine("Tanslation: " + translation);
+            Console.WriteLine("Translation: " + translation);
 
             localizationService.DeleteLocalization("NewTranslation");
 
@@ -102,7 +102,7 @@ namespace Nhea.CoreTestConsole
             localizationService.SaveLocalization("new translation", "NewTranslation", recordId, "Member", languageId);
 
             var memberTranslation = localizationService.GetLocalization("NewTranslation", recordId, languageId);
-            Console.WriteLine("Tanslation: " + translation);
+            Console.WriteLine("Translation: " + translation);
 
             localizationService.DeleteLocalization(recordId, "NewTranslation", languageId);
 

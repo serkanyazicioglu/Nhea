@@ -130,13 +130,12 @@ namespace Nhea.Enumeration
             {
                 return (T)Enum.Parse(typeof(T), value.ToString());
             }
-            catch
+            catch (Exception ex)
             {
-                Exception ex = new Exception("En error occured while converting value to enumeration.");
-                ex.Data.Add("Type", typeof(T));
-                ex.Data.Add("Value", value);
-
-                throw ex;
+                Exception innerEx = new("En error occured while converting value to enumeration: " + ex.Message);
+                innerEx.Data.Add("Type", typeof(T));
+                innerEx.Data.Add("Value", value);
+                throw innerEx;
             }
         }
     }

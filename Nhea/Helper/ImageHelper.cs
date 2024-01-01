@@ -7,6 +7,7 @@ using System.Drawing.Drawing2D;
 
 namespace Nhea.Helper
 {
+    [Obsolete("Image helper is not recommended since .Net System.Drawing GDI+ packages are only supported on Windows.")]
     public static class ImageHelper
     {
         public static byte[] ResizeImage(byte[] data, int width, int height, bool stretchImage)
@@ -55,7 +56,7 @@ namespace Nhea.Helper
             catch (Exception ex)
             {
                 Nhea.Logging.Logger.Log(ex);
-                throw ex;
+                throw;
             }
         }
 

@@ -6,12 +6,6 @@ namespace Nhea.Text
 {
     internal static class CharacterReplace
     {
-        internal static string ReplaceTurkishCharacters(string text)
-        {
-            return text.Replace('İ', 'I').Replace('Ğ', 'G').Replace('Ü', 'U').Replace('Ş', 'S').Replace('Ö', 'O').Replace('Ç', 'C')
-            .Replace('ı', 'i').Replace('ğ', 'g').Replace('ü', 'u').Replace('ş', 's').Replace('ö', 'o').Replace('ç', 'c');
-        }
-
         internal static string ReplaceNonInvariantCharacters(string text)
         {
             if (!String.IsNullOrEmpty(text))

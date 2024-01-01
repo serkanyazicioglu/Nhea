@@ -24,7 +24,7 @@ namespace Nhea.CoreCommunicationService
 
             if (smtpElement.EnableSsl)
             {
-                smtpClient.SslProtocols = SslProtocols.Ssl3 | SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Tls13;
+                smtpClient.SslProtocols = SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Tls13;
 
                 if (Environment.GetEnvironmentVariable("MAILQUEUE_IGNORE_SSL_VALIDATION") == "true")
                 {

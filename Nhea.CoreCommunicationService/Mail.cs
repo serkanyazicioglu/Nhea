@@ -51,7 +51,7 @@ namespace Nhea.CoreCommunicationService
 
                     return;
                 }
-                catch (Exception ex)
+                catch
                 {
                     if (tryCount < 10)
                     {
@@ -59,7 +59,7 @@ namespace Nhea.CoreCommunicationService
                     }
                     else
                     {
-                        throw ex;
+                        throw;
                     }
                 }
             }

@@ -68,10 +68,10 @@ namespace Nhea.Communication
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 providers = null;
-                throw ex;
+                throw;
             }
         }
 
