@@ -30,7 +30,7 @@ namespace Nhea.Text
 
         internal static bool IsEmail(string text, bool isMultiple)
         {
-            if (String.IsNullOrEmpty(text))
+            if (string.IsNullOrEmpty(text))
             {
                 return false;
             }

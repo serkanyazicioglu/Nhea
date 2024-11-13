@@ -38,7 +38,7 @@ namespace Nhea.Configuration.GenericConfigSection.Communication
                     return from;
                 }
 
-                if (!String.IsNullOrEmpty(this["from"].ToString()))
+                if (!string.IsNullOrEmpty(this["from"].ToString()))
                 {
                     return this["from"].ToString();
                 }
@@ -65,7 +65,7 @@ namespace Nhea.Configuration.GenericConfigSection.Communication
                     return host;
                 }
 
-                if (!String.IsNullOrEmpty(this["host"].ToString()))
+                if (!string.IsNullOrEmpty(this["host"].ToString()))
                 {
                     return this["host"].ToString();
                 }
@@ -92,7 +92,7 @@ namespace Nhea.Configuration.GenericConfigSection.Communication
                     return enableSsl.Value;
                 }
 
-                if (!String.IsNullOrEmpty(this["enableSsl"].ToString()))
+                if (!string.IsNullOrEmpty(this["enableSsl"].ToString()))
                 {
                     return Convert.ToBoolean(this["enableSsl"]);
                 }
@@ -119,7 +119,7 @@ namespace Nhea.Configuration.GenericConfigSection.Communication
                     return userName;
                 }
 
-                if (!String.IsNullOrEmpty(this["userName"].ToString()))
+                if (!string.IsNullOrEmpty(this["userName"].ToString()))
                 {
                     return this["userName"].ToString();
                 }
@@ -146,7 +146,7 @@ namespace Nhea.Configuration.GenericConfigSection.Communication
                     return password;
                 }
 
-                if (!String.IsNullOrEmpty(this["password"].ToString()))
+                if (!string.IsNullOrEmpty(this["password"].ToString()))
                 {
                     return this["password"].ToString();
                 }
@@ -173,7 +173,7 @@ namespace Nhea.Configuration.GenericConfigSection.Communication
                     return port.Value;
                 }
 
-                if (!String.IsNullOrEmpty(this["port"].ToString()))
+                if (!string.IsNullOrEmpty(this["port"].ToString()))
                 {
                     return Convert.ToInt32(this["port"]);
                 }
@@ -200,7 +200,7 @@ namespace Nhea.Configuration.GenericConfigSection.Communication
                     return isDefault.Value;
                 }
 
-                if (!String.IsNullOrEmpty(this["isDefault"].ToString()))
+                if (!string.IsNullOrEmpty(this["isDefault"].ToString()))
                 {
                     return Convert.ToBoolean(this["isDefault"]);
                 }
@@ -287,7 +287,7 @@ namespace Nhea.Configuration.GenericConfigSection.Communication
                     return autoGeneratePlainText.Value;
                 }
 
-                if (!String.IsNullOrEmpty(this["autoGeneratePlainText"].ToString()))
+                if (!string.IsNullOrEmpty(this["autoGeneratePlainText"].ToString()))
                 {
                     return Convert.ToBoolean(this["autoGeneratePlainText"]);
                 }
@@ -314,7 +314,7 @@ namespace Nhea.Configuration.GenericConfigSection.Communication
                     return disableHistoryLogging.Value;
                 }
 
-                if (!String.IsNullOrEmpty(this["disableHistoryLogging"].ToString()))
+                if (!string.IsNullOrEmpty(this["disableHistoryLogging"].ToString()))
                 {
                     return Convert.ToBoolean(this["disableHistoryLogging"]);
                 }

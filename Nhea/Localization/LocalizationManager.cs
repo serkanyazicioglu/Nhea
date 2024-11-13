@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Nhea.Utils;
 
 namespace Nhea.Localization
@@ -7,8 +7,6 @@ namespace Nhea.Localization
     public static class LocalizationManager
     {
         #region Queries
-
-        private const string SelectTranslationQuery = "SELECT [Translation] FROM [Localization] WHERE [Key] = @Key AND TargetEntityId IS NULL AND LanguageId = @LanguageId";
 
         private const string SelectTranslationWithTargetEntityIdQuery = "SELECT [Translation] FROM [Localization] WHERE [Key] = @Key AND TargetEntityId = @TargetEntityId AND LanguageId = @LanguageId";
 
@@ -66,7 +64,7 @@ END";
             {
                 string selectQuery = SelectTranslationWithTargetEntityIdQuery;
 
-                using (SqlCommand sqlCommand = new SqlCommand(selectQuery, sqlConnection))
+                using (SqlCommand sqlCommand = new(selectQuery, sqlConnection))
                 {
                     sqlCommand.Parameters.Clear();
 
@@ -80,41 +78,37 @@ END";
 
                     sqlCommand.Connection.Close();
 
-                    if (translation != null && !String.IsNullOrEmpty(translation.ToString()))
+                    if (translation != null && !string.IsNullOrEmpty(translation.ToString()))
                     {
                         return translation.ToString();
                     }
                 }
             }
 
-            return String.Empty;
+            return string.Empty;
         }
 
         public static Guid? GetTargetEntityId(string key, string translation, string targetEntityName, int languageId)
         {
             using (SqlConnection sqlConnection = DBUtil.CreateConnection())
+            using (SqlCommand sqlCommand = new(SelectTargetEntityIdQuery, sqlConnection))
             {
-                string selectQuery = SelectTargetEntityIdQuery;
+                sqlCommand.Parameters.Clear();
 
-                using (SqlCommand sqlCommand = new SqlCommand(selectQuery, sqlConnection))
+                sqlCommand.Parameters.Add(new SqlParameter("@Key", key));
+                sqlCommand.Parameters.Add(new SqlParameter("@Translation", translation));
+                sqlCommand.Parameters.Add(new SqlParameter("@LanguageId", languageId));
+                sqlCommand.Parameters.Add(new SqlParameter("@TargetEntityName", targetEntityName));
+
+                sqlCommand.Connection.Open();
+
+                object targetEntityId = sqlCommand.ExecuteScalar();
+
+                sqlCommand.Connection.Close();
+
+                if (targetEntityId != null && !string.IsNullOrEmpty(targetEntityId.ToString()))
                 {
-                    sqlCommand.Parameters.Clear();
-
-                    sqlCommand.Parameters.Add(new SqlParameter("@Key", key));
-                    sqlCommand.Parameters.Add(new SqlParameter("@Translation", translation));
-                    sqlCommand.Parameters.Add(new SqlParameter("@LanguageId", languageId));
-                    sqlCommand.Parameters.Add(new SqlParameter("@TargetEntityName", targetEntityName));
-
-                    sqlCommand.Connection.Open();
-
-                    object targetEntityId = sqlCommand.ExecuteScalar();
-
-                    sqlCommand.Connection.Close();
-
-                    if (targetEntityId != null && !String.IsNullOrEmpty(targetEntityId.ToString()))
-                    {
-                        return new Guid(targetEntityId.ToString());
-                    }
+                    return new Guid(targetEntityId.ToString());
                 }
             }
 
@@ -123,26 +117,24 @@ END";
 
         public static void SaveLocalization(string translation, string key, Guid targetEntityId, string targetEntityName, int languageId)
         {
-            if (!String.IsNullOrEmpty(translation))
+            if (!string.IsNullOrEmpty(translation))
             {
                 using (SqlConnection sqlConnection = DBUtil.CreateConnection())
+                using (SqlCommand sqlCommand = new(SaveQuery, sqlConnection))
                 {
-                    using (SqlCommand sqlCommand = new SqlCommand(SaveQuery, sqlConnection))
-                    {
-                        sqlCommand.Parameters.Clear();
+                    sqlCommand.Parameters.Clear();
 
-                        sqlCommand.Parameters.Add(new SqlParameter("@Translation", translation));
-                        sqlCommand.Parameters.Add(new SqlParameter("@Key", key));
-                        sqlCommand.Parameters.Add(new SqlParameter("@TargetEntityId", targetEntityId));
-                        sqlCommand.Parameters.Add(new SqlParameter("@LanguageId", languageId));
-                        sqlCommand.Parameters.Add(new SqlParameter("@TargetEntityName", targetEntityName));
+                    sqlCommand.Parameters.Add(new SqlParameter("@Translation", translation));
+                    sqlCommand.Parameters.Add(new SqlParameter("@Key", key));
+                    sqlCommand.Parameters.Add(new SqlParameter("@TargetEntityId", targetEntityId));
+                    sqlCommand.Parameters.Add(new SqlParameter("@LanguageId", languageId));
+                    sqlCommand.Parameters.Add(new SqlParameter("@TargetEntityName", targetEntityName));
 
-                        sqlCommand.Connection.Open();
+                    sqlCommand.Connection.Open();
 
-                        sqlCommand.ExecuteNonQuery();
+                    sqlCommand.ExecuteNonQuery();
 
-                        sqlCommand.Connection.Close();
-                    }
+                    sqlCommand.Connection.Close();
                 }
             }
             else
@@ -153,24 +145,22 @@ END";
 
         public static void SaveLocalization(string translation, string key, int languageId)
         {
-            if (!String.IsNullOrEmpty(translation))
+            if (!string.IsNullOrEmpty(translation))
             {
                 using (SqlConnection sqlConnection = DBUtil.CreateConnection())
+                using (SqlCommand sqlCommand = new(SaveQueryWithoutTargetEntityId, sqlConnection))
                 {
-                    using (SqlCommand sqlCommand = new SqlCommand(SaveQueryWithoutTargetEntityId, sqlConnection))
-                    {
-                        sqlCommand.Parameters.Clear();
+                    sqlCommand.Parameters.Clear();
 
-                        sqlCommand.Parameters.Add(new SqlParameter("@Translation", translation));
-                        sqlCommand.Parameters.Add(new SqlParameter("@Key", key));
-                        sqlCommand.Parameters.Add(new SqlParameter("@LanguageId", languageId));
+                    sqlCommand.Parameters.Add(new SqlParameter("@Translation", translation));
+                    sqlCommand.Parameters.Add(new SqlParameter("@Key", key));
+                    sqlCommand.Parameters.Add(new SqlParameter("@LanguageId", languageId));
 
-                        sqlCommand.Connection.Open();
+                    sqlCommand.Connection.Open();
 
-                        sqlCommand.ExecuteNonQuery();
+                    sqlCommand.ExecuteNonQuery();
 
-                        sqlCommand.Connection.Close();
-                    }
+                    sqlCommand.Connection.Close();
                 }
             }
             else
@@ -182,94 +172,55 @@ END";
         public static void DeleteLocalization(Guid targetEntityId)
         {
             using (SqlConnection sqlConnection = DBUtil.CreateConnection())
+            using (SqlCommand sqlCommand = new(DeleteAllQuery, sqlConnection))
             {
-                using (SqlCommand sqlCommand = new SqlCommand(DeleteAllQuery, sqlConnection))
-                {
-                    sqlCommand.Parameters.Clear();
+                sqlCommand.Parameters.Clear();
 
-                    sqlCommand.Parameters.Add(new SqlParameter("@TargetEntityId", targetEntityId));
+                sqlCommand.Parameters.Add(new SqlParameter("@TargetEntityId", targetEntityId));
 
-                    sqlCommand.Connection.Open();
+                sqlCommand.Connection.Open();
 
-                    sqlCommand.ExecuteNonQuery();
+                sqlCommand.ExecuteNonQuery();
 
-                    sqlCommand.Connection.Close();
-                }
+                sqlCommand.Connection.Close();
             }
         }
 
         public static void DeleteLocalization(string key, int languageId)
         {
             using (SqlConnection sqlConnection = DBUtil.CreateConnection())
+            using (SqlCommand sqlCommand = new(DeleteWithKeyQuery, sqlConnection))
             {
-                using (SqlCommand sqlCommand = new SqlCommand(DeleteWithKeyQuery, sqlConnection))
-                {
-                    sqlCommand.Parameters.Clear();
+                sqlCommand.Parameters.Clear();
 
-                    sqlCommand.Parameters.Add(new SqlParameter("@Key", key));
-                    sqlCommand.Parameters.Add(new SqlParameter("@LanguageId", languageId));
+                sqlCommand.Parameters.Add(new SqlParameter("@Key", key));
+                sqlCommand.Parameters.Add(new SqlParameter("@LanguageId", languageId));
 
-                    sqlCommand.Connection.Open();
+                sqlCommand.Connection.Open();
 
-                    sqlCommand.ExecuteNonQuery();
+                sqlCommand.ExecuteNonQuery();
 
-                    sqlCommand.Connection.Close();
-                }
+                sqlCommand.Connection.Close();
             }
         }
 
         public static void DeleteLocalization(Guid targetEntityId, string key, int languageId)
         {
             using (SqlConnection sqlConnection = DBUtil.CreateConnection())
+            using (SqlCommand sqlCommand = new(DeleteWithTargetEntityIdQuery, sqlConnection))
             {
-                using (SqlCommand sqlCommand = new SqlCommand(DeleteWithTargetEntityIdQuery, sqlConnection))
-                {
-                    sqlCommand.Parameters.Clear();
+                sqlCommand.Parameters.Clear();
 
-                    sqlCommand.Parameters.Add(new SqlParameter("@TargetEntityId", targetEntityId));
-                    sqlCommand.Parameters.Add(new SqlParameter("@Key", key));
-                    sqlCommand.Parameters.Add(new SqlParameter("@LanguageId", languageId));
+                sqlCommand.Parameters.Add(new SqlParameter("@TargetEntityId", targetEntityId));
+                sqlCommand.Parameters.Add(new SqlParameter("@Key", key));
+                sqlCommand.Parameters.Add(new SqlParameter("@LanguageId", languageId));
 
-                    sqlCommand.Connection.Open();
+                sqlCommand.Connection.Open();
 
-                    sqlCommand.ExecuteNonQuery();
+                sqlCommand.ExecuteNonQuery();
 
-                    sqlCommand.Connection.Close();
-                }
+                sqlCommand.Connection.Close();
             }
         }
-
-        //public static bool Exists(Guid targetEntityId, string twoLetterCulture)
-        //{
-        //    return CurrentCatalog.Where(currentCatalogQuery => currentCatalogQuery.TargetEntityId == targetEntityId && currentCatalogQuery.TwoLetterIsoLanguageName == twoLetterCulture).Any();
-        //}
-
-        //public static bool Exists(Guid targetEntityId, string targetEntityName, string twoLetterCulture)
-        //{
-        //    return CurrentCatalog.Where(currentCatalogQuery => currentCatalogQuery.TargetEntityId == targetEntityId && currentCatalogQuery.TargetEntityName == targetEntityName && currentCatalogQuery.TwoLetterIsoLanguageName == twoLetterCulture).Any();
-        //}
-
-        //public static bool Exists(Guid targetEntityId, string targetEntityName, string searchText, string twoLetterCulture)
-        //{
-        //    searchText = Nhea.Text.StringHelper.ReplaceTurkishCharacters(searchText).ToLower().Trim();
-
-        //    string[] words = searchText.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-        //    Expression<Func<Catalog, bool>> filter = currentCatalogQuery => currentCatalogQuery.TargetEntityId == targetEntityId
-        //        && currentCatalogQuery.TargetEntityName == targetEntityName
-        //        && currentCatalogQuery.TwoLetterIsoLanguageName == twoLetterCulture
-        //        && currentCatalogQuery.SearchText.Contains(searchText);
-
-        //    //Expression<Func<Catalog, bool>> wordFilter = null;
-
-        //    //foreach (string word in words)
-        //    //{
-        //    //    wordFilter = wordFilter.Or(catalogQuery => catalogQuery.SearchText.Contains(word));
-        //    //}
-
-        //    //filter = filter.And(wordFilter);
-
-        //    return CurrentCatalog.Where(filter.Compile()).Any();
-        //}
     }
 }

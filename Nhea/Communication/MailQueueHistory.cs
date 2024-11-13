@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Nhea.Utils;
 
 namespace Nhea.Communication
@@ -14,7 +14,7 @@ namespace Nhea.Communication
             {
                 sqlConnection.Open();
 
-                using (SqlCommand cmd = new SqlCommand(SetMailStatusCommand, sqlConnection))
+                using (SqlCommand cmd = new(SetMailStatusCommand, sqlConnection))
                 {
                     cmd.Parameters.Clear();
                     cmd.Parameters.Add(new SqlParameter("@Id", id));

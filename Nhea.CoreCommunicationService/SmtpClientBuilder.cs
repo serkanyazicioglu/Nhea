@@ -10,12 +10,12 @@ namespace Nhea.CoreCommunicationService
     {
         public static SmtpClient Build(SmtpElement smtpElement)
         {
-            SmtpClient smtpClient = new SmtpClient(smtpElement.Host);
-            smtpClient.Credentials = new System.Net.NetworkCredential(smtpElement.UserName, smtpElement.Password);
-            smtpClient.Port = smtpElement.Port;
-            smtpClient.EnableSsl = smtpElement.EnableSsl;
-
-            return smtpClient;
+            return new(smtpElement.Host)
+            {
+                Credentials = new System.Net.NetworkCredential(smtpElement.UserName, smtpElement.Password),
+                Port = smtpElement.Port,
+                EnableSsl = smtpElement.EnableSsl
+            };
         }
 
         public static MailKit.Net.Smtp.SmtpClient BuildForMailKit(SmtpElement smtpElement)
@@ -24,7 +24,7 @@ namespace Nhea.CoreCommunicationService
 
             if (smtpElement.EnableSsl)
             {
-                smtpClient.SslProtocols = SslProtocols.Tls | SslProtocols.Tls11 | SslProtocols.Tls12 | SslProtocols.Tls13;
+                smtpClient.SslProtocols = SslProtocols.Tls12 | SslProtocols.Tls13;
 
                 if (Environment.GetEnvironmentVariable("MAILQUEUE_IGNORE_SSL_VALIDATION") == "true")
                 {

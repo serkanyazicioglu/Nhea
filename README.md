@@ -31,7 +31,7 @@ Install-Package Nhea
 
 ### Prerequisites
 
-Project is built with .NET 6
+Project is built with .NET 9
 
 ## Using Namespaces
 

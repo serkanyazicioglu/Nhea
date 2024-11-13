@@ -1,6 +1,5 @@
-using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Nhea.Utils;
 
 namespace Nhea.Communication
@@ -44,22 +43,23 @@ namespace Nhea.Communication
             {
                 using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
                 {
-                    using (SqlCommand cmd = new SqlCommand(SelectCommandText, sqlConnection))
+                    using (SqlCommand cmd = new(SelectCommandText, sqlConnection))
                     {
                         cmd.Connection.Open();
 
-                        SqlDataReader reader = cmd.ExecuteReader();
+                        var reader = cmd.ExecuteReader();
 
                         while (reader.Read())
                         {
-                            MailProvider provider = new MailProvider();
-
-                            provider.Id = reader.GetInt32(0);
-                            provider.Name = reader.GetString(1);
-                            provider.Url = reader.GetString(2);
-                            provider.Description = reader.GetString(3);
-                            provider.PackageSize = reader.GetInt32(4);
-                            provider.StandbyPeriod = reader.GetInt32(5);
+                            MailProvider provider = new()
+                            {
+                                Id = reader.GetInt32(0),
+                                Name = reader.GetString(1),
+                                Url = reader.GetString(2),
+                                Description = reader.GetString(3),
+                                PackageSize = reader.GetInt32(4),
+                                StandbyPeriod = reader.GetInt32(5)
+                            };
 
                             Providers.Add(provider.Id, provider);
                         }

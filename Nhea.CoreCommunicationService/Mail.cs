@@ -2,7 +2,7 @@
 using Nhea.Utils;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.IO;
 using System.Linq;
 
@@ -16,7 +16,6 @@ namespace Nhea.CoreCommunicationService
              ([Id],[From],[To],[Cc],[Bcc],[Subject],[Body],[MailProviderId],[Priority],[HasAttachment],[CreateDate],[Status])
              VALUES 
              (@MailQueueId,@From,@To,@Cc,@Bcc,@Subject,@Body,@MailProviderId,@Priority,@HasAttachment,@CreateDate,@Status);" + DeleteCommandText;
-        private const string DeleteAttachmentsCommandText = @"DELETE FROM nhea_MailQueueAttachment WHERE MailQueueId = @MailQueueId";
 
         public void Send()
         {
@@ -70,7 +69,7 @@ namespace Nhea.CoreCommunicationService
             try
             {
                 using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
-                using (SqlCommand setStatusCommand = new SqlCommand(String.Format(UpdateStatusCommandText, "0"), sqlConnection))
+                using (SqlCommand setStatusCommand = new(String.Format(UpdateStatusCommandText, "0"), sqlConnection))
                 {
                     sqlConnection.Open();
                     setStatusCommand.Parameters.Add(new SqlParameter("@MailQueueId", Id));
@@ -89,7 +88,7 @@ namespace Nhea.CoreCommunicationService
             {
                 sqlConnection.Open();
 
-                using (SqlCommand cmd = new SqlCommand(MoveToHistoryCommandText, sqlConnection))
+                using (SqlCommand cmd = new(MoveToHistoryCommandText, sqlConnection))
                 {
                     cmd.Parameters.Clear();
                     cmd.Parameters.Add(new SqlParameter("@MailQueueId", Id));
@@ -126,7 +125,7 @@ namespace Nhea.CoreCommunicationService
             {
                 sqlConnection.Open();
 
-                using (SqlCommand cmd = new SqlCommand(DeleteCommandText, sqlConnection))
+                using (SqlCommand cmd = new(DeleteCommandText, sqlConnection))
                 {
                     cmd.Parameters.Clear();
                     cmd.Parameters.Add(new SqlParameter("@MailQueueId", Id));

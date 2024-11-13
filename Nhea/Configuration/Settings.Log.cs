@@ -28,7 +28,7 @@ namespace Nhea.Configuration
                         return CurrentLogConfigurationSettings.ConnectionString;
                     }
 
-                    if (!String.IsNullOrEmpty(config.ConnectionName))
+                    if (!string.IsNullOrEmpty(config.ConnectionName))
                     {
                         return config.ConnectionName;
                     }

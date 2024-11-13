@@ -27,7 +27,7 @@ namespace Nhea.Logging
                 exceptionData = string.Empty;
                 fileName = string.Empty;
 
-                string exceptionMessage = String.Empty;
+                string exceptionMessage = string.Empty;
                 StringBuilder exceptionStackTrace = new StringBuilder();
 
                 while (exception != null)
@@ -80,7 +80,7 @@ namespace Nhea.Logging
 
                                 string file = frame.GetFileName();
 
-                                if (!String.IsNullOrEmpty(file))
+                                if (!string.IsNullOrEmpty(file))
                                 {
                                     fileName = file;
 

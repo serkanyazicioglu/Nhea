@@ -13,12 +13,12 @@ namespace Nhea.CoreCommunicationService
     {
         public static SmtpElement SendMail(string from, string toRecipients, string subject, string body)
         {
-            return SendMail(from, toRecipients, String.Empty, String.Empty, subject, body, false, null);
+            return SendMail(from, toRecipients, string.Empty, string.Empty, subject, body, false, null);
         }
 
         public static SmtpElement SendMail(string from, string toRecipients, string ccRecipients, string subject, string body)
         {
-            return SendMail(from, toRecipients, ccRecipients, String.Empty, subject, body, false, null);
+            return SendMail(from, toRecipients, ccRecipients, string.Empty, subject, body, false, null);
         }
 
         public static SmtpElement SendMail(string from, string toRecipients, string ccRecipients, string bccRecipients, string subject, string body)

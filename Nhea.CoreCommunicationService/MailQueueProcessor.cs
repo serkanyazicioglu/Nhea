@@ -3,7 +3,7 @@ using Nhea.Logging;
 using Nhea.Utils;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace Nhea.CoreCommunicationService
 {
@@ -34,7 +34,7 @@ namespace Nhea.CoreCommunicationService
             }
 
             using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
-            using (SqlCommand cmd = new SqlCommand(cmdText, sqlConnection))
+            using (SqlCommand cmd = new(cmdText, sqlConnection))
             {
                 cmd.Connection.Open();
 
@@ -49,9 +49,10 @@ namespace Nhea.CoreCommunicationService
 
                 while (reader.Read())
                 {
-                    var mail = new Nhea.CoreCommunicationService.Mail();
-
-                    mail.Id = reader.GetGuid(0);
+                    var mail = new Nhea.CoreCommunicationService.Mail
+                    {
+                        Id = reader.GetGuid(0)
+                    };
 
                     try
                     {
@@ -68,7 +69,7 @@ namespace Nhea.CoreCommunicationService
                         if (mail.HasAttachment)
                         {
                             using (SqlConnection attachmentConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
-                            using (SqlCommand attachmentCommand = new SqlCommand(SelectAttachmentsCommandText, attachmentConnection))
+                            using (SqlCommand attachmentCommand = new(SelectAttachmentsCommandText, attachmentConnection))
                             {
                                 attachmentConnection.Open();
 

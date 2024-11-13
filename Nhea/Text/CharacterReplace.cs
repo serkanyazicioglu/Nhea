@@ -8,7 +8,7 @@ namespace Nhea.Text
     {
         internal static string ReplaceNonInvariantCharacters(string text)
         {
-            if (!String.IsNullOrEmpty(text))
+            if (!string.IsNullOrEmpty(text))
             {
                 text = text.Replace('İ', 'I').Replace('ı', 'i')
                 .Replace('Ğ', 'G').Replace('ğ', 'g')
@@ -66,7 +66,7 @@ namespace Nhea.Text
         {
             for (int i = 0; i < 10; i++)
             {
-                text = text.Replace(i.ToString(), String.Empty);
+                text = text.Replace(i.ToString(), string.Empty);
             }
 
             return text;
@@ -74,7 +74,7 @@ namespace Nhea.Text
 
         internal static string RemoveLastCharacter(string text)
         {
-            if (!String.IsNullOrEmpty(text))
+            if (!string.IsNullOrEmpty(text))
             {
                 return text.Substring(0, text.Length - 1);
             }
@@ -84,7 +84,7 @@ namespace Nhea.Text
 
         internal static string SplitText(string text, int length, string end)
         {
-            if (!String.IsNullOrEmpty(text))
+            if (!string.IsNullOrEmpty(text))
             {
                 if (text.Length > length)
                 {

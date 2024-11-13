@@ -15,22 +15,22 @@ namespace Microsoft.Extensions.DependencyInjection
 
         public bool Add(string from, string toRecipient, string subject, string body)
         {
-            return AddCore(from, toRecipient, String.Empty, String.Empty, subject, body, MailQueue.GetDateByPriority(Priority.Medium), null);
+            return AddCore(from, toRecipient, string.Empty, string.Empty, subject, body, MailQueue.GetDateByPriority(Priority.Medium), null);
         }
 
         public bool Add(string from, string toRecipient, string subject, string body, MailQueueAttachment attachment)
         {
-            return AddCore(from, toRecipient, String.Empty, String.Empty, subject, body, MailQueue.GetDateByPriority(Priority.Medium), new List<MailQueueAttachment> { attachment });
+            return AddCore(from, toRecipient, string.Empty, string.Empty, subject, body, MailQueue.GetDateByPriority(Priority.Medium), new List<MailQueueAttachment> { attachment });
         }
 
         public bool Add(string from, string toRecipient, string subject, string body, List<MailQueueAttachment> attachments)
         {
-            return AddCore(from, toRecipient, String.Empty, String.Empty, subject, body, MailQueue.GetDateByPriority(Priority.Medium), attachments);
+            return AddCore(from, toRecipient, string.Empty, string.Empty, subject, body, MailQueue.GetDateByPriority(Priority.Medium), attachments);
         }
 
         public bool Add(string from, string toRecipient, string ccRecipients, string subject, string body)
         {
-            return AddCore(from, toRecipient, ccRecipients, String.Empty, subject, body, MailQueue.GetDateByPriority(Priority.Medium), null);
+            return AddCore(from, toRecipient, ccRecipients, string.Empty, subject, body, MailQueue.GetDateByPriority(Priority.Medium), null);
         }
 
         public bool Add(string from, string toRecipient, string ccRecipients, string bccRecipients, string subject, string body)

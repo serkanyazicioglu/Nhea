@@ -1,15 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
-		<TargetFramework>net6.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<PackageTags>logging, mailqueue, enum, localization, globalization, repository</PackageTags>
 		<Description>A .Net Core library which provides logging, mailing, convertion and base repository classes.</Description>
 		<Company>Serkan Yazıcıoğlu</Company>
 		<Authors>Serkan Yazıcıoğlu</Authors>
-		<Version>3.0.0.0</Version>
+		<Version>4.0.0.0</Version>
 		<PackageReleaseNotes>
-			- Nhea is now .Net 6
-			- Updated related dependencies
+			- Nhea is now .Net 9
 		</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageProjectUrl>https://github.com/serkanyazicioglu/Nhea</PackageProjectUrl>
@@ -19,8 +18,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="6.0.0" />
-		<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.0" />
 	</ItemGroup>
 </Project>

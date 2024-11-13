@@ -105,7 +105,7 @@ namespace Nhea.Logging.LogPublisher
 
                 detail += "<b>----------------------------------end----------------------------------</b>";
 
-                string subject = String.Empty;
+                string subject = string.Empty;
 
                 if (string.IsNullOrEmpty(Settings.Log.MailList))
                 {

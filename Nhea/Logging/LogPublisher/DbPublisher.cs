@@ -2,7 +2,7 @@
 using Nhea.Text;
 using Nhea.Utils;
 using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace Nhea.Logging.LogPublisher
 {
@@ -12,18 +12,14 @@ namespace Nhea.Logging.LogPublisher
         {
             try
             {
-                string exceptionFile;
-                string exceptionDetail;
-                string exceptionData;
-
-                ExceptionDetailBuilder.Build(this.Exception, out exceptionDetail, out exceptionData, out exceptionFile);
+                ExceptionDetailBuilder.Build(this.Exception, out string exceptionDetail, out string exceptionData, out string exceptionFile);
 
                 string insertCommandText = @"INSERT INTO nhea_Log([Source], [UserName], [Level], [Message], [ExceptionFile], [Exception], [ExceptionData]) 
                                                 VALUES(@Source, @UserName, @Level, @Message, @ExceptionFile, @Exception, @ExceptionData)";
 
                 using (SqlConnection sqlConnection = DBUtil.CreateConnection(ConnectionSource.Log))
                 {
-                    using (SqlCommand cmd = new SqlCommand(insertCommandText, sqlConnection))
+                    using (SqlCommand cmd = new(insertCommandText, sqlConnection))
                     {
                         cmd.Parameters.Clear();
 
@@ -58,7 +54,7 @@ namespace Nhea.Logging.LogPublisher
                             cmd.Parameters.Add(new SqlParameter("@UserName", StringHelper.SplitText(UserName, 255)));
                         }
 
-                        if (!String.IsNullOrEmpty(exceptionDetail))
+                        if (!string.IsNullOrEmpty(exceptionDetail))
                         {
                             cmd.Parameters.Add(new SqlParameter("@Exception", StringHelper.SplitText(exceptionDetail, 8000)));
                         }
@@ -67,7 +63,7 @@ namespace Nhea.Logging.LogPublisher
                             cmd.Parameters.Add(new SqlParameter("@Exception", DBNull.Value));
                         }
 
-                        if (!String.IsNullOrEmpty(exceptionFile))
+                        if (!string.IsNullOrEmpty(exceptionFile))
                         {
                             cmd.Parameters.Add(new SqlParameter("@ExceptionFile", StringHelper.SplitText(exceptionFile, 4000)));
                         }
@@ -76,7 +72,7 @@ namespace Nhea.Logging.LogPublisher
                             cmd.Parameters.Add(new SqlParameter("@ExceptionFile", DBNull.Value));
                         }
 
-                        if (!String.IsNullOrEmpty(exceptionData))
+                        if (!string.IsNullOrEmpty(exceptionData))
                         {
                             cmd.Parameters.Add(new SqlParameter("@ExceptionData", StringHelper.SplitText(exceptionData, 4000)));
                         }

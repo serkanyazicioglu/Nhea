@@ -16,7 +16,7 @@ namespace Nhea.Helper
         {
             try
             {
-                if (value == null || String.IsNullOrEmpty(value.ToString()))
+                if (value == null || string.IsNullOrEmpty(value.ToString()))
                 {
                     return defaultValue;
                 }
@@ -38,7 +38,7 @@ namespace Nhea.Helper
         {
             try
             {
-                if (value == null || value == DBNull.Value || value.ToString() == String.Empty)
+                if (value == null || value == DBNull.Value || value.ToString() == string.Empty)
                 {
                     return default(T);
                 }
@@ -65,7 +65,7 @@ namespace Nhea.Helper
             {
                 ex.Data.Add("Type", typeof(T).ToString());
                 ex.Data.Add("Value", value);
-                throw ex;
+                throw;
             }
         }
 
@@ -88,7 +88,7 @@ namespace Nhea.Helper
             {
                 CultureInfo cultureInfo;
 
-                if (!String.IsNullOrEmpty(culture))
+                if (!string.IsNullOrEmpty(culture))
                 {
                     cultureInfo = new CultureInfo(culture);
                 }

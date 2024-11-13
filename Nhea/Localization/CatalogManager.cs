@@ -2,7 +2,7 @@
 using Nhea.Utils;
 using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using System.Linq;
 
 namespace Nhea.Localization
@@ -31,26 +31,26 @@ WHERE [Language].Status = 1 AND [TargetEntityId] IS NULL";
                         {
                             if (currentCatalog == null)
                             {
-                                List<Catalog> catalogList = new List<Catalog>();
+                                var catalogList = new List<Catalog>();
 
                                 using (SqlConnection sqlConnection = DBUtil.CreateConnection())
                                 {
-                                    using (SqlCommand cmd = new SqlCommand(LocalizationSelectCommandText, sqlConnection))
+                                    using (SqlCommand cmd = new(LocalizationSelectCommandText, sqlConnection))
                                     {
                                         cmd.Connection.Open();
                                         SqlDataReader reader = cmd.ExecuteReader();
 
                                         while (reader.Read())
                                         {
-                                            Catalog catalog = new Catalog();
-                                            catalog.Key = reader.GetString(0);
-                                            catalog.Translation = reader.GetString(1);
-                                            catalog.LanguageId = reader.GetInt32(2);
-                                            catalog.LanguageTitle = reader.GetString(3);
-                                            catalog.Culture = reader.GetString(4);
-                                            catalog.TwoLetterIsoLanguageName = reader.GetString(5);
-
-                                            catalogList.Add(catalog);
+                                            catalogList.Add(new Catalog
+                                            {
+                                                Key = reader.GetString(0),
+                                                Translation = reader.GetString(1),
+                                                LanguageId = reader.GetInt32(2),
+                                                LanguageTitle = reader.GetString(3),
+                                                Culture = reader.GetString(4),
+                                                TwoLetterIsoLanguageName = reader.GetString(5)
+                                            });
                                         }
 
                                         reader.Close();
@@ -116,7 +116,7 @@ WHERE [Language].Status = 1 AND [TargetEntityId] IS NULL";
                 Logger.Log(ex);
             }
 
-            return String.Empty;
+            return string.Empty;
         }
     }
 }

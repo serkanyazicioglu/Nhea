@@ -26,11 +26,7 @@ namespace Nhea.CoreTestConsole
             Released = 1
         }
 
-        /// <summary>
-        /// Mail kaydetme, mail queue, loglama ve localization servisi var. 
-        /// </summary>
-        /// <param name="args"></param>
-        static void Main(string[] args)
+        static void Main()
         {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())

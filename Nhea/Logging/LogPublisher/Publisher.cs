@@ -54,7 +54,7 @@ namespace Nhea.Logging.LogPublisher
         {
             get
             {
-                if (String.IsNullOrEmpty(source))
+                if (string.IsNullOrEmpty(source))
                 {
                     source = string.Empty;
 
@@ -62,7 +62,7 @@ namespace Nhea.Logging.LogPublisher
                     {
                         var assemblyName = System.Reflection.Assembly.GetEntryAssembly().GetName().Name;
 
-                        if (!String.IsNullOrEmpty(assemblyName))
+                        if (!string.IsNullOrEmpty(assemblyName))
                         {
                             source = assemblyName;
                         }
@@ -75,7 +75,7 @@ namespace Nhea.Logging.LogPublisher
                     {
                         var assemblyName = System.Reflection.Assembly.GetExecutingAssembly().GetName().Name;
 
-                        if (!String.IsNullOrEmpty(assemblyName))
+                        if (!string.IsNullOrEmpty(assemblyName))
                         {
                             source += ", " + assemblyName;
                         }

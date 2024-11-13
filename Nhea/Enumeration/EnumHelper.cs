@@ -74,13 +74,13 @@ namespace Nhea.Enumeration
         /// <returns></returns>
         public static string GetDetail<T>(object value)
         {
-            if (value != null && !String.IsNullOrEmpty(value.ToString()))
+            if (value != null && !string.IsNullOrEmpty(value.ToString()))
             {
                 return GetDetail<T>(Convert.ToInt32(value));
             }
             else
             {
-                return String.Empty;
+                return string.Empty;
             }
         }
 
@@ -115,7 +115,7 @@ namespace Nhea.Enumeration
                 }
             }
 
-            return String.Empty;
+            return string.Empty;
         }
 
         /// <summary>

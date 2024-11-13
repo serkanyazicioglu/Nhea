@@ -51,7 +51,7 @@ namespace Nhea.Text
 
             text = text.ToLower(culture);
 
-            string returnText = String.Empty;
+            string returnText = string.Empty;
 
             foreach (char ch in split)
             {

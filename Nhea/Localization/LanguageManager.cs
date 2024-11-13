@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using Nhea.Utils;
 
 namespace Nhea.Localization
@@ -10,7 +10,7 @@ namespace Nhea.Localization
         private const string LanguageSelectCommandText = @"SELECT [Id], [Title], [Culture], [TwoLetterIsoName], [CurrencyCode], [CurrencyShortCode], [CurrencyCodeNo]
 FROM [Language]
 WHERE [Language].Status = 1";
-        private static object lockObject = new object();
+        private static readonly object lockObject = new();
 
         private static List<Language> currentLanguages;
         public static List<Language> CurrentLanguages
@@ -23,27 +23,27 @@ WHERE [Language].Status = 1";
                     {
                         if (currentLanguages == null)
                         {
-                            List<Language> catalogList = new List<Language>();
+                            var catalogList = new List<Language>();
 
                             using (SqlConnection sqlConnection = DBUtil.CreateConnection())
                             {
-                                using (SqlCommand cmd = new SqlCommand(LanguageSelectCommandText, sqlConnection))
+                                using (SqlCommand cmd = new(LanguageSelectCommandText, sqlConnection))
                                 {
                                     cmd.Connection.Open();
                                     SqlDataReader reader = cmd.ExecuteReader();
 
                                     while (reader.Read())
                                     {
-                                        Language language = new Language();
-                                        language.Id = reader.GetInt32(0);
-                                        language.Title = reader.GetString(1);
-                                        language.Culture = reader.GetString(2);
-                                        language.TwoLetterIsoLanguageName = reader.GetString(3);
-                                        language.CurrencyCode = reader.GetString(4);
-                                        language.CurrencyShortCode = reader.GetString(5);
-                                        language.CurrencyCodeNo = reader.GetInt32(6);
-
-                                        catalogList.Add(language);
+                                        catalogList.Add(new Language
+                                        {
+                                            Id = reader.GetInt32(0),
+                                            Title = reader.GetString(1),
+                                            Culture = reader.GetString(2),
+                                            TwoLetterIsoLanguageName = reader.GetString(3),
+                                            CurrencyCode = reader.GetString(4),
+                                            CurrencyShortCode = reader.GetString(5),
+                                            CurrencyCodeNo = reader.GetInt32(6)
+                                        });
                                     }
 
                                     reader.Close();
@@ -69,21 +69,19 @@ WHERE [Language].Status = 1";
             string commandText = @"SELECT Id From Language WHERE Culture = @Culture OR TwoLetterIsoName = @Culture";
 
             using (SqlConnection sqlConnection = DBUtil.CreateConnection())
+            using (SqlCommand cmd = new(commandText, sqlConnection))
             {
-                using (SqlCommand cmd = new SqlCommand(commandText, sqlConnection))
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.Add(new SqlParameter("@Culture", culture));
+
+                cmd.Connection.Open();
+                object languageId = cmd.ExecuteScalar();
+                cmd.Connection.Close();
+
+                if (languageId != null)
                 {
-                    cmd.Parameters.Clear();
-
-                    cmd.Parameters.Add(new SqlParameter("@Culture", culture));
-
-                    cmd.Connection.Open();
-                    object languageId = cmd.ExecuteScalar();
-                    cmd.Connection.Close();
-
-                    if (languageId != null)
-                    {
-                        return (int)languageId;
-                    }
+                    return (int)languageId;
                 }
             }
 
@@ -95,21 +93,19 @@ WHERE [Language].Status = 1";
             string commandText = @"SELECT Title From Language WHERE Id = @Id";
 
             using (SqlConnection sqlConnection = DBUtil.CreateConnection())
+            using (SqlCommand cmd = new(commandText, sqlConnection))
             {
-                using (SqlCommand cmd = new SqlCommand(commandText, sqlConnection))
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.Add(new SqlParameter("@Id", id.ToString()));
+
+                cmd.Connection.Open();
+                object language = cmd.ExecuteScalar();
+                cmd.Connection.Close();
+
+                if (language != null)
                 {
-                    cmd.Parameters.Clear();
-
-                    cmd.Parameters.Add(new SqlParameter("@Id", id.ToString()));
-
-                    cmd.Connection.Open();
-                    object language = cmd.ExecuteScalar();
-                    cmd.Connection.Close();
-
-                    if (language != null)
-                    {
-                        return language.ToString();
-                    }
+                    return language.ToString();
                 }
             }
 
@@ -121,21 +117,19 @@ WHERE [Language].Status = 1";
             string commandText = @"SELECT TwoLetterIsoName From Language WHERE Id = @Id";
 
             using (SqlConnection sqlConnection = DBUtil.CreateConnection())
+            using (SqlCommand cmd = new SqlCommand(commandText, sqlConnection))
             {
-                using (SqlCommand cmd = new SqlCommand(commandText, sqlConnection))
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.Add(new SqlParameter("@Id", id.ToString()));
+
+                cmd.Connection.Open();
+                object culture = cmd.ExecuteScalar();
+                cmd.Connection.Close();
+
+                if (culture != null)
                 {
-                    cmd.Parameters.Clear();
-
-                    cmd.Parameters.Add(new SqlParameter("@Id", id.ToString()));
-
-                    cmd.Connection.Open();
-                    object culture = cmd.ExecuteScalar();
-                    cmd.Connection.Close();
-
-                    if (culture != null)
-                    {
-                        return culture.ToString();
-                    }
+                    return culture.ToString();
                 }
             }
 
@@ -162,26 +156,23 @@ WHERE [Language].Status = 1";
             List<Language> targetLanguages = new List<Language>();
 
             using (SqlConnection sqlConnection = DBUtil.CreateConnection())
+            using (SqlCommand cmd = new(commandText, sqlConnection))
             {
-                using (SqlCommand cmd = new SqlCommand(commandText, sqlConnection))
+                cmd.Parameters.Clear();
+
+                cmd.Parameters.Add(new SqlParameter("@TargetEntityId", targetEntityId.ToString()));
+
+                cmd.Connection.Open();
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
                 {
-                    cmd.Parameters.Clear();
-
-                    cmd.Parameters.Add(new SqlParameter("@TargetEntityId", targetEntityId.ToString()));
-
-                    cmd.Connection.Open();
-
-                    SqlDataReader reader = cmd.ExecuteReader();
-
-                    while (reader.Read())
+                    targetLanguages.Add(new Language
                     {
-                        Language language = new Language();
-
-                        language.Id = reader.GetInt32(0);
-                        language.Title = reader.GetString(1);
-
-                        targetLanguages.Add(language);
-                    }
+                        Id = reader.GetInt32(0),
+                        Title = reader.GetString(1)
+                    });
                 }
             }
 

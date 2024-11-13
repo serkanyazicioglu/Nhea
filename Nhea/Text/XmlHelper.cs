@@ -15,10 +15,10 @@ namespace Nhea.Text
             //#x9 | #xA | #xD | [#x20-#xD7FF] | [#xE000-#xFFFD] | [#x10000-#x10FFFF]    
             //any Unicode character, excluding the surrogate blocks, FFFE, and FFFF.
 
-            if (!String.IsNullOrEmpty(text))
+            if (!string.IsNullOrEmpty(text))
             {
                 string pattern = @"[^\x09\x0A\x0D\x20-\xD7FF\xE000-\xFFFD\x10000-x10FFFF]";
-                text = System.Text.RegularExpressions.Regex.Replace(text, pattern, String.Empty);
+                text = System.Text.RegularExpressions.Regex.Replace(text, pattern, string.Empty);
             }
 
             return text;

@@ -10,14 +10,14 @@ namespace Nhea.Logging.LogPublisher
         {
             try
             {
-                string exceptionDetail = String.Empty;
-                string exceptionData = String.Empty;
+                string exceptionDetail = string.Empty;
+                string exceptionData = string.Empty;
 
                 if (this.Exception != null)
                 {
                     ExceptionDetailBuilder.Build(this.Exception, out exceptionDetail, out exceptionData);
 
-                    if (!String.IsNullOrEmpty(exceptionDetail))
+                    if (!string.IsNullOrEmpty(exceptionDetail))
                     {
                         exceptionDetail = "Exception Detail:" + Environment.NewLine + exceptionDetail + Environment.NewLine;
                     }
@@ -34,7 +34,7 @@ namespace Nhea.Logging.LogPublisher
 
                 string directoryPath = Nhea.Helper.IOHelper.ToSafeDirectoryPath(Settings.Log.DirectoryPath);
 
-                if (!String.IsNullOrEmpty(directoryPath))
+                if (!string.IsNullOrEmpty(directoryPath))
                 {
                     if (!Directory.Exists(directoryPath))
                     {

@@ -51,7 +51,7 @@ namespace Nhea.Data.Repository
 
             IQueryable<T> returnList = CurrentList.Where(filter.Compile()).AsQueryable();
 
-            if (!String.IsNullOrEmpty(sortColumn))
+            if (!string.IsNullOrEmpty(sortColumn))
             {
                 returnList = returnList.Sort(sortColumn, sortDirection);
             }

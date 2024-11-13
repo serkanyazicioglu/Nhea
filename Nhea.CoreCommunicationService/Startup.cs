@@ -41,8 +41,8 @@ namespace Nhea.CoreCommunicationService
             {
                 if (dataFormat == "xml")
                 {
-                    XmlSerializer serializer = new XmlSerializer(typeof(IEnumerable<SmtpElement>));
-                    using (MemoryStream stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(smtpSettingsStr)))
+                    var serializer = new XmlSerializer(typeof(IEnumerable<SmtpElement>));
+                    using (MemoryStream stream = new(System.Text.Encoding.UTF8.GetBytes(smtpSettingsStr)))
                     {
                         smtpSettings = (IEnumerable<SmtpElement>)serializer.Deserialize(stream);
                     }

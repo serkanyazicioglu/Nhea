@@ -8,7 +8,7 @@ namespace Nhea.Globalization
         {
             if (value == null)
             {
-                return String.Empty;
+                return string.Empty;
             }
 
             string format = GetDataFormatString(dataFormatType);

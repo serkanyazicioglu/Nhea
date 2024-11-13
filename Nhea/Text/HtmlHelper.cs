@@ -18,36 +18,36 @@ namespace Nhea.Text
         /// <returns></returns>
         public static string ClearHtml(string content, bool clearStyles, bool clearTurkishCharacters)
         {
-            if (String.IsNullOrEmpty(content))
+            if (string.IsNullOrEmpty(content))
             {
-                return String.Empty;
+                return string.Empty;
             }
 
             content = WebUtility.HtmlDecode(content);
 
-            content = Regex.Replace(content, "<!--(.*?)-->", String.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, "<!--(.*?)-->", string.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
 
-            content = Regex.Replace(content, "<font[^>]*>", String.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            content = Regex.Replace(content, "</font>", String.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, "<font[^>]*>", string.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, "</font>", string.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
 
-            content = Regex.Replace(content, "<o:p>", String.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            content = Regex.Replace(content, "</o:p>", String.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            content = Regex.Replace(content, " style=\"\"", String.Empty, RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            content = Regex.Replace(content, "<?xml:namespace prefix = o ns = \"urn:schemas-microsoft-com:office:office\" />", String.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            content = Regex.Replace(content, "<meta name=\"ProgId\" content=\"Word.Document\">", String.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            content = Regex.Replace(content, "<meta name=\"Generator\" content=\"Microsoft Word 12\">", String.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            content = Regex.Replace(content, "<meta name=\"Originator\" content=\"Microsoft Word 12\">", String.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            content = Regex.Replace(content, " class=MsoNormal", String.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
-            content = Regex.Replace(content, " v:shapes=\"[^>]*\"", String.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, "<o:p>", string.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, "</o:p>", string.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, " style=\"\"", string.Empty, RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, "<?xml:namespace prefix = o ns = \"urn:schemas-microsoft-com:office:office\" />", string.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, "<meta name=\"ProgId\" content=\"Word.Document\">", string.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, "<meta name=\"Generator\" content=\"Microsoft Word 12\">", string.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, "<meta name=\"Originator\" content=\"Microsoft Word 12\">", string.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, " class=MsoNormal", string.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+            content = Regex.Replace(content, " v:shapes=\"[^>]*\"", string.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
 
             if (clearStyles)
             {
-                content = Regex.Replace(content, " style='[^>]*'", String.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+                content = Regex.Replace(content, " style='[^>]*'", string.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);
             }
 
             //if (cleanTags)
             {
-                //content = Regex.Replace(content, " style='[^>]*'", String.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);   
+                //content = Regex.Replace(content, " style='[^>]*'", string.Empty, RegexOptions.IgnorePatternWhitespace | RegexOptions.Singleline | RegexOptions.IgnoreCase);   
             }
 
             return content;
@@ -55,7 +55,7 @@ namespace Nhea.Text
 
         public static string CreatePermaUrl(string text)
         {
-            if (!String.IsNullOrEmpty(text))
+            if (!string.IsNullOrEmpty(text))
             {
                 text = text.Trim();
                 text = Nhea.Text.StringHelper.ChangeCase(text, Nhea.Text.TextCaseMode.lowercase);
@@ -67,7 +67,7 @@ namespace Nhea.Text
                 {
                     if (text.Contains(charc))
                     {
-                        text = text.Replace(charc, String.Empty);
+                        text = text.Replace(charc, string.Empty);
                     }
                 }
 
@@ -94,9 +94,9 @@ namespace Nhea.Text
         /// <returns></returns>
         public static string GetPlainText(string content)
         {
-            if (String.IsNullOrEmpty(content))
+            if (string.IsNullOrEmpty(content))
             {
-                return String.Empty;
+                return string.Empty;
             }
 
             string result;
@@ -209,13 +209,13 @@ namespace Nhea.Text
         ///// Replaces all special Html characters to symbols.
         ///// </summary>
         ///// <param name="content">Html content to be converted.</param>
-        ///// <param name="replaceUnidentifiedCharacters">If true replaces all unidentified characters with String.Empty.</param>
+        ///// <param name="replaceUnidentifiedCharacters">If true replaces all unidentified characters with string.Empty.</param>
         ///// <returns></returns>
         //public static string ReplaceSpecialCharacters(string content, bool replaceUnidentifiedCharacters)
         //{
-        //    if (String.IsNullOrEmpty(content))
+        //    if (string.IsNullOrEmpty(content))
         //    {
-        //        return String.Empty;
+        //        return string.Empty;
         //    }
 
         //    content = Regex.Replace(content, @"&nbsp;", " ", RegexOptions.IgnoreCase);

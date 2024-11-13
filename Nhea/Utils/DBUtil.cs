@@ -1,5 +1,4 @@
-using System;
-using System.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 
 namespace Nhea.Utils
 {
@@ -12,13 +11,12 @@ namespace Nhea.Utils
 
         public static SqlConnection CreateConnection(ConnectionSource connectionSource)
         {
-            string connectionString = ConnectionStringBuilder.Build(connectionSource);
-            return new SqlConnection(ClearConnectionString(connectionString));
+            return new SqlConnection(ClearConnectionString(ConnectionStringBuilder.Build(connectionSource)));
         }
 
         private static string ClearConnectionString(string connectionString)
         {
-            if (!String.IsNullOrEmpty(connectionString))
+            if (!string.IsNullOrEmpty(connectionString))
             {
                 if (connectionString.StartsWith("metadata"))
                 {

@@ -14,7 +14,7 @@ namespace Nhea.Configuration.GenericConfigSection.CommunicationSection
         {
             get
             {
-                if (!String.IsNullOrEmpty(this["connectionName"].ToString()))
+                if (!string.IsNullOrEmpty(this["connectionName"].ToString()))
                 {
                     return this["connectionName"].ToString();
                 }

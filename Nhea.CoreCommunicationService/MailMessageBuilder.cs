@@ -6,9 +6,7 @@ using Nhea.Configuration.GenericConfigSection.Communication;
 using System.Net.Mime;
 using Nhea.Communication;
 using MimeKit;
-using System.Runtime.CompilerServices;
 using System.Linq;
-using System.Collections.Specialized;
 
 namespace Nhea.CoreCommunicationService
 {
@@ -16,9 +14,9 @@ namespace Nhea.CoreCommunicationService
     {
         public static MailMessage Build(SmtpElement smtpElement, string toRecipients, string ccRecipients, string bccRecipients, string subject, string body, bool isHighPriority, List<Attachment> attachments)
         {
-            MailMessage mailMessage = new MailMessage();
+            MailMessage mailMessage = new();
 
-            if (!String.IsNullOrEmpty(smtpElement.Sender))
+            if (!string.IsNullOrEmpty(smtpElement.Sender))
             {
                 mailMessage.From = new MailAddress(smtpElement.From, smtpElement.Sender);
             }
@@ -27,17 +25,17 @@ namespace Nhea.CoreCommunicationService
                 mailMessage.From = new MailAddress(smtpElement.From);
             }
 
-            if (String.IsNullOrEmpty(toRecipients) && String.IsNullOrEmpty(ccRecipients) && String.IsNullOrEmpty(bccRecipients))
+            if (string.IsNullOrEmpty(toRecipients) && string.IsNullOrEmpty(ccRecipients) && string.IsNullOrEmpty(bccRecipients))
             {
                 toRecipients = smtpElement.DefaultToRecipients;
 
-                if (String.IsNullOrEmpty(subject))
+                if (string.IsNullOrEmpty(subject))
                 {
                     subject = smtpElement.DefaultSubject;
                 }
             }
 
-            if (!String.IsNullOrEmpty(toRecipients))
+            if (!string.IsNullOrEmpty(toRecipients))
             {
                 foreach (MailAddress address in Nhea.Communication.MailMessageBuilder.ParseRecipients(toRecipients))
                 {
@@ -45,7 +43,7 @@ namespace Nhea.CoreCommunicationService
                 }
             }
 
-            if (!String.IsNullOrEmpty(ccRecipients))
+            if (!string.IsNullOrEmpty(ccRecipients))
             {
                 foreach (MailAddress address in Nhea.Communication.MailMessageBuilder.ParseRecipients(ccRecipients))
                 {
@@ -53,7 +51,7 @@ namespace Nhea.CoreCommunicationService
                 }
             }
 
-            if (!String.IsNullOrEmpty(bccRecipients))
+            if (!string.IsNullOrEmpty(bccRecipients))
             {
                 foreach (MailAddress address in Nhea.Communication.MailMessageBuilder.ParseRecipients(bccRecipients))
                 {
@@ -85,7 +83,7 @@ namespace Nhea.CoreCommunicationService
 
             if (body.StartsWith(Nhea.Communication.MailQueue.NheaMailingStarter))
             {
-                body = body.Replace(Nhea.Communication.MailQueue.NheaMailingStarter, String.Empty);
+                body = body.Replace(Nhea.Communication.MailQueue.NheaMailingStarter, string.Empty);
 
                 var parameters = System.Text.Json.JsonSerializer.Deserialize<MailParameters>(body);
 
@@ -114,12 +112,12 @@ namespace Nhea.CoreCommunicationService
                 {
                     string listUnsubscribeHeader = parameters.ListUnsubscribe.Replace(" ", string.Empty);
 
-                    if (!listUnsubscribeHeader.StartsWith("<"))
+                    if (!listUnsubscribeHeader.StartsWith('<'))
                     {
                         listUnsubscribeHeader = "<" + listUnsubscribeHeader;
                     }
 
-                    if (!listUnsubscribeHeader.EndsWith(">"))
+                    if (!listUnsubscribeHeader.EndsWith('>'))
                     {
                         listUnsubscribeHeader += ">";
                     }
@@ -143,8 +141,10 @@ namespace Nhea.CoreCommunicationService
 
         public static MimeMessage ConvertToMimeMessage(this MailMessage mailMessage)
         {
-            var mimeMessage = new MimeKit.MimeMessage();
-            mimeMessage.Sender = new MimeKit.MailboxAddress(mailMessage.From.DisplayName, mailMessage.From.Address);
+            var mimeMessage = new MimeKit.MimeMessage
+            {
+                Sender = new MimeKit.MailboxAddress(mailMessage.From.DisplayName, mailMessage.From.Address)
+            };
             mimeMessage.From.Add(mimeMessage.Sender);
 
             foreach (var mailAddress in mailMessage.To)

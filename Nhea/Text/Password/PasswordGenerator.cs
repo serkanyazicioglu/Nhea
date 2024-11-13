@@ -30,7 +30,7 @@ namespace Nhea.Text.Password
 
         internal string CreatePassword()
         {
-            string password = String.Empty;
+            string password = string.Empty;
 
             for (int i = 0; i < this.PasswordLength; i++)
             {
