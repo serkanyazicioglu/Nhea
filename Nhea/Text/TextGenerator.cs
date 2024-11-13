@@ -17,8 +17,8 @@ namespace Nhea.Text
 
         private static string GetRandomText(string characters, int length)
         {
-            StringBuilder ret = new StringBuilder();
-            Random rnd = new Random();
+            var ret = new StringBuilder();
+            var rnd = new Random();
             
             for (int i = 0; i < length; i++)
             {

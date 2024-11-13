@@ -51,11 +51,9 @@ namespace Nhea.Text
 
             text = text.ToLower(culture);
 
-            string returnText = string.Empty;
-
             foreach (char ch in split)
             {
-                StringBuilder capitalizedWords = new StringBuilder();
+                var capitalizedWords = new StringBuilder();
 
                 string[] words = text.Split(new char[] { ch }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -91,14 +89,14 @@ namespace Nhea.Text
         internal static string ToUppercase(string text, CultureInfo culture)
         {
             string[] words = text.Split(splitArray, StringSplitOptions.RemoveEmptyEntries);
-            StringBuilder upperCasedWords = new StringBuilder();
+            var upperCasedWords = new StringBuilder();
 
             for (int i = 0; i < words.Length; i++)
             {
                 upperCasedWords.Append(words[i].ToUpper(culture));
                 if (i < words.Length - 1)
                 {
-                    upperCasedWords.Append(" ");
+                    upperCasedWords.Append(' ');
                 }
             }
 
@@ -108,14 +106,14 @@ namespace Nhea.Text
         internal static string ToLowercase(string text, CultureInfo culture)
         {
             string[] words = text.Split(splitArray, StringSplitOptions.RemoveEmptyEntries);
-            StringBuilder lowerCasedWords = new StringBuilder();
+            var lowerCasedWords = new StringBuilder();
 
             for (int i = 0; i < words.Length; i++)
             {
                 lowerCasedWords.Append(words[i].ToLower(culture));
                 if (i < words.Length - 1)
                 {
-                    lowerCasedWords.Append(" ");
+                    lowerCasedWords.Append(' ');
                 }
             }
 

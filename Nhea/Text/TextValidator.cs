@@ -1,17 +1,16 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace Nhea.Text
 {
     internal static class TextValidator
     {
-        private static Regex AlphabeticRegex = new Regex(@"^\D*[a-zA-Z]?$", RegexOptions.Compiled);
+        private static readonly Regex AlphabeticRegex = new(@"^\D*[a-zA-Z]?$", RegexOptions.Compiled);
 
-        private static Regex NumericRegex = new Regex(@"^[0-9]+$", RegexOptions.Compiled);
+        private static readonly Regex NumericRegex = new(@"^[0-9]+$", RegexOptions.Compiled);
 
-        private static Regex SingleEmailRegex = new Regex(@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*", RegexOptions.Compiled);
+        private static readonly Regex SingleEmailRegex = new(@"\w+([-+.']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*", RegexOptions.Compiled);
 
-        private static Regex MultipleEmailRegex = new Regex(@"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*(\s*[,;]\s*\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)*\s*", RegexOptions.Compiled);
+        private static readonly Regex MultipleEmailRegex = new(@"\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*(\s*[,;]\s*\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*)*\s*", RegexOptions.Compiled);
 
         internal static bool IsAlphabetic(string text)
         {
@@ -37,7 +36,7 @@ namespace Nhea.Text
 
             text = text.Trim();
 
-            if (text.Contains(" "))
+            if (text.Contains(' '))
             {
                 return false;
             }
