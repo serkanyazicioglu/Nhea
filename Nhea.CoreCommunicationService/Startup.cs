@@ -55,7 +55,9 @@ namespace Nhea.CoreCommunicationService
 
             if (Environment.GetEnvironmentVariable("MAILQUEUE_IGNORE_SSL_VALIDATION") == "true")
             {
+#pragma warning disable SYSLIB0014 // Type or member is obsolete
                 ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+#pragma warning restore SYSLIB0014 // Type or member is obsolete
             }
 
             services.AddMailService(configure =>
