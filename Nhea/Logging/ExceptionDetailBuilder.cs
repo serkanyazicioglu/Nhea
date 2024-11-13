@@ -16,8 +16,7 @@ namespace Nhea.Logging
 
         public static void Build(Exception exception, out string exceptionDetail, out string exceptionData)
         {
-            string fileName;
-            Build(exception, out exceptionDetail, out exceptionData, out fileName);
+            Build(exception, out exceptionDetail, out exceptionData, out _);
         }
 
         public static void Build(Exception exception, out string exceptionDetail, out string exceptionData, out string fileName)
@@ -28,7 +27,7 @@ namespace Nhea.Logging
                 fileName = string.Empty;
 
                 string exceptionMessage = string.Empty;
-                StringBuilder exceptionStackTrace = new StringBuilder();
+                var exceptionStackTrace = new StringBuilder();
 
                 while (exception != null)
                 {
@@ -38,7 +37,7 @@ namespace Nhea.Logging
                         {
                             if (entry.Key != null && entry.Value != null)
                             {
-                                exceptionData = String.Concat(exceptionData, "<b>" + entry.Key.ToString() + ":</b> " + entry.Value.ToString() + Environment.NewLine);
+                                exceptionData = string.Concat(exceptionData, "<b>" + entry.Key.ToString() + ":</b> " + entry.Value.ToString() + Environment.NewLine);
                             }
                         }
                     }
@@ -49,7 +48,7 @@ namespace Nhea.Logging
                     exceptionStackTrace.Insert(0, exception.StackTrace);
                     exceptionStackTrace.Insert(0, Environment.NewLine);
 
-                    StackTrace trace = new StackTrace(exception, true);
+                    var trace = new StackTrace(exception, true);
 
                     if (trace != null)
                     {

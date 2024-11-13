@@ -40,7 +40,7 @@ namespace Nhea.Helper
             {
                 if (value == null || value == DBNull.Value || value.ToString() == string.Empty)
                 {
-                    return default(T);
+                    return default;
                 }
                 else if ((typeof(T) == typeof(Guid)) || (typeof(T) == typeof(Guid?)) || (typeof(T).GetGenericArguments().Length > 0 && typeof(T).GetGenericArguments()[0].ToString() == "System.Guid"))
                 {
@@ -106,7 +106,7 @@ namespace Nhea.Helper
         {
             if (convertionType.IsGenericType && convertionType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
             {
-                NullableConverter nullableConverter = new NullableConverter(convertionType);
+                var nullableConverter = new NullableConverter(convertionType);
                 convertionType = nullableConverter.UnderlyingType;
             }
 

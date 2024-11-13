@@ -64,8 +64,8 @@ namespace Nhea.Helper
 
         public static string ReadFileContent(string path)
         {
-            FileStream fileStream = new FileStream(path, FileMode.Open);
-            StreamReader streamReader = new StreamReader(fileStream);
+            var fileStream = new FileStream(path, FileMode.Open);
+            var streamReader = new StreamReader(fileStream);
 
             try
             {
@@ -80,7 +80,7 @@ namespace Nhea.Helper
 
         public static string ToSafeDirectoryPath(string s)
         {
-            if (s.Contains(":"))
+            if (s.Contains(':'))
             {
                 var driver = s.Substring(0, s.IndexOf(':') + 1);
                 var afterDriverPath = s.Substring(s.IndexOf(':') + 1);
