@@ -1,6 +1,5 @@
 [![.NET](https://github.com/serkanyazicioglu/Nhea/actions/workflows/dotnet-pipeline.yml/badge.svg)](https://github.com/serkanyazicioglu/Nhea/actions/workflows/dotnet-pipeline.yml)
 [![NuGet](https://img.shields.io/nuget/v/Nhea.svg)](https://www.nuget.org/packages/Nhea/)
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=nhea_Nhea&metric=alert_status)](https://sonarcloud.io/dashboard?id=nhea_Nhea)
 
 # Nhea Framework
 
