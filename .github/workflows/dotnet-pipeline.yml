@@ -17,19 +17,10 @@ jobs:
     - name: Setup .NET
       uses: actions/setup-dotnet@v2
       with:
-        dotnet-version: 6.0.x
+        dotnet-version: 9.0.x
         
     - name: Restore dependencies
       run: dotnet restore *.sln
-      
-    - name: Instal sonarscanner
-      run: dotnet tool install --global dotnet-sonarscanner
-  
-    - name: Sonarscanner begin
-      run: dotnet sonarscanner begin /o:"${{ secrets.SONAR_ORGANIZATION }}" /k:"${{ secrets.SONAR_PROJECT_KEY }}" /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.host.url="https://sonarcloud.io"
   
     - name: Build
       run: dotnet build *.sln --no-restore --configuration Release
-      
-    - name: Sonarscanner end
-      run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
