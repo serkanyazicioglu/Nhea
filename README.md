@@ -14,7 +14,6 @@ Nhea Framework is a set of tools that helped me over years. This framework consi
 
 Other Helper namespaces:
 - Convertion Helpers
-- Image Helpers
 - Text Helpers
 
 
