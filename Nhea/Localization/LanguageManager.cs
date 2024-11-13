@@ -117,7 +117,7 @@ WHERE [Language].Status = 1";
             string commandText = @"SELECT TwoLetterIsoName From Language WHERE Id = @Id";
 
             using (SqlConnection sqlConnection = DBUtil.CreateConnection())
-            using (SqlCommand cmd = new SqlCommand(commandText, sqlConnection))
+            using (SqlCommand cmd = new(commandText, sqlConnection))
             {
                 cmd.Parameters.Clear();
 
@@ -153,7 +153,7 @@ WHERE [Language].Status = 1";
                 commandText = unusedLanguagesCommandText;
             }
 
-            List<Language> targetLanguages = new List<Language>();
+            var targetLanguages = new List<Language>();
 
             using (SqlConnection sqlConnection = DBUtil.CreateConnection())
             using (SqlCommand cmd = new(commandText, sqlConnection))

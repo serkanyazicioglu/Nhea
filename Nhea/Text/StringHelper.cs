@@ -165,13 +165,15 @@ namespace Nhea.Text
 
         public static List<string> GeneratePassword(int passwordLength, string charSet, List<ConstantChar> constantChars, int totalCount)
         {
-            PasswordGenerator passwordGenerator = new PasswordGenerator();
-            passwordGenerator.CharSet = charSet;
-            passwordGenerator.ConstantChars = constantChars;
-            passwordGenerator.PasswordLength = passwordLength;
-            passwordGenerator.TotalCount = totalCount;
+            PasswordGenerator passwordGenerator = new()
+            {
+                CharSet = charSet,
+                ConstantChars = constantChars,
+                PasswordLength = passwordLength,
+                TotalCount = totalCount
+            };
 
-            List<string> passwordList = new List<string>();
+            var passwordList = new List<string>();
 
             while (passwordList.Count < totalCount)
             {

@@ -15,10 +15,8 @@ namespace Nhea.Data
 
         public LambdaComparer(Func<T, T, bool> lambdaComparer, Func<T, int> lambdaHash)
         {
-            if (lambdaComparer == null)
-                throw new ArgumentNullException("lambdaComparer");
-            if (lambdaHash == null)
-                throw new ArgumentNullException("lambdaHash");
+            ArgumentNullException.ThrowIfNull(lambdaComparer);
+            ArgumentNullException.ThrowIfNull(lambdaHash);
 
             _lambdaComparer = lambdaComparer;
             _lambdaHash = lambdaHash;

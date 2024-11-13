@@ -14,22 +14,21 @@ namespace Nhea.Enumeration
         /// <returns></returns>
         public static List<Enumeration> GetEnumerations<T>()
         {
-            List<Enumeration> enumerationList = new List<Enumeration>();
+            var enumerationList = new List<Enumeration>();
 
             foreach (FieldInfo field in typeof(T).GetFields(BindingFlags.Static | BindingFlags.GetField | BindingFlags.Public))
             {
                 foreach (Attribute attrib in field.GetCustomAttributes(true))
                 {
-                    Enumeration enumeration = new Enumeration();
-                    enumeration.Name = field.GetValue(null).ToString();
-
                     Type underlyingType = Enum.GetUnderlyingType(typeof(T));
-                    enumeration.Value = ConvertionHelper.GetConvertedValue((Enum.Parse(typeof(T), field.GetValue(null).ToString())), underlyingType).ToString();
-
                     Detail detail = (Detail)attrib;
-                    enumeration.Detail = detail.Value;
 
-                    enumerationList.Add(enumeration);
+                    enumerationList.Add(new Enumeration
+                    {
+                        Name = field.GetValue(null).ToString(),
+                        Value = ConvertionHelper.GetConvertedValue((Enum.Parse(typeof(T), field.GetValue(null).ToString())), underlyingType).ToString(),
+                        Detail = detail.Value
+                    });
                 }
             }
 
@@ -38,19 +37,18 @@ namespace Nhea.Enumeration
 
         public static List<Enumeration> ConvertToEnumerations<T>(List<T> enumerations)
         {
-            List<Enumeration> enumerationList = new List<Enumeration>();
+            var enumerationList = new List<Enumeration>();
 
             foreach (var enumC in enumerations)
             {
-                Enumeration enumeration = new Enumeration();
-                enumeration.Name = enumC.ToString();
-
                 int enumcval = Convert.ToInt32(enumC);
 
-                enumeration.Value = enumcval.ToString();
-                enumeration.Detail = GetDetail<T>(enumcval);
-
-                enumerationList.Add(enumeration);
+                enumerationList.Add(new Enumeration
+                {
+                    Name = enumC.ToString(),
+                    Value = enumcval.ToString(),
+                    Detail = GetDetail<T>(enumcval)
+                });
             }
 
             return enumerationList;

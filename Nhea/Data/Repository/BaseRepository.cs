@@ -50,7 +50,7 @@ namespace Nhea.Data.Repository
 
         public virtual T CreateNew()
         {
-            T entity = new T();
+            T entity = new();
 
             this.Add(entity);
 

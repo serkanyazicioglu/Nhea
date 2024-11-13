@@ -36,18 +36,18 @@ namespace Nhea.Text.Password
             {
                 ConstantChar? constantChar = null;
 
-                if (this.ConstantChars != null && this.ConstantChars.Count() > 0 && this.ConstantChars.Where(p => p.CharIndex == i).Count() > 0)
+                if (this.ConstantChars != null && this.ConstantChars.Count > 0 && ConstantChars.Any(p => p.CharIndex == i))
                 {
-                    constantChar = this.ConstantChars.Where(p => p.CharIndex == i).Single();
+                    constantChar = this.ConstantChars.Single(p => p.CharIndex == i);
                 }
 
                 if (constantChar.HasValue)
                 {
-                    password = String.Concat(password, constantChar.Value.Constant);
+                    password = string.Concat(password, constantChar.Value.Constant);
                 }
                 else
                 {
-                    password = String.Concat(password, this.CharSet[(int)(CurrentRandom.NextDouble() * this.CharSet.Length)]);
+                    password = string.Concat(password, this.CharSet[(int)(CurrentRandom.NextDouble() * this.CharSet.Length)]);
                 }
             }
 
@@ -65,7 +65,7 @@ namespace Nhea.Text.Password
 
         private const int MaxAllowedSequentalDuplicateCharacter = 2;
 
-        private bool ValidatePassword(string password)
+        private static bool ValidatePassword(string password)
         {
             foreach (char character in password)
             {
@@ -77,7 +77,7 @@ namespace Nhea.Text.Password
                 }
                 else if (characterCount > MaxAllowedSequentalDuplicateCharacter)
                 {
-                    string checkCharacters = new string(character, MaxAllowedSequentalDuplicateCharacter + 1);
+                    string checkCharacters = new(character, MaxAllowedSequentalDuplicateCharacter + 1);
 
                     if (password.Contains(checkCharacters))
                     {

@@ -16,7 +16,7 @@ FROM [Localization]
 INNER JOIN [Language] ON [Language].Id = [Localization].LanguageId
 WHERE [Language].Status = 1 AND [TargetEntityId] IS NULL";
 
-        private static object lockObject = new object();
+        private static readonly object lockObject = new();
 
         private static List<Catalog> currentCatalog;
         internal static List<Catalog> CurrentCatalog

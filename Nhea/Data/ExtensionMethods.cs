@@ -30,11 +30,8 @@ namespace Nhea.Data
 
         public static IQueryable<T> OrderBy<T>(this IQueryable<T> source, string sortExpression)
         {
-            if (source == null)
-                throw new ArgumentNullException("source", "source is null.");
-
-            if (string.IsNullOrEmpty(sortExpression))
-                throw new ArgumentException("sortExpression is null or empty.", "sortExpression");
+            ArgumentNullException.ThrowIfNull(source);
+            ArgumentNullException.ThrowIfNull(sortExpression);
 
             var parts = sortExpression.Split(' ');
             var isDescending = false;

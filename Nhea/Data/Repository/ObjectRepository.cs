@@ -18,7 +18,7 @@ namespace Nhea.Data.Repository
 
         protected internal override T GetSingleCore(System.Linq.Expressions.Expression<Func<T, bool>> filter, bool getDefaultFilter)
         {
-            T item = default(T);
+            T item = default;
 
             if (filter != null)
             {

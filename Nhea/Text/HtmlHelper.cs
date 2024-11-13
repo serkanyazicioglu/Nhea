@@ -8,7 +8,7 @@ namespace Nhea.Text
     {
         public static string ClearHtml(string content)
         {
-            return ClearHtml(content, false, true);
+            return ClearHtml(content, false);
         }
 
         /// <summary>
@@ -16,7 +16,7 @@ namespace Nhea.Text
         /// </summary>
         /// <param name="content">Html content to be cleaned</param>
         /// <returns></returns>
-        public static string ClearHtml(string content, bool clearStyles, bool clearTurkishCharacters)
+        public static string ClearHtml(string content, bool clearStyles)
         {
             if (string.IsNullOrEmpty(content))
             {
@@ -183,8 +183,8 @@ namespace Nhea.Text
                 {
                     result = result.Replace(breaks, "\r\r");
                     result = result.Replace(tabs, "\t\t\t\t");
-                    breaks = breaks + "\r";
-                    tabs = tabs + "\t";
+                    breaks += "\r";
+                    tabs += "\t";
                 }
 
                 return result;

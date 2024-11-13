@@ -86,16 +86,7 @@ namespace Nhea.Helper
 
             if (value is IConvertible)
             {
-                CultureInfo cultureInfo;
-
-                if (!string.IsNullOrEmpty(culture))
-                {
-                    cultureInfo = new CultureInfo(culture);
-                }
-                else
-                {
-                    cultureInfo = System.Globalization.CultureInfo.CurrentCulture;
-                }
+                var cultureInfo = !string.IsNullOrEmpty(culture) ? new CultureInfo(culture) : System.Globalization.CultureInfo.CurrentCulture;
 
                 value = (T)Convert.ChangeType(value, convertionType, cultureInfo);
             }

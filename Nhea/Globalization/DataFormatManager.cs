@@ -20,10 +20,9 @@ namespace Nhea.Globalization
                     return value.ToString();
                 case DataFormatType.Currency:
                     {
-                        decimal parsedValue;
-                        if (Decimal.TryParse(value.ToString(), out parsedValue))
+                        if (decimal.TryParse(value.ToString(), out decimal parsedValue))
                         {
-                            return String.Format(format, parsedValue);
+                            return string.Format(format, parsedValue);
                         }
                         break;
                     }
@@ -31,28 +30,25 @@ namespace Nhea.Globalization
                 case DataFormatType.DateTime:
                 case DataFormatType.Time:
                     {
-                        DateTime parsedValue;
-                        if (DateTime.TryParse(value.ToString(), out parsedValue))
+                        if (DateTime.TryParse(value.ToString(), out DateTime parsedValue))
                         {
-                            return String.Format(format, parsedValue);
+                            return string.Format(format, parsedValue);
                         }
                         break;
                     }
                 case DataFormatType.Double:
                     {
-                        double parsedValue;
-                        if (Double.TryParse(value.ToString(), out parsedValue))
+                        if (double.TryParse(value.ToString(), out double parsedValue))
                         {
-                            return String.Format(format, parsedValue);
+                            return string.Format(format, parsedValue);
                         }
                         break;
                     }
                 case DataFormatType.Integer:
                     {
-                        int parsedValue;
-                        if (Int32.TryParse(value.ToString(), out parsedValue))
+                        if (int.TryParse(value.ToString(), out int parsedValue))
                         {
-                            return String.Format(format, parsedValue);
+                            return string.Format(format, parsedValue);
                         }
                         break;
                     }
