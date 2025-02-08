@@ -13,7 +13,7 @@ Nhea Framework is a set of tools that helped me over years. This framework consi
 - Logging (Logging publishers)
 
 Other Helper namespaces:
-- Convertion Helpers
+- Conversion Helpers
 - Text Helpers
 
 
@@ -29,7 +29,7 @@ Install-Package Nhea
 
 ### Prerequisites
 
-Project is built with .NET 9
+Project is built with .NET 9.0.
 
 ## Using Namespaces
 
@@ -43,7 +43,7 @@ Nhea has three different kind of logging: File, Database (SQL) and E-Mail. .Net 
 
 By default Logging targets File.
 
-For file publishing you can change the file name to provide a unique name. By defaylt log file will be created in the executing folder. If you want to change the path or the file name you can override these settings. Directory will be automatically created by Nhea.
+For file publishing you can change the file name to provide a unique name. By default log file will be created in the executing folder. If you want to change the path or the file name you can override these settings. Directory will be automatically created by Nhea.
 
 ```
 services.AddLogging(configure =>
@@ -77,7 +77,7 @@ services.AddLogging(configure =>
 );
 ```
 
-For DB publishing you have to provide a sql connection string. In order to use SQL first you have to create Nhea's <a href=https://github.com/serkanyazicioglu/Nhea/blob/master/SQL/nhea_Log.sql>log table</a>. Execute the nhea_Log.sql which creates the schema of the table.
+For DB publishing you have to provide a sql connection string. In order to use SQL first you have to create the <a href=https://github.com/serkanyazicioglu/Nhea/blob/master/SQL/nhea_Log.sql>log table</a>. Execute the nhea_Log.sql which creates the schema of the table.
 
 ```
 services.AddLogging(configure => configure.AddNheaLogger(nhea =>
@@ -89,7 +89,7 @@ services.AddLogging(configure => configure.AddNheaLogger(nhea =>
 
 #### Mailing Configuration
 
-Nhea has a mailing as a service and logging is directly intergrated with it. In order to use this service first you have to create Nhea's <a href=https://github.com/serkanyazicioglu/Nhea/blob/master/SQL/nhea_MailQueue.sql>mail tables</a>. Execute the nhea_MailQueue.sql which creates the schema of the tables.
+Nhea has a mailing as a service and logging is directly integrated with it. In order to use this service first you have to create the <a href=https://github.com/serkanyazicioglu/Nhea/blob/master/SQL/nhea_MailQueue.sql>mail tables</a>. Execute the nhea_MailQueue.sql which creates the schema of the tables.
 
 ```
 services.AddMailService(configure =>
@@ -116,7 +116,7 @@ Please refer to the <a href="https://github.com/serkanyazicioglu/Nhea#mailing-jo
 
 #### Localization Configuration
 
-For configuring the localization service you can use the following sample code. In order to use this service first you have to create Nhea's <a href=https://github.com/serkanyazicioglu/Nhea/blob/master/SQL/Localization.sql>localization table</a>. Execute the Localization.sql which creates the schema of the table.
+For configuring the localization service you can use the following sample code. In order to use this service first you have to create the <a href=https://github.com/serkanyazicioglu/Nhea/blob/master/SQL/Localization.sql>localization table</a>. Execute the Localization.sql which creates the schema of the table.
 
 ```
 services.AddNheaLocalizationService(configure =>
@@ -165,7 +165,7 @@ TargetEntityId must be Guid in this context. You can directly insert your primar
 
 Important Note: Nhea won't be supporting .Net Framework since .Net Core took a lot of ground on the community.
 
-First of all we will edit .config file to include Nhea configurations. Inside configSections we're gonna add Nhea's sectionGroup.
+First of all we will edit .config file to include Nhea configurations. Inside configSections we're going to add the sectionGroup.
 
 ```
 <configSections>
@@ -281,7 +281,7 @@ catch (Exception ex)
 }
 ```
 
-If you have a SQL database you may want to target your DB for logs. It can easily be done by just a few configuration changes. In order to use SQL first you have to create Nhea's <a href=https://github.com/serkanyazicioglu/Nhea/blob/master/SQL/nhea_Log.sql>log table</a>. Execute the nhea_Log.sql which creates the schema of the table.
+If you have a SQL database you may want to target your DB for logs. It can easily be done by just a few configuration changes. In order to use SQL first you have to create the <a href=https://github.com/serkanyazicioglu/Nhea/blob/master/SQL/nhea_Log.sql>log table</a>. Execute the nhea_Log.sql which creates the schema of the table.
 
 And then you should change the configuration. Add data to configuration list and set the connection name. Then change the defaultPublishType to 'Database'.
 
@@ -314,7 +314,7 @@ Please refer to the documentation on Docker Hub for running the service.
 
 ### Enumeration Helpers
 
-As an old but useful practice you can set additional details for your enums. Simply put Detail attribute on to the header of your enumeraions.
+As an old but useful practice you can set additional details for your enum types. Simply put Detail attribute on to the header of your enumerations.
 
 ```
 public enum StatusType
