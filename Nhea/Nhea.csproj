@@ -6,7 +6,7 @@
 		<Description>A .Net Core library which provides logging, mailing, convertion and base repository classes.</Description>
 		<Company>Serkan Yazıcıoğlu</Company>
 		<Authors>Serkan Yazıcıoğlu</Authors>
-		<Version>4.0.0.0</Version>
+		<Version>4.0.1.0</Version>
 		<PackageReleaseNotes>
 			- Nhea is now .Net 9
 		</PackageReleaseNotes>
@@ -18,8 +18,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Microsoft.Data.SqlClient" Version="5.2.2" />
-		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.0" />
-		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.0" />
+		<PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.1" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.1" />
 	</ItemGroup>
 </Project>
