@@ -29,7 +29,7 @@ Install-Package Nhea
 
 ### Prerequisites
 
-Project is built with .NET 9.0.
+Project is built with .NET 10.0.
 
 ## Using Namespaces
 

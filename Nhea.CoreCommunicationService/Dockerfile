@@ -1,9 +1,9 @@
-FROM mcr.microsoft.com/dotnet/aspnet:9.0-noble AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0-noble AS base
 WORKDIR /app
 EXPOSE 80
 EXPOSE 443
 
-FROM mcr.microsoft.com/dotnet/sdk:9.0-noble AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0-noble AS build
 WORKDIR /src
 COPY ["Nhea.CoreCommunicationService/Nhea.CoreCommunicationService.csproj", "Nhea.CoreCommunicationService/"]
 COPY ["Nhea/Nhea.csproj", "Nhea/"]
