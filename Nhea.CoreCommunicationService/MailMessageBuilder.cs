@@ -85,7 +85,7 @@ namespace Nhea.CoreCommunicationService
             {
                 body = body.Replace(Nhea.Communication.MailQueue.NheaMailingStarter, string.Empty);
 
-                var parameters = System.Text.Json.JsonSerializer.Deserialize<MailParameters>(body);
+                var parameters = System.Text.Json.JsonSerializer.Deserialize(body, CommunicationJsonContext.Default.MailParameters);
 
                 if (!string.IsNullOrEmpty(parameters.PlainText) || smtpElement.AutoGeneratePlainText)
                 {

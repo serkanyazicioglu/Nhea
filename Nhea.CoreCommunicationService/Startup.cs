@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net;
-using System.Xml.Serialization;
 
 namespace Nhea.CoreCommunicationService
 {
@@ -23,7 +22,6 @@ namespace Nhea.CoreCommunicationService
             string sqlConnectionString = Environment.GetEnvironmentVariable("MAILQUEUE_CONNECTION");
 
             IEnumerable<SmtpElement> smtpSettings = null;
-            string dataFormat = Environment.GetEnvironmentVariable("MAILQUEUE_DATAFORMAT");
 
             string smtpSettingsStr = Environment.GetEnvironmentVariable("MAILQUEUE_SMTPSETTINGS");
 
@@ -39,18 +37,7 @@ namespace Nhea.CoreCommunicationService
 
             if (!string.IsNullOrEmpty(smtpSettingsStr))
             {
-                if (dataFormat == "xml")
-                {
-                    var serializer = new XmlSerializer(typeof(IEnumerable<SmtpElement>));
-                    using (MemoryStream stream = new(System.Text.Encoding.UTF8.GetBytes(smtpSettingsStr)))
-                    {
-                        smtpSettings = (IEnumerable<SmtpElement>)serializer.Deserialize(stream);
-                    }
-                }
-                else
-                {
-                    smtpSettings = System.Text.Json.JsonSerializer.Deserialize<IEnumerable<SmtpElement>>(smtpSettingsStr);
-                }
+                smtpSettings = System.Text.Json.JsonSerializer.Deserialize(smtpSettingsStr, CommunicationJsonContext.Default.IEnumerableSmtpElement);
             }
 
             if (Environment.GetEnvironmentVariable("MAILQUEUE_IGNORE_SSL_VALIDATION") == "true")
