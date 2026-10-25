@@ -6,9 +6,9 @@
 		<Description>A .Net Core library which provides logging, mailing, convertion and base repository classes.</Description>
 		<Company>Serkan Yazıcıoğlu</Company>
 		<Authors>Serkan Yazıcıoğlu</Authors>
-		<Version>5.0.0.0</Version>
+		<Version>5.0.1.0</Version>
 		<PackageReleaseNotes>
-			- Nhea is now .Net 10
+			- Log mails show the runtime version (e.g. .NET 10.0.14) next to the target framework
 		</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageProjectUrl>https://github.com/serkanyazicioglu/Nhea</PackageProjectUrl>

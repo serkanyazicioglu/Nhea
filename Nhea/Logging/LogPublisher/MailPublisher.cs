@@ -61,21 +61,19 @@ namespace Nhea.Logging.LogPublisher
 
                 //var version = System.Environment.Version;
                 //var appContextFrameworkName = System.AppContext.TargetFrameworkName;
-                string frameworkName = null;
-
                 try
                 {
-                    frameworkName = Assembly.GetEntryAssembly()?.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName;
+                    var frameworkName = Assembly.GetEntryAssembly()?.GetCustomAttribute<TargetFrameworkAttribute>()?.FrameworkName;
+
+                    if (!string.IsNullOrEmpty(frameworkName))
+                    {
+                        detail += "<b>Framework:</b> " + frameworkName + HtmlNewLine;
+                    }
                 }
                 catch
                 { }
 
-                if (string.IsNullOrEmpty(frameworkName))
-                {
-                    frameworkName = System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription;
-                }
-
-                detail += "<b>Framework:</b> " + frameworkName + HtmlNewLine;
+                detail += "<b>Runtime:</b> " + System.Runtime.InteropServices.RuntimeInformation.FrameworkDescription + HtmlNewLine;
 
                 detail += "<b>OSArchitecture:</b> " + System.Runtime.InteropServices.RuntimeInformation.OSArchitecture.ToString() + HtmlNewLine;
 
