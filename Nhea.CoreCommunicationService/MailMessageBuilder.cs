@@ -60,7 +60,7 @@ namespace Nhea.CoreCommunicationService
                 }
             }
 
-            mailMessage.DeliveryNotificationOptions = DeliveryNotificationOptions.OnSuccess | DeliveryNotificationOptions.OnFailure;
+            mailMessage.DeliveryNotificationOptions = DeliveryNotificationOptions.OnFailure;
             mailMessage.Subject = subject.Replace('\r', ' ').Replace('\n', ' ').Replace(Environment.NewLine, " ");
             mailMessage.SubjectEncoding = Encoding.UTF8;
             mailMessage.BodyEncoding = Encoding.UTF8;
