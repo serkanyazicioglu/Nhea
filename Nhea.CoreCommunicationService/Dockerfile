@@ -1,7 +1,6 @@
-FROM mcr.microsoft.com/dotnet/aspnet:10.0-noble AS base
+FROM mcr.microsoft.com/dotnet/runtime-deps:10.0-noble AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8080
 
 FROM mcr.microsoft.com/dotnet/sdk:10.0-noble AS build
 WORKDIR /src
@@ -18,4 +17,4 @@ RUN dotnet publish "Nhea.CoreCommunicationService.csproj" -c Release -o /app/pub
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "Nhea.CoreCommunicationService.dll"]
+ENTRYPOINT ["./Nhea.CoreCommunicationService"]
