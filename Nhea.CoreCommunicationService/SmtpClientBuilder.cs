@@ -33,10 +33,26 @@ namespace Nhea.CoreCommunicationService
                 }
             }
 
-            smtpClient.Connect(smtpElement.Host, smtpElement.Port, SecureSocketOptions.Auto);
+            smtpClient.Connect(smtpElement.Host, smtpElement.Port, GetSecureSocketOptions(smtpElement));
             smtpClient.Authenticate(smtpElement.UserName, smtpElement.Password);
 
             return smtpClient;
+        }
+
+        // Auto falls back to plain text when STARTTLS is missing, which would send the credentials unencrypted.
+        private static SecureSocketOptions GetSecureSocketOptions(SmtpElement smtpElement)
+        {
+            if (!smtpElement.EnableSsl)
+            {
+                return SecureSocketOptions.Auto;
+            }
+
+            if (smtpElement.Port == 465)
+            {
+                return SecureSocketOptions.SslOnConnect;
+            }
+
+            return SecureSocketOptions.StartTls;
         }
     }
 }
