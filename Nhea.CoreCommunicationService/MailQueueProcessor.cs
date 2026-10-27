@@ -1,4 +1,5 @@
-﻿using Nhea.Communication;
+﻿using Microsoft.Extensions.Logging;
+using Nhea.Communication;
 using Nhea.Logging;
 using Nhea.Utils;
 using System;
@@ -20,6 +21,11 @@ namespace Nhea.CoreCommunicationService
         }
 
         public static List<Mail> Fetch(MailProvider mailProvider)
+        {
+            return Fetch(mailProvider, null);
+        }
+
+        public static List<Mail> Fetch(MailProvider mailProvider, ILogger logger)
         {
             var mailList = new List<Mail>();
 
@@ -104,7 +110,14 @@ namespace Nhea.CoreCommunicationService
                         }
                         catch (Exception ex)
                         {
-                            Logger.Log(ex, false);
+                            if (logger != null)
+                            {
+                                logger.LogError(ex, "Queued mail {MailId} could not be read: {Message}", mail.Id, ex.Message);
+                            }
+                            else
+                            {
+                                Logger.Log(ex, false);
+                            }
 
                             mail.SetError();
                         }

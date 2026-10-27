@@ -60,7 +60,7 @@ namespace Nhea.CoreCommunicationService
                 nhea.PublishType = Nhea.Logging.PublishTypes.File;
                 nhea.AutoInform = false;
                 nhea.FriendlyName = "nhea mail service";
-            }));
+            }).AddFilter<Nhea.Services.NheaLoggerProvider>(null, LogLevel.Warning));
 
             services.AddOptions();
 
