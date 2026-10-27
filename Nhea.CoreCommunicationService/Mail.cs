@@ -1,10 +1,12 @@
 ﻿using Nhea.Communication;
+using Nhea.Configuration.GenericConfigSection.Communication;
 using Nhea.Utils;
 using System;
 using System.Collections.Generic;
 using Microsoft.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace Nhea.CoreCommunicationService
 {
@@ -17,7 +19,22 @@ namespace Nhea.CoreCommunicationService
              VALUES 
              (@MailQueueId,@From,@To,@Cc,@Bcc,@Subject,@Body,@MailProviderId,@Priority,@HasAttachment,@CreateDate,@Status);" + DeleteCommandText;
 
+        private const int SmtpSendTryCount = 3;
+        private const int CompleteSendTryCount = 3;
+
         public void Send()
+        {
+            var smtpElement = SendToSmtp();
+
+            if (!smtpElement.DisableHistoryLogging && string.IsNullOrEmpty(this.From))
+            {
+                this.From = smtpElement.From;
+            }
+
+            CompleteSend(smtpElement);
+        }
+
+        private SmtpElement SendToSmtp()
         {
             int tryCount = 0;
 
@@ -32,15 +49,31 @@ namespace Nhea.CoreCommunicationService
                         attachments.AddRange(Attachments.Select(attachment => new System.Net.Mail.Attachment(new MemoryStream(attachment.Data), attachment.Name)));
                     }
 
-                    var smtpElement = SmtpHelper.SendMail(From, ToRecipient, CcRecipients, BccRecipients, Subject, Body, false, attachments);
+                    return SmtpHelper.SendMail(From, ToRecipient, CcRecipients, BccRecipients, Subject, Body, false, attachments);
+                }
+                catch
+                {
+                    tryCount++;
 
+                    if (tryCount >= SmtpSendTryCount)
+                    {
+                        throw;
+                    }
+                }
+            }
+        }
+
+        // The mail has already been sent here: retrying the SMTP send on a database error would deliver it again.
+        private void CompleteSend(SmtpElement smtpElement)
+        {
+            int tryCount = 0;
+
+            while (true)
+            {
+                try
+                {
                     if (!smtpElement.DisableHistoryLogging)
                     {
-                        if (string.IsNullOrEmpty(this.From))
-                        {
-                            this.From = smtpElement.From;
-                        }
-
                         MoveToHistory(MailStatus.Sent);
                     }
                     else
@@ -50,16 +83,16 @@ namespace Nhea.CoreCommunicationService
 
                     return;
                 }
-                catch
+                catch (Exception ex)
                 {
-                    if (tryCount < 10)
+                    tryCount++;
+
+                    if (tryCount >= CompleteSendTryCount)
                     {
-                        tryCount++;
+                        throw new Exception("Mail " + Id + " was sent but could not be removed from the queue.", ex);
                     }
-                    else
-                    {
-                        throw;
-                    }
+
+                    Thread.Sleep(TimeSpan.FromSeconds(tryCount));
                 }
             }
         }
@@ -88,7 +121,8 @@ namespace Nhea.CoreCommunicationService
             {
                 sqlConnection.Open();
 
-                using (SqlCommand cmd = new(MoveToHistoryCommandText, sqlConnection))
+                using (SqlTransaction transaction = sqlConnection.BeginTransaction())
+                using (SqlCommand cmd = new(MoveToHistoryCommandText, sqlConnection, transaction))
                 {
                     cmd.Parameters.Clear();
                     cmd.Parameters.Add(new SqlParameter("@MailQueueId", Id));
@@ -113,6 +147,7 @@ namespace Nhea.CoreCommunicationService
                     }
 
                     cmd.ExecuteNonQuery();
+                    transaction.Commit();
                 }
 
                 sqlConnection.Close();
