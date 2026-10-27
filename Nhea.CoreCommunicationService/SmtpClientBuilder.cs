@@ -33,8 +33,16 @@ namespace Nhea.CoreCommunicationService
                 }
             }
 
-            smtpClient.Connect(smtpElement.Host, smtpElement.Port, GetSecureSocketOptions(smtpElement));
-            smtpClient.Authenticate(smtpElement.UserName, smtpElement.Password);
+            try
+            {
+                smtpClient.Connect(smtpElement.Host, smtpElement.Port, GetSecureSocketOptions(smtpElement));
+                smtpClient.Authenticate(smtpElement.UserName, smtpElement.Password);
+            }
+            catch
+            {
+                smtpClient.Dispose();
+                throw;
+            }
 
             return smtpClient;
         }

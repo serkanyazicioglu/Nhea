@@ -52,62 +52,62 @@ namespace Nhea.CoreCommunicationService
 
                 cmd.Parameters.Add(new SqlParameter("@PackageSize", packageSize));
 
-                SqlDataReader reader = cmd.ExecuteReader();
-
-                while (reader.Read())
+                using (SqlDataReader reader = cmd.ExecuteReader())
                 {
-                    var mail = new Nhea.CoreCommunicationService.Mail
+                    while (reader.Read())
                     {
-                        Id = reader.GetGuid(0)
-                    };
-
-                    try
-                    {
-                        mail.From = reader.GetString(1);
-                        mail.ToRecipient = reader.GetString(2);
-                        mail.CcRecipients = reader.GetString(3);
-                        mail.BccRecipients = reader.GetString(4);
-                        mail.Subject = reader.GetString(5);
-                        mail.Body = reader.GetString(6);
-                        mail.Priority = reader.GetDateTime(7);
-                        mail.CreateDate = reader.GetDateTime(8);
-                        mail.HasAttachment = reader.GetBoolean(9);
-
-                        if (mail.HasAttachment)
+                        var mail = new Nhea.CoreCommunicationService.Mail
                         {
-                            using (SqlConnection attachmentConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
-                            using (SqlCommand attachmentCommand = new(SelectAttachmentsCommandText, attachmentConnection))
+                            Id = reader.GetGuid(0)
+                        };
+
+                        try
+                        {
+                            mail.From = reader.GetString(1);
+                            mail.ToRecipient = reader.GetString(2);
+                            mail.CcRecipients = reader.GetString(3);
+                            mail.BccRecipients = reader.GetString(4);
+                            mail.Subject = reader.GetString(5);
+                            mail.Body = reader.GetString(6);
+                            mail.Priority = reader.GetDateTime(7);
+                            mail.CreateDate = reader.GetDateTime(8);
+                            mail.HasAttachment = reader.GetBoolean(9);
+
+                            if (mail.HasAttachment)
                             {
-                                attachmentConnection.Open();
-
-                                attachmentCommand.Parameters.Add(new SqlParameter("@MailQueueId", mail.Id));
-
-                                SqlDataReader attachmentReader = attachmentCommand.ExecuteReader();
-
-                                while (attachmentReader.Read())
+                                using (SqlConnection attachmentConnection = DBUtil.CreateConnection(ConnectionSource.Communication))
+                                using (SqlCommand attachmentCommand = new(SelectAttachmentsCommandText, attachmentConnection))
                                 {
-                                    string path = attachmentReader.GetString(0);
+                                    attachmentConnection.Open();
 
-                                    var attachment = new MailQueueAttachment
+                                    attachmentCommand.Parameters.Add(new SqlParameter("@MailQueueId", mail.Id));
+
+                                    using (SqlDataReader attachmentReader = attachmentCommand.ExecuteReader())
                                     {
-                                        Name = attachmentReader.GetString(0),
-                                        Data = (byte[])attachmentReader["AttachmentData"]
-                                    };
+                                        while (attachmentReader.Read())
+                                        {
+                                            var attachment = new MailQueueAttachment
+                                            {
+                                                Name = attachmentReader.GetString(0),
+                                                Data = (byte[])attachmentReader["AttachmentData"]
+                                            };
 
-                                    mail.Attachments.Add(attachment);
+                                            mail.Attachments.Add(attachment);
+                                        }
+                                    }
+
+                                    attachmentConnection.Close();
                                 }
-
-                                attachmentConnection.Close();
                             }
+
+                            mailList.Add(mail);
                         }
+                        catch (Exception ex)
+                        {
+                            Logger.Log(ex, false);
 
-                        mailList.Add(mail);
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Log(ex, false);
-
-                        mail.SetError();
+                            mail.SetError();
+                        }
                     }
                 }
 

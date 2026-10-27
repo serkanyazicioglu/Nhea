@@ -43,35 +43,37 @@ namespace Nhea.CoreCommunicationService
 
             if (smtpElement != null)
             {
-                var mailMessage = MailMessageBuilder.Build(smtpElement, toRecipients, ccRecipients, bccRecipients, subject, body, isHighPriority, attachments);
-
-                if (string.IsNullOrEmpty(smtpElement.SmtpLibrary) || smtpElement.SmtpLibrary == "default")
+                using (var mailMessage = MailMessageBuilder.Build(smtpElement, toRecipients, ccRecipients, bccRecipients, subject, body, isHighPriority, attachments))
                 {
-                    using (var smtpClient = SmtpClientBuilder.Build(smtpElement))
+                    if (string.IsNullOrEmpty(smtpElement.SmtpLibrary) || smtpElement.SmtpLibrary == "default")
                     {
-                        smtpClient.Send(mailMessage);
-                    }
-                }
-                else if (smtpElement.SmtpLibrary == "mailkit")
-                {
-                    using (var smtpClient = SmtpClientBuilder.BuildForMailKit(smtpElement))
-                    {
-                        try
+                        using (var smtpClient = SmtpClientBuilder.Build(smtpElement))
                         {
-                            smtpClient.Send(mailMessage.ConvertToMimeMessage());
+                            smtpClient.Send(mailMessage);
                         }
-                        finally
+                    }
+                    else if (smtpElement.SmtpLibrary == "mailkit")
+                    {
+                        using (var smtpClient = SmtpClientBuilder.BuildForMailKit(smtpElement))
+                        using (var mimeMessage = mailMessage.ConvertToMimeMessage())
                         {
-                            if (smtpClient.IsConnected)
+                            try
                             {
-                                smtpClient.Disconnect(true);
+                                smtpClient.Send(mimeMessage);
+                            }
+                            finally
+                            {
+                                if (smtpClient.IsConnected)
+                                {
+                                    smtpClient.Disconnect(true);
+                                }
                             }
                         }
                     }
-                }
-                else
-                {
-                    throw new Exception("Smtp library not found! Library: " + smtpElement.SmtpLibrary);
+                    else
+                    {
+                        throw new Exception("Smtp library not found! Library: " + smtpElement.SmtpLibrary);
+                    }
                 }
 
                 return smtpElement;
