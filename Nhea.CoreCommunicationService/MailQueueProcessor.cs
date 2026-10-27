@@ -10,8 +10,8 @@ namespace Nhea.CoreCommunicationService
     public class MailQueueProcessor
     {
         private const int MaxPackageSize = 100;
-        private const string SelectCommandText = @"SELECT TOP (@PackageSize) Id, [From], [To], Cc, Bcc, Subject, Body, Priority, CreateDate, HasAttachment FROM nhea_MailQueue WHERE IsReadyToSend = 1 AND MailProviderId = @MailProviderId ORDER BY [Priority]";
-        private const string NullableSelectCommandText = @"SELECT TOP (@PackageSize) Id, [From], [To], Cc, Bcc, Subject, Body, Priority, CreateDate, HasAttachment FROM nhea_MailQueue WHERE IsReadyToSend = 1 AND MailProviderId IS NULL ORDER BY [Priority]";
+        private const string SelectCommandText = @"SELECT TOP (@PackageSize) Id, [From], [To], Cc, Bcc, Subject, Body, Priority, CreateDate, HasAttachment FROM nhea_MailQueue WHERE IsReadyToSend = 1 AND MailProviderId = @MailProviderId ORDER BY [Priority], CreateDate";
+        private const string NullableSelectCommandText = @"SELECT TOP (@PackageSize) Id, [From], [To], Cc, Bcc, Subject, Body, Priority, CreateDate, HasAttachment FROM nhea_MailQueue WHERE IsReadyToSend = 1 AND MailProviderId IS NULL ORDER BY [Priority], CreateDate";
         private const string SelectAttachmentsCommandText = "SELECT [AttachmentName],[AttachmentData] FROM [nhea_MailQueueAttachment] WHERE MailQueueId = @MailQueueId";
 
         public static List<Mail> Fetch()
