@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Net.Mail;
 using Nhea.Configuration.GenericConfigSection.Communication;
@@ -149,17 +150,17 @@ namespace Nhea.CoreCommunicationService
 
             foreach (var mailAddress in mailMessage.To)
             {
-                mimeMessage.To.Add(new MimeKit.MailboxAddress(string.Empty, mailAddress.Address));
+                mimeMessage.To.Add(new MimeKit.MailboxAddress(mailAddress.DisplayName, mailAddress.Address));
             }
 
             foreach (var mailAddress in mailMessage.CC)
             {
-                mimeMessage.To.Add(new MimeKit.MailboxAddress(string.Empty, mailAddress.Address));
+                mimeMessage.Cc.Add(new MimeKit.MailboxAddress(mailAddress.DisplayName, mailAddress.Address));
             }
 
             foreach (var mailAddress in mailMessage.Bcc)
             {
-                mimeMessage.Bcc.Add(new MimeKit.MailboxAddress(string.Empty, mailAddress.Address));
+                mimeMessage.Bcc.Add(new MimeKit.MailboxAddress(mailAddress.DisplayName, mailAddress.Address));
             }
 
             mimeMessage.Subject = mailMessage.Subject;
@@ -167,7 +168,21 @@ namespace Nhea.CoreCommunicationService
 
             var builder = new MimeKit.BodyBuilder();
 
-            if (mailMessage.IsBodyHtml)
+            if (mailMessage.AlternateViews.Count > 0)
+            {
+                foreach (var alternateView in mailMessage.AlternateViews)
+                {
+                    if (alternateView.ContentType.MediaType == MediaTypeNames.Text.Html)
+                    {
+                        builder.HtmlBody = ReadAlternateView(alternateView);
+                    }
+                    else if (alternateView.ContentType.MediaType == MediaTypeNames.Text.Plain)
+                    {
+                        builder.TextBody = ReadAlternateView(alternateView);
+                    }
+                }
+            }
+            else if (mailMessage.IsBodyHtml)
             {
                 builder.HtmlBody = mailMessage.Body;
             }
@@ -195,6 +210,18 @@ namespace Nhea.CoreCommunicationService
             }
 
             return mimeMessage;
+        }
+
+        private static string ReadAlternateView(AlternateView alternateView)
+        {
+            Encoding encoding = string.IsNullOrEmpty(alternateView.ContentType.CharSet) ? Encoding.UTF8 : Encoding.GetEncoding(alternateView.ContentType.CharSet);
+
+            alternateView.ContentStream.Position = 0;
+
+            using (var reader = new StreamReader(alternateView.ContentStream, encoding, false, 1024, true))
+            {
+                return reader.ReadToEnd();
+            }
         }
     }
 }
