@@ -9,8 +9,9 @@ namespace Nhea.CoreCommunicationService
 {
     public class MailQueueProcessor
     {
-        private const string SelectCommandText = @"SET ROWCOUNT @PackageSize; SELECT TOP 100 Id, [From], [To], Cc, Bcc, Subject, Body, Priority, CreateDate, HasAttachment FROM nhea_MailQueue WHERE IsReadyToSend = 1 AND MailProviderId = @MailProviderId ORDER BY [Priority]";
-        private const string NullableSelectCommandText = @"SET ROWCOUNT @PackageSize; SELECT TOP 100 Id, [From], [To], Cc, Bcc, Subject, Body, Priority, CreateDate, HasAttachment FROM nhea_MailQueue WHERE IsReadyToSend = 1 AND MailProviderId IS NULL ORDER BY [Priority]";
+        private const int MaxPackageSize = 100;
+        private const string SelectCommandText = @"SELECT TOP (@PackageSize) Id, [From], [To], Cc, Bcc, Subject, Body, Priority, CreateDate, HasAttachment FROM nhea_MailQueue WHERE IsReadyToSend = 1 AND MailProviderId = @MailProviderId ORDER BY [Priority]";
+        private const string NullableSelectCommandText = @"SELECT TOP (@PackageSize) Id, [From], [To], Cc, Bcc, Subject, Body, Priority, CreateDate, HasAttachment FROM nhea_MailQueue WHERE IsReadyToSend = 1 AND MailProviderId IS NULL ORDER BY [Priority]";
         private const string SelectAttachmentsCommandText = "SELECT [AttachmentName],[AttachmentData] FROM [nhea_MailQueueAttachment] WHERE MailQueueId = @MailQueueId";
 
         public static List<Mail> Fetch()
@@ -41,6 +42,12 @@ namespace Nhea.CoreCommunicationService
                 if (mailProvider != null)
                 {
                     cmd.Parameters.Add(new SqlParameter("@MailProviderId", mailProviderId));
+                }
+
+                // A package size of 0 meant no limit with SET ROWCOUNT, so it still fetches up to the maximum.
+                if (packageSize <= 0 || packageSize > MaxPackageSize)
+                {
+                    packageSize = MaxPackageSize;
                 }
 
                 cmd.Parameters.Add(new SqlParameter("@PackageSize", packageSize));
