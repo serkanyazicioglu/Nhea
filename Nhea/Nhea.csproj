@@ -9,6 +9,7 @@
 		<Version>5.0.2.0</Version>
 		<PackageReleaseNotes>
 			- File and mail logs show the process start time and uptime
+			- GeneratePassword uses a cryptographically secure random number generator
 		</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageProjectUrl>https://github.com/serkanyazicioglu/Nhea</PackageProjectUrl>

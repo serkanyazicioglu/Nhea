@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 
 namespace Nhea.Text.Password
 {
@@ -14,23 +14,10 @@ namespace Nhea.Text.Password
 
         internal List<ConstantChar> ConstantChars { get; set; }
 
-        private Random currentRandom;
-        private Random CurrentRandom
-        {
-            get
-            {
-                if (currentRandom == null)
-                {
-                    currentRandom = new Random();
-                }
-
-                return currentRandom;
-            }
-        }
-
         internal string CreatePassword()
         {
             string password = string.Empty;
+            string randomChars = RandomNumberGenerator.GetString(this.CharSet, this.PasswordLength);
 
             for (int i = 0; i < this.PasswordLength; i++)
             {
@@ -47,7 +34,7 @@ namespace Nhea.Text.Password
                 }
                 else
                 {
-                    password = string.Concat(password, this.CharSet[(int)(CurrentRandom.NextDouble() * this.CharSet.Length)]);
+                    password = string.Concat(password, randomChars[i]);
                 }
             }
 
