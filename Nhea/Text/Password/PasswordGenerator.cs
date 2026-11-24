@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
 
@@ -14,7 +15,24 @@ namespace Nhea.Text.Password
 
         internal List<ConstantChar> ConstantChars { get; set; }
 
+        private const int MaxCreateAttempts = 1000;
+
         internal string CreatePassword()
+        {
+            for (int attempt = 0; attempt < MaxCreateAttempts; attempt++)
+            {
+                string password = BuildPassword();
+
+                if (ValidatePassword(password))
+                {
+                    return password;
+                }
+            }
+
+            throw new InvalidOperationException(String.Format("Could not generate a {0} character password from the given character set without exceeding {1} total or {2} sequential occurrences of the same character.", this.PasswordLength, MaxAllowedTotalDuplicateCharacter, MaxAllowedSequentalDuplicateCharacter));
+        }
+
+        private string BuildPassword()
         {
             string password = string.Empty;
             string randomChars = RandomNumberGenerator.GetString(this.CharSet, this.PasswordLength);
@@ -38,14 +56,7 @@ namespace Nhea.Text.Password
                 }
             }
 
-            if (ValidatePassword(password))
-            {
-                return password;
-            }
-            else
-            {
-                return CreatePassword();
-            }
+            return password;
         }
 
         private const int MaxAllowedTotalDuplicateCharacter = 4;

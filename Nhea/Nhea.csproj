@@ -10,6 +10,7 @@
 		<PackageReleaseNotes>
 			- File and mail logs show the process start time and uptime
 			- GeneratePassword uses a cryptographically secure random number generator
+			- GeneratePassword throws InvalidOperationException instead of overflowing the stack when the duplicate character rules can't be met
 		</PackageReleaseNotes>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageProjectUrl>https://github.com/serkanyazicioglu/Nhea</PackageProjectUrl>
