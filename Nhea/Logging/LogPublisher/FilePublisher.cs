@@ -28,7 +28,14 @@ namespace Nhea.Logging.LogPublisher
                     }
                 }
 
-                string detail = String.Format("Date: {0}{7}LogLevel: {1}{7}Message: {2}{7}Source: {3}{7}Username: {4}{7}{7}{5}{6}", DateTime.Now.ToString(), Level.ToString(), Message, Source, UserName, exceptionDetail, exceptionData, Environment.NewLine);
+                string processDetail = string.Empty;
+
+                if (ProcessStartTime.HasValue)
+                {
+                    processDetail = "Process Start: " + ProcessStartTime.Value.ToString() + Environment.NewLine + "Uptime: " + ProcessUptime + Environment.NewLine;
+                }
+
+                string detail = String.Format("Date: {0}{7}{8}LogLevel: {1}{7}Message: {2}{7}Source: {3}{7}Username: {4}{7}{7}{5}{6}", DateTime.Now.ToString(), Level.ToString(), Message, Source, UserName, exceptionDetail, exceptionData, Environment.NewLine, processDetail);
 
                 string logfilename = Nhea.Helper.IOHelper.ToSafeFileName(String.Format(Settings.Log.FileName, DateTime.Now));
 

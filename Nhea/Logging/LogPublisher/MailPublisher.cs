@@ -44,6 +44,13 @@ namespace Nhea.Logging.LogPublisher
                 string detail = "<b>Message:</b> " + Message + HtmlNewLine;
                 detail += "<b>Log Level:</b> " + Level.ToString() + HtmlNewLine;
                 detail += "<b>Date:</b> " + DateTime.Now.ToString() + HtmlNewLine;
+
+                if (ProcessStartTime.HasValue)
+                {
+                    detail += "<b>Process Start:</b> " + ProcessStartTime.Value.ToString() + HtmlNewLine;
+                    detail += "<b>Uptime:</b> " + ProcessUptime + HtmlNewLine;
+                }
+
                 detail += "<b>Username:</b> " + UserName + HtmlNewLine;
 
                 string aspnetCoreEnvironmentVariable = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");

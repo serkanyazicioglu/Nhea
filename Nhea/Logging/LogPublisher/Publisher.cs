@@ -1,11 +1,44 @@
 ﻿using Microsoft.Extensions.Logging;
 using Nhea.Configuration;
 using System;
+using System.Diagnostics;
 
 namespace Nhea.Logging.LogPublisher
 {
     public abstract class Publisher : IPublisher
     {
+        private static readonly Lazy<DateTime?> processStartTime = new(() =>
+        {
+            try
+            {
+                using (var process = Process.GetCurrentProcess())
+                {
+                    return process.StartTime;
+                }
+            }
+            catch
+            {
+                return null;
+            }
+        });
+
+        protected static DateTime? ProcessStartTime => processStartTime.Value;
+
+        protected static string ProcessUptime
+        {
+            get
+            {
+                if (!ProcessStartTime.HasValue)
+                {
+                    return null;
+                }
+
+                var uptime = DateTime.Now - ProcessStartTime.Value;
+
+                return string.Format("{0}d {1:hh\\:mm\\:ss}", (int)uptime.TotalDays, uptime);
+            }
+        }
+
         public string Message { get; set; }
 
         public Exception Exception { get; set; }
